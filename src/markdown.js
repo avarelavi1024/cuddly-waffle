@@ -42,6 +42,7 @@ export function markdownToHtml(markdown) {
     flushOrderedList();
     if (trimmed.startsWith("# ")) html.push(`<h1>${inlineMarkdown(trimmed.slice(2))}</h1>`);
     else if (trimmed.startsWith("## ")) html.push(`<h2>${inlineMarkdown(trimmed.slice(3))}</h2>`);
+    else if (trimmed.startsWith("### ")) html.push(`<h3>${inlineMarkdown(trimmed.slice(4))}</h3>`);
     else if (trimmed.startsWith("> ")) html.push(`<blockquote>${inlineMarkdown(trimmed.slice(2).replace(/\n/g, " "))}</blockquote>`);
     else html.push(`<p>${inlineMarkdown(trimmed.replace(/\n/g, " "))}</p>`);
   }

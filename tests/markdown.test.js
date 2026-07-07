@@ -17,3 +17,7 @@ This is **strong** and *emphasized* with [a link](https://example.com).`);
 test("markdownToHtml escapes raw HTML", () => {
   assert.equal(markdownToHtml(`<script>alert("x")</script>`), `<p>&lt;script&gt;alert(&quot;x&quot;)&lt;/script&gt;</p>`);
 });
+
+test("markdownToHtml converts section reference headings", () => {
+  assert.equal(markdownToHtml(`### References for this section`), `<h3>References for this section</h3>`);
+});

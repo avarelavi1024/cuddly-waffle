@@ -8,7 +8,7 @@ tags: ["Ireland", "Spain", "political culture", "history", "identity"]
 excerpt: "Ireland and Spain share Catholic influence, emigration, modernisation and European integration, but their political cultures come from different historical wounds."
 image: "images/editorial-work-independence.svg"
 curated: true
-featured: true
+featured: false
 status: "published"
 ---
 
