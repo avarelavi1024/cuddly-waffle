@@ -7,6 +7,7 @@ const site = {
 };
 
 const themes = [
+  { name: "Politics & Identity", slug: "politics", image: "/images/editorial-politics.svg" },
   { name: "Mythologies", slug: "mythologies", image: "/images/editorial-myths.svg" },
   { name: "Cities", slug: "cities", image: "/images/editorial-cities.svg" },
   { name: "Visual Culture", slug: "visual-culture", image: "/images/editorial-visual-culture.svg" },
@@ -177,7 +178,7 @@ export function renderHomePage(essays) {
 
       <section class="theme-marquee" aria-label="Thematic carousel">
         <div class="theme-track">
-          ${[...themes, ...themes].map((theme) => `<a href="${themeHref(theme)}" class="theme-pill"><img src="${theme.image}" alt=""><span>${theme.name}</span></a>`).join("")}
+          ${[...themes, ...themes].map((theme) => `<a href="${themeHref(theme)}" class="theme-pill"><img src="${theme.image}" alt=""><span>${escapeHtml(theme.name)}</span></a>`).join("")}
         </div>
       </section>
 
@@ -202,7 +203,7 @@ export function renderHomePage(essays) {
           <h2>Available categories</h2>
           <a href="/projects/">Explore</a>
         </div>
-        <div class="category-grid">${themes.map((theme) => `<a href="${themeHref(theme)}" class="category-tile"><img src="${theme.image}" alt=""><span>${theme.name}</span></a>`).join("")}</div>
+        <div class="category-grid">${themes.map((theme) => `<a href="${themeHref(theme)}" class="category-tile"><img src="${theme.image}" alt=""><span>${escapeHtml(theme.name)}</span></a>`).join("")}</div>
       </section>
 
       <section class="section open-questions" id="open-questions">
@@ -237,10 +238,10 @@ export function renderProjectsPage(essays) {
       <section class="page-title">
         <p class="kicker">Projects</p>
         <h1>Essays, visual notes and questions in progress.</h1>
-        <p>Explore the themes that shape this archive, from culture and cities to health, business and open questions.</p>
+        <p>Explore the themes that shape this archive, from politics and identity to culture, cities, health, business and open questions.</p>
       </section>
       <section class="category-grid project-categories">
-        ${themes.map((theme) => `<a id="${theme.slug}" href="#all-essays" class="category-tile"><img src="${theme.image}" alt=""><span>${theme.name}</span></a>`).join("")}
+        ${themes.map((theme) => `<a id="${theme.slug}" href="#all-essays" class="category-tile"><img src="${theme.image}" alt=""><span>${escapeHtml(theme.name)}</span></a>`).join("")}
       </section>
       <section class="section all-essays" id="all-essays">
         <div class="section-heading">

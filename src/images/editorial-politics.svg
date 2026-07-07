@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Editorial abstract image about politics, history and identity">
+  <rect width="1200" height="900" fill="#5a1e37"/>
+  <rect x="105" y="110" width="360" height="640" fill="#f4f1ea"/>
+  <rect x="510" y="175" width="250" height="520" fill="#6f6b37"/>
+  <rect x="805" y="110" width="290" height="640" fill="#0d4d4f"/>
+  <circle cx="285" cy="430" r="78" fill="#bf8b2e"/>
+  <circle cx="635" cy="430" r="62" fill="#d9a294"/>
+  <circle cx="950" cy="430" r="70" fill="#a24e34"/>
+  <path d="M185 705 C 330 625, 430 785, 590 700 S 830 580, 1015 705" fill="none" stroke="#f4f1ea" stroke-width="24"/>
+  <path d="M190 182 L390 182 M550 245 L720 245 M850 182 L1045 182" stroke="#211714" stroke-width="18" stroke-linecap="round" opacity=".55"/>
+</svg>
