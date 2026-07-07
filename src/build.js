@@ -1,7 +1,7 @@
 import { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { loadEssays } from "./content.js";
-import { renderAboutPage, renderArchivePage, renderContactPage, renderEssayPage, renderHomePage, renderProjectsPage } from "./templates.js";
+import { categoryThemes, renderAboutPage, renderArchivePage, renderCategoryPage, renderContactPage, renderEssayPage, renderHomePage, renderProjectsPage } from "./templates.js";
 
 async function writePage(path, html) {
   await mkdir(dirname(path), { recursive: true });
@@ -34,6 +34,10 @@ async function build() {
 
   for (const essay of essays) {
     await writePage(join("dist/essays", essay.slug, "index.html"), renderEssayPage(essay, essays));
+  }
+
+  for (const theme of categoryThemes) {
+    await writePage(join("dist/categories", theme.slug, "index.html"), renderCategoryPage(theme, essays));
   }
 
   await copyAsset("src/styles.css", "dist/styles.css");

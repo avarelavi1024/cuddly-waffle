@@ -7,16 +7,60 @@ const site = {
 };
 
 const themes = [
-  { name: "Politics & Identity", slug: "politics", image: "/images/editorial-politics.svg" },
-  { name: "Mythologies", slug: "mythologies", image: "/images/editorial-myths.svg" },
-  { name: "Cities", slug: "cities", image: "/images/editorial-cities.svg" },
-  { name: "Visual Culture", slug: "visual-culture", image: "/images/editorial-visual-culture.svg" },
-  { name: "Health", slug: "health", image: "/images/editorial-nutrition.svg" },
-  { name: "Business", slug: "business", image: "/images/editorial-business.svg" },
-  { name: "Open Questions", slug: "open-questions", image: "/images/editorial-open-questions.svg" }
+  {
+    name: "Politics & Identity",
+    slug: "politics",
+    image: "/images/editorial-politics.svg",
+    categories: ["Politics"],
+    description: "Essays on history, memory, territory, power and the narratives that shape public life."
+  },
+  {
+    name: "Mythologies",
+    slug: "mythologies",
+    image: "/images/editorial-myths.svg",
+    categories: ["Culture"],
+    description: "Ancient stories, literary symbols and cultural figures re-read from the present."
+  },
+  {
+    name: "Cities",
+    slug: "cities",
+    image: "/images/editorial-cities.svg",
+    categories: ["Cities"],
+    description: "Urban life, belonging, tourism, housing and the difference between visiting and living."
+  },
+  {
+    name: "Visual Culture",
+    slug: "visual-culture",
+    image: "/images/editorial-visual-culture.svg",
+    categories: ["Visual Culture"],
+    description: "Images, platforms, aesthetics and the visual systems that shape how ideas are read."
+  },
+  {
+    name: "Health",
+    slug: "health",
+    image: "/images/editorial-nutrition.svg",
+    categories: ["Health"],
+    description: "Nutrition, bodies, behaviour and the social conditions that shape health choices."
+  },
+  {
+    name: "Business",
+    slug: "business",
+    image: "/images/editorial-business.svg",
+    categories: ["Business"],
+    description: "Work, brands, digital systems and the everyday organisation of modern businesses."
+  },
+  {
+    name: "Open Questions",
+    slug: "open-questions",
+    image: "/images/editorial-open-questions.svg",
+    categories: [],
+    description: "A rotating archive of questions that may become future essays."
+  }
 ];
 
-const themeHref = (theme) => theme.slug === "open-questions" ? "/#open-questions" : `/projects/#${theme.slug}`;
+export const categoryThemes = themes;
+
+const themeHref = (theme) => `/categories/${theme.slug}/`;
 
 const openQuestions = [
   ["Culture, society and everyday life", "Why is it easier to visit cities than to live in them?"],
@@ -241,7 +285,7 @@ export function renderProjectsPage(essays) {
         <p>Explore the themes that shape this archive, from politics and identity to culture, cities, health, business and open questions.</p>
       </section>
       <section class="category-grid project-categories">
-        ${themes.map((theme) => `<a id="${theme.slug}" href="#all-essays" class="category-tile"><img src="${theme.image}" alt=""><span>${escapeHtml(theme.name)}</span></a>`).join("")}
+        ${themes.map((theme) => `<a id="${theme.slug}" href="${themeHref(theme)}" class="category-tile"><img src="${theme.image}" alt=""><span>${escapeHtml(theme.name)}</span></a>`).join("")}
       </section>
       <section class="section all-essays" id="all-essays">
         <div class="section-heading">
@@ -249,6 +293,71 @@ export function renderProjectsPage(essays) {
           <span>${essays.filter((essay) => essay.status !== "coming-soon").length} published</span>
         </div>
         <div class="archive-list">${essays.length ? essays.map((essay) => archiveRow(essay)).join("") : `<p class="empty-state">No essays published yet.</p>`}</div>
+      </section>
+    </main>`
+  });
+}
+
+export function renderCategoryPage(theme, essays) {
+  if (theme.slug === "open-questions") return renderOpenQuestionsPage(theme);
+
+  const categoryEssays = essays.filter((essay) => theme.categories.includes(essay.category));
+  const published = categoryEssays.filter((essay) => essay.status !== "coming-soon");
+  const upcoming = categoryEssays.filter((essay) => essay.status === "coming-soon");
+
+  return pageShell({
+    title: theme.name,
+    description: theme.description,
+    image: theme.image,
+    body: `<main class="projects-page category-page">
+      <section class="page-title category-title">
+        <div>
+          <p class="kicker">Category</p>
+          <h1>${escapeHtml(theme.name)}</h1>
+          <p>${escapeHtml(theme.description)}</p>
+        </div>
+        <img src="${theme.image}" alt="">
+      </section>
+      <section class="section all-essays">
+        <div class="section-heading">
+          <h2>Published essays</h2>
+          <span>${published.length} published</span>
+        </div>
+        <div class="archive-list">${published.length ? published.map((essay) => archiveRow(essay)).join("") : `<p class="empty-state">No essays published in this category yet.</p>`}</div>
+      </section>
+      <section class="section all-essays">
+        <div class="section-heading">
+          <h2>In progress</h2>
+          <span>${upcoming.length} coming soon</span>
+        </div>
+        <div class="archive-list">${upcoming.length ? upcoming.map((essay) => archiveRow(essay)).join("") : `<p class="empty-state">No upcoming essays listed for this category.</p>`}</div>
+      </section>
+    </main>`
+  });
+}
+
+function renderOpenQuestionsPage(theme) {
+  return pageShell({
+    title: theme.name,
+    description: theme.description,
+    image: theme.image,
+    body: `<main class="projects-page category-page">
+      <section class="page-title category-title">
+        <div>
+          <p class="kicker">Category</p>
+          <h1>${escapeHtml(theme.name)}</h1>
+          <p>${escapeHtml(theme.description)}</p>
+        </div>
+        <img src="${theme.image}" alt="">
+      </section>
+      <section class="section open-questions">
+        <div class="section-heading">
+          <h2>Questions in rotation</h2>
+          <a href="/#open-questions">View on home</a>
+        </div>
+        <div class="question-list">
+          ${openQuestions.map((item) => `<details><summary>${escapeHtml(item.question)}</summary><p>${escapeHtml(item.category)}</p></details>`).join("")}
+        </div>
       </section>
     </main>`
   });
@@ -345,9 +454,9 @@ function renderFooter() {
     </div>
     <div>
       <strong>Explore</strong>
-      <a href="/projects/#open-questions">Society</a>
-      <a href="/projects/#mythologies">Mythology</a>
-      <a href="/projects/#health">Health</a>
+      <a href="/categories/politics/">Politics</a>
+      <a href="/categories/mythologies/">Mythology</a>
+      <a href="/categories/health/">Health</a>
     </div>
     <div>
       <strong>More</strong>
