@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Editorial abstract image about open questions">
+  <rect width="1200" height="900" fill="#a24e34"/>
+  <circle cx="330" cy="350" r="210" fill="#f4f1ea"/>
+  <circle cx="690" cy="350" r="210" fill="#bf8b2e"/>
+  <circle cx="510" cy="560" r="210" fill="#0d4d4f"/>
+  <path d="M820 640 C 920 460, 1030 420, 1100 250" fill="none" stroke="#5a1e37" stroke-width="38"/>
+</svg>

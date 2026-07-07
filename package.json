@@ -1,0 +1,11 @@
+{
+  "name": "ana-editorial-essay-blog",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node src/build.js",
+    "dev": "node src/dev-server.js",
+    "test": "node --test tests/*.test.js"
+  }
+}

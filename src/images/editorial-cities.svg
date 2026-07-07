@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Editorial abstract image about cities">
+  <rect width="1200" height="900" fill="#d9a294"/>
+  <rect x="130" y="150" width="230" height="600" fill="#0d4d4f"/>
+  <rect x="430" y="260" width="230" height="490" fill="#7d2027"/>
+  <rect x="730" y="90" width="300" height="660" fill="#6f6b37"/>
+  <path d="M90 790 C 290 660, 520 730, 720 610 S 1000 540, 1130 680" fill="none" stroke="#f4f1ea" stroke-width="34"/>
+</svg>

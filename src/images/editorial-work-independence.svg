@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Editorial abstract image about work and independence">
+  <rect width="1200" height="900" fill="#0d4d4f"/>
+  <circle cx="250" cy="220" r="210" fill="#a24e34"/>
+  <rect x="470" y="130" width="520" height="620" fill="#bf8b2e"/>
+  <path d="M120 760 C 300 560, 460 900, 720 650 S 1050 500, 1120 720" fill="none" stroke="#f4f1ea" stroke-width="34"/>
+</svg>

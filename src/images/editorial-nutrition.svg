@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Editorial abstract image about nutrition">
+  <rect width="1200" height="900" fill="#f4f1ea"/>
+  <circle cx="850" cy="260" r="240" fill="#6f6b37"/>
+  <rect x="170" y="180" width="520" height="560" fill="#d9a294"/>
+  <path d="M140 700 C 360 500, 520 820, 760 590 S 1040 460, 1110 660" fill="none" stroke="#a24e34" stroke-width="36"/>
+</svg>
