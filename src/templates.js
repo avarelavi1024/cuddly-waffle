@@ -15,6 +15,8 @@ const themes = [
   { name: "Open Questions", slug: "open-questions", image: "/images/editorial-open-questions.svg" }
 ];
 
+const themeHref = (theme) => theme.slug === "open-questions" ? "/#open-questions" : `/projects/#${theme.slug}`;
+
 const openQuestions = [
   ["Culture, society and everyday life", "Why is it easier to visit cities than to live in them?"],
   ["Culture, society and everyday life", "How does our identity change when we change environments?"],
@@ -175,7 +177,7 @@ export function renderHomePage(essays) {
 
       <section class="theme-marquee" aria-label="Thematic carousel">
         <div class="theme-track">
-          ${[...themes, ...themes].map((theme) => `<a href="/projects/#${theme.slug}" class="theme-pill"><img src="${theme.image}" alt=""><span>${theme.name}</span></a>`).join("")}
+          ${[...themes, ...themes].map((theme) => `<a href="${themeHref(theme)}" class="theme-pill"><img src="${theme.image}" alt=""><span>${theme.name}</span></a>`).join("")}
         </div>
       </section>
 
@@ -200,10 +202,10 @@ export function renderHomePage(essays) {
           <h2>Available categories</h2>
           <a href="/projects/">Explore</a>
         </div>
-        <div class="category-grid">${themes.map((theme) => `<a href="/projects/#${theme.slug}" class="category-tile"><img src="${theme.image}" alt=""><span>${theme.name}</span></a>`).join("")}</div>
+        <div class="category-grid">${themes.map((theme) => `<a href="${themeHref(theme)}" class="category-tile"><img src="${theme.image}" alt=""><span>${theme.name}</span></a>`).join("")}</div>
       </section>
 
-      <section class="section open-questions">
+      <section class="section open-questions" id="open-questions">
         <div class="section-heading">
           <h2>Open questions</h2>
           <button type="button" class="rotate-questions" data-rotate-questions>Rotate</button>
