@@ -44,5 +44,5 @@ function advanceQuestions() {
 if (questionItems.length > 3) {
   showQuestionSet(questionOffset);
   rotateQuestions?.addEventListener("click", advanceQuestions);
-  window.setInterval(advanceQuestions, 9000);
+  window.setInterval(advanceQuestions, 24000);
 }
