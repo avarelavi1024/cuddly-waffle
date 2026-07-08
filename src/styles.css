@@ -830,6 +830,7 @@ h3 {
 
   .site-header {
     position: static;
+    gap: 12px;
   }
 
   .issue-strip {
@@ -858,6 +859,16 @@ h3 {
     min-height: auto;
   }
 
+  .latest-publication .essay-card-featured img,
+  .essay-card-featured img,
+  .category-title img {
+    min-height: 220px;
+  }
+
+  .essay-body {
+    max-width: none;
+  }
+
   .archive-row {
     grid-template-columns: 1fr;
   }
@@ -871,6 +882,115 @@ h3 {
   }
 }
 
+@media (max-width: 600px) {
+  .site-header {
+    padding: 14px 14px;
+  }
+
+  nav {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  nav a {
+    text-align: center;
+  }
+
+  .name-hero,
+  .section,
+  .projects-page,
+  .essay-page,
+  .text-page,
+  .contact-page,
+  .about-strip {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .theme-track {
+    animation-duration: 52s;
+    padding: 10px;
+  }
+
+  .theme-pill {
+    padding: 7px 11px 7px 7px;
+    font-size: 13px;
+  }
+
+  .theme-pill img {
+    width: 34px;
+    height: 34px;
+  }
+
+  .latest-publication .essay-card-featured {
+    padding: 14px;
+  }
+
+  .latest-publication .essay-card-featured img,
+  .essay-card-featured img,
+  .category-title img {
+    min-height: 180px;
+  }
+
+  .small-essay,
+  .small-essay a,
+  .small-essay .disabled-card {
+    min-height: auto;
+  }
+
+  .category-tile {
+    min-height: 156px;
+  }
+
+  .category-tile span {
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+    font-size: clamp(27px, 10vw, 38px);
+  }
+
+  .question-list summary {
+    font-size: clamp(22px, 8vw, 31px);
+  }
+
+  .essay-hero img {
+    aspect-ratio: 4 / 3;
+    margin-top: 22px;
+  }
+
+  .essay-body {
+    margin-top: 34px;
+    font-size: 18px;
+    line-height: 1.62;
+  }
+
+  .essay-body h2 {
+    font-size: clamp(30px, 10vw, 42px);
+    line-height: 1.03;
+  }
+
+  .essay-body blockquote {
+    padding: 18px;
+    font-size: clamp(22px, 8vw, 30px);
+  }
+
+  .essay-body ol {
+    list-style-position: outside;
+    padding-left: 20px;
+  }
+
+  .essay-body li {
+    padding: 12px;
+    overflow-wrap: anywhere;
+  }
+
+  .site-footer {
+    gap: 18px;
+  }
+}
+
 @media (max-width: 460px) {
   nav a,
   .section-heading a,
@@ -879,8 +999,27 @@ h3 {
   }
 
   .hero h1,
+  .name-hero h1,
   .contact-hero h1,
   .essay-hero h1 {
     font-size: clamp(38px, 13vw, 54px);
+  }
+
+  .hero-copy > p:last-child,
+  .page-title p:last-child,
+  .essay-hero > p:last-child,
+  .about-strip p,
+  .projects-page .page-title p:last-child {
+    font-size: 16px;
+  }
+
+  .section-heading h2,
+  .page-title h1,
+  .about-strip h2 {
+    font-size: clamp(31px, 12vw, 43px);
+  }
+
+  .archive-row {
+    gap: 6px;
   }
 }
