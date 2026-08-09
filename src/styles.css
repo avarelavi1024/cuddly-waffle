@@ -457,6 +457,21 @@ h3 {
   line-height: 1.5;
 }
 
+.theme-pill:focus-visible,
+.essay-card-featured a:focus-visible,
+.category-tile:focus-visible,
+.question-list summary:focus-visible,
+.visual-notes a:focus-visible,
+.visual-notes button:focus-visible,
+.contact-page a:focus-visible,
+.compact-contact + .site-footer a:focus-visible {
+  outline-color: var(--paper);
+}
+
+.question-list summary:focus-visible {
+  outline-offset: -4px;
+}
+
 .projects-page .page-title p:last-child {
   max-width: 560px;
   color: var(--muted);
