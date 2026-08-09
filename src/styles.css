@@ -593,6 +593,14 @@ h3 {
   gap: clamp(28px, 5vw, 70px);
 }
 
+.essay-series {
+  margin: 0 0 10px;
+  color: var(--green);
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
 .essay-hero h1 {
   font-size: clamp(42px, 6vw, 86px);
   line-height: .98;

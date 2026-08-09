@@ -16,6 +16,7 @@ const publishedEssay = {
   date: "2026-08-09",
   year: "2026",
   category: "Culture",
+  series: "The Secret Histories of Colour",
   tags: ["culture", "examples"],
   excerpt: "An example essay used to verify the page renderer.",
   image: "/images/editorial-myths.svg",
@@ -31,6 +32,14 @@ test("published essay pages expose article metadata and useful image alt text", 
   const html = renderEssayPage(publishedEssay, [publishedEssay]);
   assert.match(html, /property="og:type" content="article"/);
   assert.match(html, /<img[^>]+alt="Editorial illustration for Example Essay"/);
+});
+
+test("essay pages render optional series metadata", () => {
+  const html = renderEssayPage(publishedEssay, [publishedEssay]);
+  assert.match(html, /<p class="essay-series">The Secret Histories of Colour<\/p>/);
+
+  const withoutSeries = renderEssayPage({ ...publishedEssay, series: "" }, [publishedEssay]);
+  assert.doesNotMatch(withoutSeries, /class="essay-series"/);
 });
 
 test("essay image attributes remain single escaped attributes with adversarial input", () => {
