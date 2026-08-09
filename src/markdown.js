@@ -14,39 +14,76 @@ function inlineMarkdown(value) {
 }
 
 export function markdownToHtml(markdown) {
-  const blocks = markdown
-    .trim()
-    .split(/\n{2,}/)
-    .filter(Boolean);
-
+  const lines = String(markdown).trim().split(/\r?\n/);
   const html = [];
-  let orderedItems = [];
+  let paragraphLines = [];
+  let listItems = [];
+  let listTag = null;
+  let quoteLines = [];
 
-  function flushOrderedList() {
-    if (!orderedItems.length) return;
-    html.push(`<ol>${orderedItems.map((item) => `<li>${inlineMarkdown(item)}</li>`).join("")}</ol>`);
-    orderedItems = [];
+  function flushParagraph() {
+    if (!paragraphLines.length) return;
+    html.push(`<p>${inlineMarkdown(paragraphLines.join(" "))}</p>`);
+    paragraphLines = [];
   }
 
-  for (const block of blocks) {
-    const trimmed = block.trim();
-    if (/^\d+\.\s+/m.test(trimmed)) {
-      const items = trimmed
-        .split(/\n(?=\d+\.\s+)/)
-        .map((item) => item.replace(/^\d+\.\s+/, "").replace(/\n/g, " ").trim())
-        .filter(Boolean);
-      orderedItems.push(...items);
-      continue;
+  function flushList() {
+    if (!listItems.length) return;
+    html.push(`<${listTag}>\n${listItems.map((item) => `<li>${inlineMarkdown(item)}</li>`).join("\n")}\n</${listTag}>`);
+    listItems = [];
+    listTag = null;
+  }
+
+  function flushQuote() {
+    if (!quoteLines.length) return;
+    html.push(`<blockquote><p>${inlineMarkdown(quoteLines.join(" "))}</p></blockquote>`);
+    quoteLines = [];
+  }
+
+  function flushBlocks() {
+    flushParagraph();
+    flushList();
+    flushQuote();
+  }
+
+  for (const line of lines) {
+    const unorderedItem = line.match(/^[-*] (.+)$/);
+    const orderedItem = line.match(/^\d+\. (.+)$/);
+    const quote = line.match(/^> (.+)$/);
+    const thematicBreak = /^ {0,3}([-*_])(?: *\1){2,} *$/.test(line);
+
+    if (!line.trim()) {
+      flushBlocks();
+    } else if (thematicBreak) {
+      flushBlocks();
+      html.push("<hr>");
+    } else if (unorderedItem || orderedItem) {
+      flushParagraph();
+      flushQuote();
+      const nextListTag = unorderedItem ? "ul" : "ol";
+      if (listTag && listTag !== nextListTag) flushList();
+      listTag = nextListTag;
+      listItems.push((unorderedItem || orderedItem)[1]);
+    } else if (quote) {
+      flushParagraph();
+      flushList();
+      quoteLines.push(quote[1]);
+    } else if (line.startsWith("### ")) {
+      flushBlocks();
+      html.push(`<h3>${inlineMarkdown(line.slice(4))}</h3>`);
+    } else if (line.startsWith("## ")) {
+      flushBlocks();
+      html.push(`<h2>${inlineMarkdown(line.slice(3))}</h2>`);
+    } else if (line.startsWith("# ")) {
+      flushBlocks();
+      html.push(`<h1>${inlineMarkdown(line.slice(2))}</h1>`);
+    } else {
+      flushList();
+      flushQuote();
+      paragraphLines.push(line.trim());
     }
-
-    flushOrderedList();
-    if (trimmed.startsWith("# ")) html.push(`<h1>${inlineMarkdown(trimmed.slice(2))}</h1>`);
-    else if (trimmed.startsWith("## ")) html.push(`<h2>${inlineMarkdown(trimmed.slice(3))}</h2>`);
-    else if (trimmed.startsWith("### ")) html.push(`<h3>${inlineMarkdown(trimmed.slice(4))}</h3>`);
-    else if (trimmed.startsWith("> ")) html.push(`<blockquote>${inlineMarkdown(trimmed.slice(2).replace(/\n/g, " "))}</blockquote>`);
-    else html.push(`<p>${inlineMarkdown(trimmed.replace(/\n/g, " "))}</p>`);
   }
 
-  flushOrderedList();
+  flushBlocks();
   return html.join("\n");
 }

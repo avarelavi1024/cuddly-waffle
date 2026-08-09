@@ -21,3 +21,24 @@ test("markdownToHtml escapes raw HTML", () => {
 test("markdownToHtml converts section reference headings", () => {
   assert.equal(markdownToHtml(`### References for this section`), `<h3>References for this section</h3>`);
 });
+
+test("markdownToHtml renders editorial block elements", () => {
+  const html = markdownToHtml(`> A quoted claim.\n\n- First source\n- Second source\n\n1. First step\n2. Second step\n\n---`);
+  assert.equal(html, `<blockquote><p>A quoted claim.</p></blockquote>
+<ul>
+<li>First source</li>
+<li>Second source</li>
+</ul>
+<ol>
+<li>First step</li>
+<li>Second step</li>
+</ol>
+<hr>`);
+});
+
+test("markdownToHtml escapes HTML inside lists and block quotes", () => {
+  const html = markdownToHtml(`- <img src=x onerror=alert(1)>\n\n> <script>alert(1)</script>`);
+  assert.doesNotMatch(html, /<img|<script>/);
+  assert.match(html, /&lt;img/);
+  assert.match(html, /&lt;script/);
+});
