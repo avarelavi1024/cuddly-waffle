@@ -2,8 +2,9 @@ import { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadEssays } from "./content.js";
-import { site } from "./site.js";
+import { absoluteUrl, site } from "./site.js";
 import { categoryThemes, renderAboutPage, renderArchivePage, renderCategoryPage, renderContactPage, renderEssayPage, renderHomePage, renderNotFoundPage, renderProjectsPage } from "./templates.js";
+import { verifyOutput } from "./verify-output.js";
 
 async function writePage(path, html) {
   await mkdir(dirname(path), { recursive: true });
@@ -34,12 +35,8 @@ function escapeXml(value) {
     .replaceAll("'", "&apos;");
 }
 
-function canonicalUrl(path) {
-  return new URL(path, `${site.origin}/`).href;
-}
-
 function renderSitemap(paths) {
-  const urls = paths.map((path) => `  <url><loc>${escapeXml(canonicalUrl(path))}</loc></url>`).join("\n");
+  const urls = paths.map((path) => `  <url><loc>${escapeXml(absoluteUrl(path))}</loc></url>`).join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls}
@@ -85,6 +82,7 @@ export async function build({ contentDir = "content/essays", outputDir = "dist" 
   await copyAsset(join(sourceRoot, "src", "styles.css"), join(outputDir, "styles.css"));
   await copyAsset(join(sourceRoot, "src", "client.js"), join(outputDir, "client.js"));
   await copyImages(sourceRoot, outputDir);
+  await verifyOutput(outputDir);
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {

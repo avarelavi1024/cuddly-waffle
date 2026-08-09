@@ -8,7 +8,7 @@ import { build } from "../src/build.js";
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
-function essaySource(slug, status, { category = "Culture", featured = false } = {}) {
+function essaySource(slug, status, { category = "Culture", featured = false, image = "/images/editorial-myths.svg" } = {}) {
   const body = status === "published"
     ? "This published fixture contains enough substantive words to pass editorial validation while exercising production route generation and canonical sitemap behavior in isolation."
     : "This unpublished fixture remains visible only where its publication status permits it.";
@@ -21,7 +21,7 @@ year: "2026"
 category: "${category}"
 tags: ["fixture"]
 excerpt: "A fixture excerpt for ${slug}."
-image: "/images/editorial-myths.svg"
+image: "${image}"
 featured: ${featured}
 status: "${status}"
 ---
@@ -61,6 +61,16 @@ async function buildFixture(t, { onlyDraft = false, publishedSlug = "published" 
   t.after(() => rm(root, { recursive: true, force: true }));
   return { contentDir, outputDir };
 }
+
+test("build rejects generated output with a missing essay asset", async (t) => {
+  const { contentDir, outputDir } = await buildFixture(t, { onlyDraft: true });
+  await writeFile(
+    join(contentDir, "published.md"),
+    essaySource("published", "published", { featured: true, image: "/images/not-copied.svg" })
+  );
+
+  await assert.rejects(build({ contentDir, outputDir }), /Missing asset: \/images\/not-copied\.svg/);
+});
 
 test("build generates only published essay routes", async (t) => {
   const { contentDir, outputDir } = await buildFixture(t);

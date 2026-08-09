@@ -6,6 +6,7 @@
   "scripts": {
     "build": "node src/build.js",
     "dev": "node src/dev-server.js",
-    "test": "node --test tests/*.test.js"
+    "test": "node --test --test-isolation=none tests/*.test.js",
+    "verify": "node src/verify-output.js dist"
   }
 }
