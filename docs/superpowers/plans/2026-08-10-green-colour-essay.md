@@ -152,6 +152,7 @@ git commit -m "feat: support editorial essay series"
 
 **Files:**
 - Create: `content/essays/green-from-poison-to-purity.md`
+- Modify: `content/essays/why-do-we-talk-about-willpower-food.md`
 - Modify: `tests/build.test.js`
 - Read: `C:\Users\avare\Downloads\Green_From_Poison_to_Purity_Final.pdf`
 
@@ -216,7 +217,9 @@ status: "published"
 ---
 ```
 
-Use the PDF’s section order: Abstract, Research Question, Introduction, Green and the Natural World, The Difficulty of Making Green, Toxic Beauty, Desire/Fashion/Decoration, Modern Reinvention, The Paradox of Green, Final Reflection, Key Takeaways, Pull Quotes and Bibliography. Under every source-bearing section, retain its own `### References` list before the next `##` heading.
+Use the PDF’s section order: Abstract, Research Question, Introduction, Green and the Natural World, The Difficulty of Making Green, Toxic Beauty, Desire/Fashion/Decoration, Modern Reinvention, The Paradox of Green, Final Reflection, Key Takeaways, Pull Quotes and Bibliography. Under every source-bearing section, retain its own `### Sources for this section` list before the next `##` heading.
+
+Change `featured: true` to `featured: false` in `content/essays/why-do-we-talk-about-willpower-food.md` so Green becomes the single featured publication while the previous essay remains published.
 
 - [ ] **Step 4: Perform text-integrity checks**
 
@@ -237,7 +240,7 @@ Expected: the new real-content assertions pass; the build fixture may still fail
 - [ ] **Step 6: Commit the publication source and test**
 
 ```powershell
-git add content/essays/green-from-poison-to-purity.md tests/build.test.js
+git add content/essays/green-from-poison-to-purity.md content/essays/why-do-we-talk-about-willpower-food.md tests/build.test.js
 git commit -m "content: add Green colour history essay"
 ```
 

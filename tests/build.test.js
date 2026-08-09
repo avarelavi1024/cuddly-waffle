@@ -5,6 +5,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { test } from "node:test";
 import { build } from "../src/build.js";
+import { parseFrontmatter } from "../src/content.js";
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -38,6 +39,22 @@ async function exists(path) {
     return false;
   }
 }
+
+test("Green is a complete published colour-series essay", async () => {
+  const source = await readFile("content/essays/green-from-poison-to-purity.md", "utf8");
+  const { data, body } = parseFrontmatter(source, "green-from-poison-to-purity.md");
+
+  assert.equal(data.title, "Green: From Poison to Purity");
+  assert.equal(data.series, "The Secret Histories of Colour");
+  assert.equal(data.category, "Visual Culture");
+  assert.equal(data.status, "published");
+  assert.equal(data.featured, true);
+  assert.match(body, /## 3\. The Difficulty of Making Green/);
+  assert.match(body, /## 4\. Toxic Beauty: Scheele's Green and Arsenic in the Home/);
+  assert.match(body, /## Consolidated Bibliography/);
+  assert.ok((body.match(/### Sources for this section/g) || []).length >= 8);
+  assert.ok(body.trim().split(/\s+/).length >= 2500);
+});
 
 async function buildFixture(t, { onlyDraft = false, publishedSlug = "published" } = {}) {
   const root = await mkdtemp(join(tmpdir(), "editorial-build-"));
