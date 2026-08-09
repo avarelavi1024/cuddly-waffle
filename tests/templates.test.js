@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import * as templates from "../src/templates.js";
 
-const { renderAboutPage, renderEssayPage } = templates;
+const { renderAboutPage, renderContactPage, renderEssayPage, renderHomePage } = templates;
 
 const publishedEssay = {
   sourceFile: "content/essays/example-essay.md",
@@ -42,4 +42,16 @@ test("every page shell contains one main landmark and visible skip link", () => 
   assert.equal((html.match(/<main/g) || []).length, 1);
   assert.match(html, /<a class="skip-link" href="#main-content">Skip to content<\/a>/);
   assert.match(html, /<main[^>]*id="main-content"/);
+});
+
+test("question rotation exposes an accessible live region without forcing announcements", () => {
+  const html = renderHomePage([publishedEssay]);
+  assert.match(html, /class="question-list"[^>]+data-question-list/);
+  assert.match(html, /aria-label="Show another set of questions"/);
+});
+
+test("external links provide an accessible new-window hint", () => {
+  const html = renderContactPage();
+  assert.match(html, /target="_blank" rel="noopener noreferrer"/);
+  assert.match(html, /<span class="sr-only"> \(opens in a new tab\)<\/span>/);
 });

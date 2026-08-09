@@ -34,7 +34,7 @@ export function renderFooter() {
       <strong>More</strong>
       <a href="/about/">About</a>
       <a href="/contact/">Contact</a>
-      <a href="https://www.linkedin.com/in/ana-varela-vilariño-7aa95b235" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://www.linkedin.com/in/ana-varela-vilariño-7aa95b235" target="_blank" rel="noopener noreferrer">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a>
     </div>
   </footer>`;
 }

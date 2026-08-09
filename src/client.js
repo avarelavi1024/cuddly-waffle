@@ -25,7 +25,9 @@ if (filters) {
 
 const questionItems = [...document.querySelectorAll("[data-question-item]")];
 const rotateQuestions = document.querySelector("[data-rotate-questions]");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 let questionOffset = 0;
+let questionTimer;
 
 function showQuestionSet(offset) {
   if (!questionItems.length) return;
@@ -41,8 +43,17 @@ function advanceQuestions() {
   showQuestionSet(questionOffset);
 }
 
+function syncQuestionTimer() {
+  window.clearInterval(questionTimer);
+  if (!reduceMotion.matches && questionItems.length > 3) {
+    questionTimer = window.setInterval(advanceQuestions, 24000);
+  }
+}
+
 if (questionItems.length > 3) {
   showQuestionSet(questionOffset);
   rotateQuestions?.addEventListener("click", advanceQuestions);
-  window.setInterval(advanceQuestions, 24000);
 }
+
+reduceMotion.addEventListener?.("change", syncQuestionTimer);
+syncQuestionTimer();

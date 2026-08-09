@@ -129,7 +129,7 @@ export function renderHomePage(essays) {
       <section class="section open-questions" id="open-questions">
         <div class="section-heading">
           <h2>Open questions</h2>
-          <button type="button" class="rotate-questions" data-rotate-questions>Rotate</button>
+          <button type="button" class="rotate-questions" data-rotate-questions aria-label="Show another set of questions">Rotate</button>
         </div>
         <div class="question-list" data-question-list>
           ${openQuestions.map((item, index) => `<details data-question-item ${index > 2 ? "hidden" : ""}><summary>${escapeHtml(item.question)}</summary><p>${escapeHtml(item.category)}</p></details>`).join("")}
