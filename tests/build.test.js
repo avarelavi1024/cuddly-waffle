@@ -54,6 +54,8 @@ test("Green is a complete published colour-series essay", async () => {
   assert.match(body, /## Consolidated Bibliography/);
   assert.ok((body.match(/### Sources for this section/g) || []).length >= 8);
   assert.ok(body.trim().split(/\s+/).length >= 2500);
+  assert.equal(await exists("src/images/editorial-green.svg"), true);
+  assert.equal(await exists("src/images/social-green.png"), true);
 });
 
 async function buildFixture(t, { onlyDraft = false, publishedSlug = "published" } = {}) {
@@ -206,7 +208,7 @@ test("generated pages include author metadata and article authorship only for es
 });
 
 test("social cards are 1200 by 630 raster images", async () => {
-  for (const name of ["social-default.png", "social-willpower-food.png", "social-ireland-spain.png"]) {
+  for (const name of ["social-default.png", "social-willpower-food.png", "social-ireland-spain.png", "social-green.png"]) {
     const bytes = await readFile(join("src/images", name));
     assert.equal(bytes.subarray(1, 4).toString("ascii"), "PNG");
     assert.equal(bytes.readUInt32BE(16), 1200);
