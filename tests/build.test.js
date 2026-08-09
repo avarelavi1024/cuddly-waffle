@@ -38,7 +38,7 @@ async function exists(path) {
   }
 }
 
-async function buildFixture(t, { publishedSlug = "published" } = {}) {
+async function buildFixture(t, { onlyDraft = false, publishedSlug = "published" } = {}) {
   const root = await mkdtemp(join(tmpdir(), "editorial-build-"));
   const contentDir = join(root, "content", "essays");
   const outputDir = join(root, "dist");
@@ -46,9 +46,12 @@ async function buildFixture(t, { publishedSlug = "published" } = {}) {
   await mkdir(contentDir, { recursive: true });
   await mkdir(sourceDir, { recursive: true });
 
-  await Promise.all([
+  const publicEssayFiles = onlyDraft ? [] : [
     writeFile(join(contentDir, `${publishedSlug}.md`), essaySource(publishedSlug, "published", { featured: true })),
-    writeFile(join(contentDir, "upcoming.md"), essaySource("upcoming", "coming-soon", { category: "Cities" })),
+    writeFile(join(contentDir, "upcoming.md"), essaySource("upcoming", "coming-soon", { category: "Cities" }))
+  ];
+  await Promise.all([
+    ...publicEssayFiles,
     writeFile(join(contentDir, "draft.md"), essaySource("draft", "draft")),
     cp(join(projectRoot, "src", "styles.css"), join(sourceDir, "styles.css")),
     cp(join(projectRoot, "src", "client.js"), join(sourceDir, "client.js")),
@@ -65,6 +68,16 @@ test("build generates only published essay routes", async (t) => {
 
   assert.equal(await exists(join(outputDir, "essays", "published", "index.html")), true);
   assert.equal(await exists(join(outputDir, "essays", "upcoming", "index.html")), false);
+  assert.equal(await exists(join(outputDir, "essays", "draft", "index.html")), false);
+});
+
+test("build renders a public empty state from draft-only content", async (t) => {
+  const { contentDir, outputDir } = await buildFixture(t, { onlyDraft: true });
+  await build({ contentDir, outputDir });
+
+  const home = await readFile(join(outputDir, "index.html"), "utf8");
+  assert.match(home, /No essays published yet\./);
+  assert.doesNotMatch(home, /Draft Essay/);
   assert.equal(await exists(join(outputDir, "essays", "draft", "index.html")), false);
 });
 

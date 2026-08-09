@@ -81,7 +81,7 @@ export const openQuestions = [
 export function renderHomePage(essays) {
   const publishedEssays = essays.filter((essay) => essay.status !== "coming-soon");
   const featured = publishedEssays.find((essay) => essay.featured) ?? publishedEssays[0] ?? essays[0];
-  const selected = essays.filter((essay) => essay.slug !== featured.slug).slice(0, 3);
+  const selected = featured ? essays.filter((essay) => essay.slug !== featured.slug).slice(0, 3) : [];
 
   return pageShell({
     title: site.name,
@@ -107,7 +107,7 @@ export function renderHomePage(essays) {
           <h2>Latest publication</h2>
           <a href="/projects/">View projects</a>
         </div>
-        ${essayCard(featured, true)}
+        ${featured ? essayCard(featured, true) : `<p class="empty-state">No essays published yet.</p>`}
       </section>
 
       <section class="section selected-essays" id="essays">
