@@ -3,16 +3,45 @@ import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { test } from "node:test";
+import { deflateSync } from "node:zlib";
 import { verifyOutput } from "../src/verify-output.js";
 
+function crc32(bytes) {
+  let crc = 0xffffffff;
+  for (const byte of bytes) {
+    crc ^= byte;
+    for (let bit = 0; bit < 8; bit += 1) {
+      crc = (crc >>> 1) ^ (crc & 1 ? 0xedb88320 : 0);
+    }
+  }
+  return (crc ^ 0xffffffff) >>> 0;
+}
+
+function pngChunk(type, data) {
+  const typeBytes = Buffer.from(type, "ascii");
+  const chunk = Buffer.alloc(data.length + 12);
+  chunk.writeUInt32BE(data.length, 0);
+  typeBytes.copy(chunk, 4);
+  data.copy(chunk, 8);
+  chunk.writeUInt32BE(crc32(Buffer.concat([typeBytes, data])), data.length + 8);
+  return chunk;
+}
+
 function pngFixture(width = 1200, height = 630) {
-  const bytes = Buffer.alloc(24);
-  Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]).copy(bytes);
-  bytes.writeUInt32BE(13, 8);
-  bytes.write("IHDR", 12, "ascii");
-  bytes.writeUInt32BE(width, 16);
-  bytes.writeUInt32BE(height, 20);
-  return bytes;
+  const signature = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+  const header = Buffer.alloc(13);
+  header.writeUInt32BE(width, 0);
+  header.writeUInt32BE(height, 4);
+  header[8] = 8;
+  header[9] = 2;
+  const rowLength = (width * 3) + 1;
+  const raster = Buffer.alloc(rowLength * height);
+  return Buffer.concat([
+    signature,
+    pngChunk("IHDR", header),
+    pngChunk("IDAT", deflateSync(raster)),
+    pngChunk("IEND", Buffer.alloc(0))
+  ]);
 }
 
 const validPngFixture = pngFixture();
@@ -92,6 +121,43 @@ test("verifyOutput reports invalid social image dimensions", async (t) => {
   );
 });
 
+test("verifyOutput rejects an off-origin Open Graph image", async (t) => {
+  const outputDir = await outputFixture(t, {
+    "index.html": `<link rel="canonical" href="https://ana-varela.vercel.app/"><meta property="og:image" content="https://cdn.example.com/social.png">`
+  });
+
+  await assert.rejects(
+    verifyOutput(outputDir),
+    /Off-origin Open Graph image URL: https:\/\/cdn\.example\.com\/social\.png in \//
+  );
+});
+
+test("verifyOutput rejects a truncated PNG", async (t) => {
+  const outputDir = await outputFixture(t, {
+    "index.html": `<link rel="canonical" href="https://ana-varela.vercel.app/"><meta property="og:image" content="https://ana-varela.vercel.app/images/truncated.png">`,
+    "images/truncated.png": validPngFixture.subarray(0, -12)
+  });
+
+  await assert.rejects(
+    verifyOutput(outputDir),
+    /Invalid social image: \/images\/truncated\.png \(expected complete PNG\)/
+  );
+});
+
+test("verifyOutput rejects a PNG with corrupt chunk data", async (t) => {
+  const corruptedPng = Buffer.from(validPngFixture);
+  corruptedPng[41] ^= 0xff;
+  const outputDir = await outputFixture(t, {
+    "index.html": `<link rel="canonical" href="https://ana-varela.vercel.app/"><meta property="og:image" content="https://ana-varela.vercel.app/images/corrupt.png">`,
+    "images/corrupt.png": corruptedPng
+  });
+
+  await assert.rejects(
+    verifyOutput(outputDir),
+    /Invalid social image: \/images\/corrupt\.png \(expected complete PNG\)/
+  );
+});
+
 test("verifyOutput reports a social image that is not a PNG", async (t) => {
   const outputDir = await outputFixture(t, {
     "index.html": `<link rel="canonical" href="https://ana-varela.vercel.app/"><meta property="og:image" content="https://ana-varela.vercel.app/images/social.png">`,
@@ -106,7 +172,8 @@ test("verifyOutput reports a social image that is not a PNG", async (t) => {
 
 test("verifyOutput rejects a relative 404 canonical when one is present", async (t) => {
   const outputDir = await outputFixture(t, {
-    "404.html": `<link rel="canonical" href="/404.html"><meta property="og:image" content="https://cdn.example.com/social.png">`
+    "404.html": `<link rel="canonical" href="/404.html"><meta property="og:image" content="https://ana-varela.vercel.app/images/social-default.png">`,
+    "images/social-default.png": validPngFixture
   });
 
   await assert.rejects(verifyOutput(outputDir), /Non-absolute canonical URL: \/404\.html/);
@@ -114,7 +181,8 @@ test("verifyOutput rejects a relative 404 canonical when one is present", async 
 
 test("verifyOutput requires local references to resolve to files", async (t) => {
   const outputDir = await outputFixture(t, {
-    "index.html": `<link rel="canonical" href="https://ana-varela.vercel.app/"><meta property="og:image" content="https://cdn.example.com/social.png"><img src="/images/placeholder" alt="">`,
+    "index.html": `<link rel="canonical" href="https://ana-varela.vercel.app/"><meta property="og:image" content="https://ana-varela.vercel.app/images/social-default.png"><img src="/images/placeholder" alt="">`,
+    "images/social-default.png": validPngFixture,
     "images/placeholder/keep.txt": "placeholder directory"
   });
 
@@ -123,7 +191,8 @@ test("verifyOutput requires local references to resolve to files", async (t) => 
 
 test("verifyOutput ignores attribute-like text outside start tags", async (t) => {
   const outputDir = await outputFixture(t, {
-    "index.html": `<link rel="canonical" href="https://ana-varela.vercel.app/"><meta property="og:image" content="https://cdn.example.com/social.png"><p>Example source text: src='/missing.png'</p><!-- <img src="/commented.png"> --><script>const example = '<a href="/script-link/">';</script><style>/* <img src="/style-image.png"> */</style>`
+    "index.html": `<link rel="canonical" href="https://ana-varela.vercel.app/"><meta property="og:image" content="https://ana-varela.vercel.app/images/social-default.png"><p>Example source text: src='/missing.png'</p><!-- <img src="/commented.png"> --><script>const example = '<a href="/script-link/">';</script><style>/* <img src="/style-image.png"> */</style>`,
+    "images/social-default.png": validPngFixture
   });
 
   await assert.doesNotReject(verifyOutput(outputDir));
@@ -131,7 +200,8 @@ test("verifyOutput ignores attribute-like text outside start tags", async (t) =>
 
 test("verifyOutput ignores metadata tags inside comments", async (t) => {
   const outputDir = await outputFixture(t, {
-    "index.html": `<meta property="og:image" content="https://cdn.example.com/social.png"><!-- <link rel="canonical" href="https://ana-varela.vercel.app/"> -->`
+    "index.html": `<meta property="og:image" content="https://ana-varela.vercel.app/images/social-default.png"><!-- <link rel="canonical" href="https://ana-varela.vercel.app/"> -->`,
+    "images/social-default.png": validPngFixture
   });
 
   await assert.rejects(verifyOutput(outputDir), /Missing canonical URL: \//);
