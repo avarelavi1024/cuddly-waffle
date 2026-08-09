@@ -51,6 +51,7 @@ export function markdownToHtml(markdown) {
     const orderedItem = line.match(/^\d+\. (.+)$/);
     const quote = line.match(/^> (.+)$/);
     const thematicBreak = /^ {0,3}([-*_])(?: *\1){2,} *$/.test(line);
+    const headingLine = line.trimStart();
 
     if (!line.trim()) {
       flushBlocks();
@@ -68,15 +69,15 @@ export function markdownToHtml(markdown) {
       flushParagraph();
       flushList();
       quoteLines.push(quote[1]);
-    } else if (line.startsWith("### ")) {
+    } else if (headingLine.startsWith("### ")) {
       flushBlocks();
-      html.push(`<h3>${inlineMarkdown(line.slice(4))}</h3>`);
-    } else if (line.startsWith("## ")) {
+      html.push(`<h3>${inlineMarkdown(headingLine.slice(4))}</h3>`);
+    } else if (headingLine.startsWith("## ")) {
       flushBlocks();
-      html.push(`<h2>${inlineMarkdown(line.slice(3))}</h2>`);
-    } else if (line.startsWith("# ")) {
+      html.push(`<h2>${inlineMarkdown(headingLine.slice(3))}</h2>`);
+    } else if (headingLine.startsWith("# ")) {
       flushBlocks();
-      html.push(`<h1>${inlineMarkdown(line.slice(2))}</h1>`);
+      html.push(`<h1>${inlineMarkdown(headingLine.slice(2))}</h1>`);
     } else {
       flushList();
       flushQuote();

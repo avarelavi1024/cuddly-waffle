@@ -22,6 +22,14 @@ test("markdownToHtml converts section reference headings", () => {
   assert.equal(markdownToHtml(`### References for this section`), `<h3>References for this section</h3>`);
 });
 
+test("markdownToHtml preserves headings with leading indentation", () => {
+  assert.equal(
+    markdownToHtml(`# First heading\n\n  ## Indented heading`),
+    `<h1>First heading</h1>
+<h2>Indented heading</h2>`
+  );
+});
+
 test("markdownToHtml renders editorial block elements", () => {
   const html = markdownToHtml(`> A quoted claim.\n\n- First source\n- Second source\n\n1. First step\n2. Second step\n\n---`);
   assert.equal(html, `<blockquote><p>A quoted claim.</p></blockquote>
