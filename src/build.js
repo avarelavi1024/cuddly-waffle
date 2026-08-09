@@ -19,7 +19,7 @@ async function copyImages(sourceRoot, outputDir) {
   const sourceDir = join(sourceRoot, "src", "images");
   const destinationDir = join(outputDir, "images");
   await mkdir(destinationDir, { recursive: true });
-  const images = await readdir(sourceDir);
+  const images = (await readdir(sourceDir)).sort();
   for (const image of images) {
     await copyAsset(join(sourceDir, image), join(destinationDir, image));
   }

@@ -138,4 +138,24 @@ test("build preserves compatibility and infrastructure outputs", async (t) => {
   assert.equal(await exists(join(outputDir, "styles.css")), true);
   assert.equal(await exists(join(outputDir, "client.js")), true);
   assert.equal(await exists(join(outputDir, "images", "editorial-myths.svg")), true);
+  for (const name of [
+    "social-default.png",
+    "social-willpower-food.png",
+    "social-ireland-spain.png",
+    "favicon.svg"
+  ]) {
+    assert.equal(await exists(join(outputDir, "images", name)), true);
+  }
+
+  const home = await readFile(join(outputDir, "index.html"), "utf8");
+  assert.match(home, /<link rel="icon" href="\/images\/favicon\.svg" type="image\/svg\+xml">/);
+});
+
+test("social cards are 1200 by 630 raster images", async () => {
+  for (const name of ["social-default.png", "social-willpower-food.png", "social-ireland-spain.png"]) {
+    const bytes = await readFile(join("src/images", name));
+    assert.equal(bytes.subarray(1, 4).toString("ascii"), "PNG");
+    assert.equal(bytes.readUInt32BE(16), 1200);
+    assert.equal(bytes.readUInt32BE(20), 630);
+  }
 });

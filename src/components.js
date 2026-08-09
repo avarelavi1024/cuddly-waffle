@@ -51,6 +51,7 @@ export function pageShell({ title, description, path, body, image, type = "websi
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${escapeHtml(title)} · ${escapeHtml(site.title)}</title>
   ${renderMetadata({ title, description, path, image, type, article })}
+  <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
