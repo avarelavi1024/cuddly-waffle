@@ -1,6 +1,7 @@
-import { access, readFile, readdir } from "node:fs/promises";
+import { readFile, readdir, stat } from "node:fs/promises";
 import { extname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
+import { site } from "./site.js";
 
 async function listHtmlFiles(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -27,8 +28,15 @@ function attributes(tag) {
   return values;
 }
 
+function startTags(html) {
+  return [...html.matchAll(/<([a-z][\w:-]*)\b[^>]*>/gi)].map((match) => ({
+    name: match[1].toLowerCase(),
+    attributes: attributes(match[0])
+  }));
+}
+
 function tags(html, name) {
-  return [...html.matchAll(new RegExp(`<${name}\\b[^>]*>`, "gi"))].map((match) => attributes(match[0]));
+  return startTags(html).filter((tag) => tag.name === name).map((tag) => tag.attributes);
 }
 
 function isAbsoluteWebUrl(value) {
@@ -63,16 +71,46 @@ function isAssetReference(attribute, pathname) {
   return attribute === "src" || (extname(pathname) !== "" && extname(pathname) !== ".html");
 }
 
-async function exists(path) {
+async function isFile(path) {
   try {
-    await access(path);
-    return true;
+    return (await stat(path)).isFile();
   } catch {
     return false;
   }
 }
 
-function checkMetadata(html, route, findings) {
+async function checkSocialImage(value, outputDir, findings) {
+  if (!isAbsoluteWebUrl(value)) return;
+  const url = new URL(value);
+  if (!url.pathname.toLowerCase().endsWith(".png")) {
+    findings.add(`Open Graph image must be PNG: ${value}`);
+    return;
+  }
+  if (url.origin !== site.origin) return;
+
+  const target = targetFor(outputDir, url.pathname);
+  if (!await isFile(target)) {
+    findings.add(`Missing asset: ${url.pathname}`);
+    return;
+  }
+
+  const bytes = await readFile(target);
+  const isPng = bytes.length >= 24
+    && bytes.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))
+    && bytes.subarray(12, 16).toString("ascii") === "IHDR";
+  if (!isPng) {
+    findings.add(`Invalid social image: ${url.pathname} (expected PNG)`);
+    return;
+  }
+
+  const width = bytes.readUInt32BE(16);
+  const height = bytes.readUInt32BE(20);
+  if (width !== 1200 || height !== 630) {
+    findings.add(`Invalid social image dimensions: ${url.pathname} (expected 1200x630, got ${width}x${height})`);
+  }
+}
+
+async function checkMetadata(html, route, outputDir, findings) {
   const canonicalValues = tags(html, "link")
     .filter((tag) => tag.get("rel")?.toLowerCase().split(/\s+/).includes("canonical"))
     .map((tag) => tag.get("href") ?? "");
@@ -80,16 +118,19 @@ function checkMetadata(html, route, findings) {
     .filter((tag) => (tag.get("property") ?? "").toLowerCase() === "og:image")
     .map((tag) => tag.get("content") ?? "");
 
-  if (route !== "/404.html") {
-    if (canonicalValues.length === 0) findings.add(`Missing canonical URL: ${route}`);
-    for (const value of canonicalValues.filter((item) => !isAbsoluteWebUrl(item))) {
-      findings.add(`Non-absolute canonical URL: ${value || "(empty)"} in ${route}`);
-    }
+  if (route !== "/404.html" && canonicalValues.length === 0) {
+    findings.add(`Missing canonical URL: ${route}`);
+  }
+  for (const value of canonicalValues.filter((item) => !isAbsoluteWebUrl(item))) {
+    findings.add(`Non-absolute canonical URL: ${value || "(empty)"} in ${route}`);
   }
 
   if (socialValues.length === 0) findings.add(`Missing Open Graph image URL: ${route}`);
-  for (const value of socialValues.filter((item) => !isAbsoluteWebUrl(item))) {
-    findings.add(`Non-absolute Open Graph image URL: ${value || "(empty)"} in ${route}`);
+  for (const value of socialValues) {
+    if (!isAbsoluteWebUrl(value)) {
+      findings.add(`Non-absolute Open Graph image URL: ${value || "(empty)"} in ${route}`);
+    }
+    await checkSocialImage(value, outputDir, findings);
   }
 
   if (route.startsWith("/essays/") && route.endsWith("/") && !tags(html, "meta").some(
@@ -100,14 +141,14 @@ function checkMetadata(html, route, findings) {
 }
 
 async function checkReferences(html, outputDir, findings) {
-  const pattern = /\b(href|src)\s*=\s*(["'])(.*?)\2/gi;
-  for (const match of html.matchAll(pattern)) {
-    const attribute = match[1].toLowerCase();
-    const pathname = localReference(match[3]);
-    if (!pathname || await exists(targetFor(outputDir, pathname))) continue;
+  for (const tag of startTags(html)) {
+    for (const attribute of ["href", "src"]) {
+      const pathname = localReference(tag.attributes.get(attribute) ?? "");
+      if (!pathname || await isFile(targetFor(outputDir, pathname))) continue;
 
-    const label = isAssetReference(attribute, pathname) ? "Missing asset" : "Broken route";
-    findings.add(`${label}: ${pathname}`);
+      const label = isAssetReference(attribute, pathname) ? "Missing asset" : "Broken route";
+      findings.add(`${label}: ${pathname}`);
+    }
   }
 }
 
@@ -117,12 +158,13 @@ export async function verifyOutput(outputDir) {
 
   for (const htmlFile of await listHtmlFiles(absoluteOutputDir)) {
     const html = await readFile(htmlFile, "utf8");
-    checkMetadata(html, outputRoute(absoluteOutputDir, htmlFile), findings);
+    await checkMetadata(html, outputRoute(absoluteOutputDir, htmlFile), absoluteOutputDir, findings);
     await checkReferences(html, absoluteOutputDir, findings);
   }
 
   if (findings.size > 0) {
-    throw new Error(`Generated output verification failed:\n${[...findings].sort((left, right) => left.localeCompare(right)).join("\n")}`);
+    const sortedFindings = [...findings].sort((left, right) => left < right ? -1 : left > right ? 1 : 0);
+    throw new Error(`Generated output verification failed:\n${sortedFindings.join("\n")}`);
   }
 }
 

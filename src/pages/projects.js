@@ -46,7 +46,6 @@ export function renderCategoryPage(theme, essays) {
     title: theme.name,
     description: theme.description,
     path: `/categories/${theme.slug}/`,
-    image: theme.image,
     body: `<main class="projects-page category-page">
       <section class="page-title category-title">
         <div>
@@ -79,7 +78,6 @@ function renderOpenQuestionsPage(theme) {
     title: theme.name,
     description: theme.description,
     path: `/categories/${theme.slug}/`,
-    image: theme.image,
     body: `<main class="projects-page category-page">
       <section class="page-title category-title">
         <div>

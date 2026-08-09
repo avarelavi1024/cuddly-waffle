@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import * as templates from "../src/templates.js";
 
-const { renderAboutPage, renderContactPage, renderEssayPage, renderHomePage } = templates;
+const { categoryThemes, renderAboutPage, renderCategoryPage, renderContactPage, renderEssayPage, renderHomePage } = templates;
 
 const publishedEssay = {
   sourceFile: "content/essays/example-essay.md",
@@ -27,6 +27,22 @@ test("published essay pages expose article metadata and useful image alt text", 
   const html = renderEssayPage(publishedEssay, [publishedEssay]);
   assert.match(html, /property="og:type" content="article"/);
   assert.match(html, /<img[^>]+alt="Editorial illustration for Example Essay"/);
+});
+
+test("essay pages without a social image use the default raster card", () => {
+  const essay = { ...publishedEssay, socialImage: "" };
+  const html = renderEssayPage(essay, [essay]);
+
+  assert.match(html, /property="og:image" content="https:\/\/ana-varela\.vercel\.app\/images\/social-default\.png"/);
+  assert.match(html, /<img src="\/images\/editorial-myths\.svg" alt="Editorial illustration for Example Essay">/);
+});
+
+test("category pages use raster social metadata while preserving editorial artwork", () => {
+  const theme = categoryThemes[0];
+  const html = renderCategoryPage(theme, []);
+
+  assert.match(html, /property="og:image" content="https:\/\/ana-varela\.vercel\.app\/images\/social-default\.png"/);
+  assert.match(html, new RegExp(`<img src="${theme.image}" alt="">`));
 });
 
 test("the 404 page preserves the site identity and recovery links", () => {

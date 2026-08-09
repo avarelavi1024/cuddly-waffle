@@ -15,7 +15,7 @@ export function renderEssayPage(essay, essays) {
     title: essay.title,
     description: essay.excerpt,
     path: `/essays/${essay.slug}/`,
-    image: asset(essay.socialImage || essay.image),
+    image: essay.socialImage ? asset(essay.socialImage) : undefined,
     type: "article",
     article,
     body: `<main class="essay-page">

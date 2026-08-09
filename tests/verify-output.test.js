@@ -5,9 +5,17 @@ import { dirname, join } from "node:path";
 import { test } from "node:test";
 import { verifyOutput } from "../src/verify-output.js";
 
-const validPngFixture = Buffer.from([
-  0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a
-]);
+function pngFixture(width = 1200, height = 630) {
+  const bytes = Buffer.alloc(24);
+  Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]).copy(bytes);
+  bytes.writeUInt32BE(13, 8);
+  bytes.write("IHDR", 12, "ascii");
+  bytes.writeUInt32BE(width, 16);
+  bytes.writeUInt32BE(height, 20);
+  return bytes;
+}
+
+const validPngFixture = pngFixture();
 
 async function outputFixture(t, files) {
   const outputDir = await mkdtemp(join(tmpdir(), "editorial-output-"));
@@ -46,10 +54,11 @@ test("verifyOutput reports non-absolute canonical and social URLs", async (t) =>
     "images/social-default.png": validPngFixture
   });
 
-  await assert.rejects(
-    verifyOutput(outputDir),
-    /Non-absolute canonical URL: \/[\s\S]*Non-absolute Open Graph image URL: \/images\/social-default\.png/
-  );
+  await assert.rejects(verifyOutput(outputDir), (error) => {
+    assert.match(error.message, /Non-absolute canonical URL: \/ in \//);
+    assert.match(error.message, /Non-absolute Open Graph image URL: \/images\/social-default\.png in \//);
+    return true;
+  });
 });
 
 test("verifyOutput reports public draft or upcoming essay routes", async (t) => {
@@ -63,11 +72,69 @@ test("verifyOutput reports public draft or upcoming essay routes", async (t) => 
   );
 });
 
+test("verifyOutput reports a missing metadata-only social image", async (t) => {
+  const outputDir = await outputFixture(t, {
+    "index.html": `<link rel="canonical" href="https://ana-varela.vercel.app/"><meta property="og:image" content="https://ana-varela.vercel.app/images/missing.png">`
+  });
+
+  await assert.rejects(verifyOutput(outputDir), /Missing asset: \/images\/missing\.png/);
+});
+
+test("verifyOutput reports invalid social image dimensions", async (t) => {
+  const outputDir = await outputFixture(t, {
+    "index.html": `<link rel="canonical" href="https://ana-varela.vercel.app/"><meta property="og:image" content="https://ana-varela.vercel.app/images/social-small.png">`,
+    "images/social-small.png": pngFixture(600, 315)
+  });
+
+  await assert.rejects(
+    verifyOutput(outputDir),
+    /Invalid social image dimensions: \/images\/social-small\.png \(expected 1200x630, got 600x315\)/
+  );
+});
+
+test("verifyOutput reports a social image that is not a PNG", async (t) => {
+  const outputDir = await outputFixture(t, {
+    "index.html": `<link rel="canonical" href="https://ana-varela.vercel.app/"><meta property="og:image" content="https://ana-varela.vercel.app/images/social.png">`,
+    "images/social.png": "not a PNG"
+  });
+
+  await assert.rejects(
+    verifyOutput(outputDir),
+    /Invalid social image: \/images\/social\.png \(expected PNG\)/
+  );
+});
+
+test("verifyOutput rejects a relative 404 canonical when one is present", async (t) => {
+  const outputDir = await outputFixture(t, {
+    "404.html": `<link rel="canonical" href="/404.html"><meta property="og:image" content="https://cdn.example.com/social.png">`
+  });
+
+  await assert.rejects(verifyOutput(outputDir), /Non-absolute canonical URL: \/404\.html/);
+});
+
+test("verifyOutput requires local references to resolve to files", async (t) => {
+  const outputDir = await outputFixture(t, {
+    "index.html": `<link rel="canonical" href="https://ana-varela.vercel.app/"><meta property="og:image" content="https://cdn.example.com/social.png"><img src="/images/placeholder" alt="">`,
+    "images/placeholder/keep.txt": "placeholder directory"
+  });
+
+  await assert.rejects(verifyOutput(outputDir), /Missing asset: \/images\/placeholder/);
+});
+
+test("verifyOutput ignores attribute-like text outside start tags", async (t) => {
+  const outputDir = await outputFixture(t, {
+    "index.html": `<link rel="canonical" href="https://ana-varela.vercel.app/"><meta property="og:image" content="https://cdn.example.com/social.png"><p>Example source text: src='/missing.png'</p><!-- href="/also-missing/" -->`
+  });
+
+  await assert.doesNotReject(verifyOutput(outputDir));
+});
+
 test("verifyOutput permits 404 metadata omission and resolves query or fragment suffixes", async (t) => {
   const outputDir = await outputFixture(t, {
     "404.html": `<meta property="og:image" content="https://ana-varela.vercel.app/images/social-default.png"><a href="/#top">Home</a>`,
     "index.html": `<link rel="canonical" href="https://ana-varela.vercel.app/"><meta property="og:image" content="https://ana-varela.vercel.app/images/social-default.png"><a href="/about/?from=home">About</a>`,
-    "about/index.html": `<link rel="canonical" href="https://ana-varela.vercel.app/about/"><meta property="og:image" content="https://ana-varela.vercel.app/images/social-default.png">`
+    "about/index.html": `<link rel="canonical" href="https://ana-varela.vercel.app/about/"><meta property="og:image" content="https://ana-varela.vercel.app/images/social-default.png">`,
+    "images/social-default.png": validPngFixture
   });
 
   await assert.doesNotReject(verifyOutput(outputDir));

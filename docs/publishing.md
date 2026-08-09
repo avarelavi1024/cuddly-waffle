@@ -19,7 +19,7 @@ Complete these required frontmatter fields:
 Optional fields control presentation:
 
 - `socialImage`: a share-card PNG under `src/images`. If omitted, the site uses the default social image.
-- `curated`: set to `true` to include the essay in curated presentation areas.
+- `curated`: reserved for future presentation controls; it is loaded today but does not change the generated site.
 - `featured`: set to `true` for the featured published essay. At most one published essay may be featured.
 
 Published essay bodies must contain at least 20 words. Keep the Markdown heading hierarchy meaningful: one `#` title, `##` sections, and `###` subsections such as References.
