@@ -22,7 +22,7 @@ Optional fields control presentation:
 - `curated`: reserved for future presentation controls; it is loaded today but does not change the generated site.
 - `featured`: set to `true` for the featured published essay. At most one published essay may be featured.
 
-Published essay bodies must contain at least 20 words. Keep the Markdown heading hierarchy meaningful: one `#` title, `##` sections, and `###` subsections such as References.
+Published essay bodies must contain at least 20 words. The page renderer creates the single `#` title from frontmatter, so begin the Markdown body with prose or a `##` section. Use `##` for sections and `###` for subsections such as References.
 
 ## 2. Choose the publication status
 
@@ -36,9 +36,9 @@ Start new work as `draft`. Use `coming-soon` only when the title should appear p
 
 ## 3. Add images
 
-Put image files in `src/images` and refer to them as `images/<filename>` in frontmatter. Editorial page images may be SVG. Social images must be PNG files exactly 1200 by 630 pixels; use a specific `socialImage` for an essay or rely on `images/social-default.png`.
+Put image files in `src/images` and refer to them as `images/<filename>` in frontmatter. Paths may use normalized subdirectories beneath `images/`, but schemes, traversal segments, backslashes, quotes and control characters are rejected. Editorial page images may be SVG. Social images must be PNG files exactly 1200 by 630 pixels; use a specific `socialImage` for an essay or rely on `images/social-default.png`.
 
-Do not point frontmatter at files outside `src/images`. The production build copies that directory to `dist/images` and fails verification when generated HTML references a missing local file.
+Do not point frontmatter at files outside `src/images`. Before replacing `dist`, the production build checks the editorial and optional social image for every essay, including drafts and coming-soon entries, then copies `src/images` recursively. A missing file reports the source Markdown file and frontmatter field without deleting the previous output.
 
 ## 4. Test and build locally
 

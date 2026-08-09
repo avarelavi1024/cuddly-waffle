@@ -13,8 +13,6 @@ featured: false
 status: "draft"
 ---
 
-# Essay title
-
 Opening paragraph.
 
 ## First section

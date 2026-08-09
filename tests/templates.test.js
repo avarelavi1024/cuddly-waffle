@@ -1,5 +1,9 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import { renderFooter } from "../src/components.js";
+import { parseFrontmatter, readingTime } from "../src/content.js";
+import { markdownToHtml } from "../src/markdown.js";
 import * as templates from "../src/templates.js";
 
 const { categoryThemes, renderAboutPage, renderCategoryPage, renderContactPage, renderEssayPage, renderHomePage } = templates;
@@ -27,6 +31,31 @@ test("published essay pages expose article metadata and useful image alt text", 
   const html = renderEssayPage(publishedEssay, [publishedEssay]);
   assert.match(html, /property="og:type" content="article"/);
   assert.match(html, /<img[^>]+alt="Editorial illustration for Example Essay"/);
+});
+
+test("essay image attributes remain single escaped attributes with adversarial input", () => {
+  const essay = { ...publishedEssay, image: '/images/editorial.svg" onerror="alert(1)' };
+  const html = renderEssayPage(essay, [essay]);
+
+  assert.match(html, /src="\/images\/editorial\.svg&quot; onerror=&quot;alert\(1\)"/);
+  assert.doesNotMatch(html, /src="\/images\/editorial\.svg" onerror=/);
+});
+
+test("a template-derived essay renders exactly one top-level heading", async () => {
+  const source = await readFile("content/essay-template.md", "utf8");
+  const { data, body } = parseFrontmatter(source, "essay-template.md");
+  const essay = {
+    sourceFile: "content/essay-template.md",
+    slug: "essay-template",
+    ...data,
+    image: `/${data.image}`,
+    socialImage: `/${data.socialImage}`,
+    readingTime: readingTime(body),
+    bodyHtml: markdownToHtml(body)
+  };
+  const html = renderEssayPage(essay, [essay]);
+
+  assert.equal((html.match(/<h1(?:\s|>)/g) || []).length, 1);
 });
 
 test("essay pages without a social image use the default raster card", () => {
@@ -64,10 +93,15 @@ test("question rotation exposes an accessible live region without forcing announ
   const html = renderHomePage([publishedEssay]);
   assert.match(html, /class="question-list"[^>]+data-question-list/);
   assert.match(html, /aria-label="Show another set of questions"/);
+  assert.doesNotMatch(html, /aria-live/);
 });
 
-test("external links provide an accessible new-window hint", () => {
+test("the Contact LinkedIn link independently provides safe new-window markup", () => {
   const html = renderContactPage();
-  assert.match(html, /target="_blank" rel="noopener noreferrer"/);
-  assert.match(html, /<span class="sr-only"> \(opens in a new tab\)<\/span>/);
+  assert.match(html, /<main[\s\S]*?<a href="https:\/\/www\.linkedin\.com\/in\/[^\"]+" target="_blank" rel="noopener noreferrer">LinkedIn:[\s\S]*?<span class="sr-only"> \(opens in a new tab\)<\/span><\/a>[\s\S]*?<\/main>/);
+});
+
+test("the footer LinkedIn link independently provides safe new-window markup", () => {
+  const html = renderFooter();
+  assert.match(html, /<a href="https:\/\/www\.linkedin\.com\/in\/[^\"]+" target="_blank" rel="noopener noreferrer">LinkedIn<span class="sr-only"> \(opens in a new tab\)<\/span><\/a>/);
 });

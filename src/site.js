@@ -3,6 +3,7 @@ export const site = Object.freeze({
   title: "Mini Theses",
   description: "Cultural analysis, visual research and everyday questions shaped into concise essays.",
   origin: "https://ana-varela.vercel.app",
+  authorUrl: "https://ana-varela.vercel.app/about/",
   defaultSocialImage: "/images/social-default.png"
 });
 

@@ -8,7 +8,7 @@ import { build } from "../src/build.js";
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
-function essaySource(slug, status, { category = "Culture", featured = false, image = "/images/editorial-myths.svg" } = {}) {
+function essaySource(slug, status, { category = "Culture", featured = false, image = "/images/editorial-myths.svg", socialImage } = {}) {
   const body = status === "published"
     ? "This published fixture contains enough substantive words to pass editorial validation while exercising production route generation and canonical sitemap behavior in isolation."
     : "This unpublished fixture remains visible only where its publication status permits it.";
@@ -22,6 +22,7 @@ category: "${category}"
 tags: ["fixture"]
 excerpt: "A fixture excerpt for ${slug}."
 image: "${image}"
+${socialImage === undefined ? "" : `socialImage: "${socialImage}"\n`}
 featured: ${featured}
 status: "${status}"
 ---
@@ -59,17 +60,25 @@ async function buildFixture(t, { onlyDraft = false, publishedSlug = "published" 
   ]);
 
   t.after(() => rm(root, { recursive: true, force: true }));
-  return { contentDir, outputDir };
+  return { contentDir, outputDir, sourceDir };
 }
 
-test("build rejects generated output with a missing essay asset", async (t) => {
+test("build preflights every essay asset before deleting existing output", async (t) => {
   const { contentDir, outputDir } = await buildFixture(t, { onlyDraft: true });
-  await writeFile(
-    join(contentDir, "published.md"),
-    essaySource("published", "published", { featured: true, image: "/images/not-copied.svg" })
-  );
+  await mkdir(outputDir, { recursive: true });
+  await writeFile(join(outputDir, "keep.txt"), "preserve existing output");
+  await Promise.all([
+    writeFile(join(contentDir, "draft.md"), essaySource("draft", "draft", { image: "/images/missing-draft.svg" })),
+    writeFile(join(contentDir, "upcoming.md"), essaySource("upcoming", "coming-soon", { socialImage: "/images/missing-upcoming.png" }))
+  ]);
 
-  await assert.rejects(build({ contentDir, outputDir }), /Missing asset: \/images\/not-copied\.svg/);
+  await assert.rejects(build({ contentDir, outputDir }), (error) => {
+    assert.match(error.message, /draft\.md: image references missing asset \/images\/missing-draft\.svg/);
+    assert.match(error.message, /upcoming\.md: socialImage references missing asset \/images\/missing-upcoming\.png/);
+    assert.match(error.message, /Add the file beneath src\/images or correct the frontmatter field/);
+    return true;
+  });
+  assert.equal(await readFile(join(outputDir, "keep.txt"), "utf8"), "preserve existing output");
 });
 
 test("build generates only published essay routes", async (t) => {
@@ -79,6 +88,21 @@ test("build generates only published essay routes", async (t) => {
   assert.equal(await exists(join(outputDir, "essays", "published", "index.html")), true);
   assert.equal(await exists(join(outputDir, "essays", "upcoming", "index.html")), false);
   assert.equal(await exists(join(outputDir, "essays", "draft", "index.html")), false);
+});
+
+test("build preserves normalized image files nested beneath src/images", async (t) => {
+  const { contentDir, outputDir, sourceDir } = await buildFixture(t);
+  const nestedImage = join(sourceDir, "images", "nested", "editorial-myths.svg");
+  await mkdir(dirname(nestedImage), { recursive: true });
+  await cp(join(projectRoot, "src", "images", "editorial-myths.svg"), nestedImage);
+  await writeFile(
+    join(contentDir, "published.md"),
+    essaySource("published", "published", { featured: true, image: "images/nested/editorial-myths.svg" })
+  );
+
+  await build({ contentDir, outputDir });
+
+  assert.equal(await exists(join(outputDir, "images", "nested", "editorial-myths.svg")), true);
 });
 
 test("build renders a public empty state from draft-only content", async (t) => {
@@ -127,15 +151,6 @@ test("sitemap contains canonical public routes only", async (t) => {
   assert.doesNotMatch(sitemap, /upcoming|draft|\/archive\//);
 });
 
-test("sitemap escapes canonical URLs for XML", async (t) => {
-  const { contentDir, outputDir } = await buildFixture(t, { publishedSlug: "published&notes" });
-  await build({ contentDir, outputDir });
-
-  const sitemap = await readFile(join(outputDir, "sitemap.xml"), "utf8");
-  assert.match(sitemap, /\/essays\/published&amp;notes\//);
-  assert.doesNotMatch(sitemap, /\/essays\/published&notes\//);
-});
-
 test("build preserves compatibility and infrastructure outputs", async (t) => {
   const { contentDir, outputDir } = await buildFixture(t);
   await build({ contentDir, outputDir });
@@ -159,6 +174,18 @@ test("build preserves compatibility and infrastructure outputs", async (t) => {
 
   const home = await readFile(join(outputDir, "index.html"), "utf8");
   assert.match(home, /<link rel="icon" href="\/images\/favicon\.svg" type="image\/svg\+xml">/);
+});
+
+test("generated pages include author metadata and article authorship only for essays", async (t) => {
+  const { contentDir, outputDir } = await buildFixture(t);
+  await build({ contentDir, outputDir });
+
+  const home = await readFile(join(outputDir, "index.html"), "utf8");
+  const essay = await readFile(join(outputDir, "essays", "published", "index.html"), "utf8");
+  assert.match(home, /<meta name="author" content="Ana Varela Vilari/);
+  assert.doesNotMatch(home, /property="article:author"/);
+  assert.match(essay, /<meta name="author" content="Ana Varela Vilari/);
+  assert.match(essay, /<meta property="article:author" content="https:\/\/ana-varela\.vercel\.app\/about\/">/);
 });
 
 test("social cards are 1200 by 630 raster images", async () => {

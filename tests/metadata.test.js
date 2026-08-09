@@ -16,6 +16,8 @@ test("renderMetadata emits absolute canonical and social URLs", () => {
   assert.match(html, /rel="canonical" href="https:\/\/ana-varela\.vercel\.app\/essays\/example\/"/);
   assert.match(html, /property="og:image" content="https:\/\/ana-varela\.vercel\.app\/images\/social-example\.png"/);
   assert.match(html, /property="article:published_time" content="2026-08-09"/);
+  assert.match(html, /name="author" content="Ana Varela Vilari/);
+  assert.match(html, /property="article:author" content="https:\/\/ana-varela\.vercel\.app\/about\/"/);
   assert.match(html, /name="twitter:card" content="summary_large_image"/);
 });
 
@@ -47,4 +49,5 @@ test("renderMetadata omits article fields for non-article pages", () => {
   });
 
   assert.doesNotMatch(html, /property="article:/);
+  assert.match(html, /name="author" content="Ana Varela Vilari/);
 });

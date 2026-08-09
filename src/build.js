@@ -1,4 +1,4 @@
-import { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
+import { cp, mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadEssays } from "./content.js";
@@ -19,10 +19,32 @@ async function copyAsset(from, to) {
 async function copyImages(sourceRoot, outputDir) {
   const sourceDir = join(sourceRoot, "src", "images");
   const destinationDir = join(outputDir, "images");
-  await mkdir(destinationDir, { recursive: true });
-  const images = (await readdir(sourceDir)).sort();
-  for (const image of images) {
-    await copyAsset(join(sourceDir, image), join(destinationDir, image));
+  await cp(sourceDir, destinationDir, { recursive: true });
+}
+
+async function isFile(path) {
+  try {
+    return (await stat(path)).isFile();
+  } catch {
+    return false;
+  }
+}
+
+async function preflightEssayAssets(essays, sourceRoot) {
+  const findings = [];
+  for (const essay of essays) {
+    for (const field of ["image", "socialImage"]) {
+      const reference = essay[field];
+      if (!reference) continue;
+      const sourcePath = join(sourceRoot, "src", ...reference.slice(1).split("/"));
+      if (!await isFile(sourcePath)) {
+        findings.push(`${essay.sourceFile}: ${field} references missing asset ${reference}. Add the file beneath src/images or correct the frontmatter field.`);
+      }
+    }
+  }
+
+  if (findings.length > 0) {
+    throw new Error(`Editorial asset preflight failed:\n${findings.sort().join("\n")}`);
   }
 }
 
@@ -49,6 +71,8 @@ export async function build({ contentDir = "content/essays", outputDir = "dist" 
   const visibleEssays = essays.filter((essay) => essay.status !== "draft");
   const publishedEssays = essays.filter((essay) => essay.status === "published");
   const sourceRoot = resolve(contentDir, "..", "..");
+
+  await preflightEssayAssets(essays, sourceRoot);
 
   await rm(outputDir, { recursive: true, force: true });
   await mkdir(outputDir, { recursive: true });

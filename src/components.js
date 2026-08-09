@@ -67,7 +67,7 @@ export function pageShell({ title, description, path, body, image, type = "websi
 export function essayCard(essay, featured = false) {
   const published = essay.status !== "coming-soon";
   const content = `
-      <img src="${asset(essay.image)}" alt="">
+      <img src="${escapeHtml(asset(essay.image))}" alt="">
       <span>${published ? `${escapeHtml(essay.category)} / ${escapeHtml(essay.readingTime)}` : `${escapeHtml(essay.category)} / Coming soon`}</span>
       <h3>${escapeHtml(published ? essay.title : "Coming soon")}</h3>
       <p>${escapeHtml(published ? essay.excerpt : essay.title)}</p>`;

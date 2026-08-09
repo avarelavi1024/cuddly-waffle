@@ -8,13 +8,15 @@ export function renderMetadata({ title, description, path, image = site.defaultS
     ? [
       `<meta property="article:published_time" content="${escapeHtml(article.publishedTime)}">`,
       `<meta property="article:section" content="${escapeHtml(article.section)}">`,
-      ...article.tags.map((tag) => `<meta property="article:tag" content="${escapeHtml(tag)}">`)
+      ...article.tags.map((tag) => `<meta property="article:tag" content="${escapeHtml(tag)}">`),
+      ...(site.authorUrl ? [`<meta property="article:author" content="${escapeHtml(site.authorUrl)}">`] : [])
     ]
     : [];
 
   return [
     `<link rel="canonical" href="${escapeHtml(canonicalUrl)}">`,
     `<meta name="description" content="${escapeHtml(description)}">`,
+    `<meta name="author" content="${escapeHtml(site.name)}">`,
     `<meta property="og:title" content="${escapeHtml(title)}">`,
     `<meta property="og:description" content="${escapeHtml(description)}">`,
     `<meta property="og:type" content="${escapeHtml(type)}">`,

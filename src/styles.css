@@ -518,6 +518,7 @@ h3 {
 .carousel-controls button,
 .filters button,
 .rotate-questions {
+  min-height: 44px;
   border: 1px solid currentColor;
   background: transparent;
   color: inherit;
@@ -945,7 +946,17 @@ h3 {
   }
 
   nav a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
     text-align: center;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
   }
 
   .name-hero,
@@ -1054,6 +1065,18 @@ h3 {
 
   .site-footer {
     gap: 18px;
+  }
+
+  .site-footer div {
+    gap: 0;
+  }
+
+  .site-footer a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    min-width: 44px;
+    width: fit-content;
   }
 }
 

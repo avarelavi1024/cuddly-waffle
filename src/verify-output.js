@@ -5,6 +5,8 @@ import { inflateSync } from "node:zlib";
 import { site } from "./site.js";
 
 const PNG_SIGNATURE = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+const REQUIRED_PROPERTY_METADATA = ["og:title", "og:description", "og:type", "og:url", "og:image"];
+const REQUIRED_NAMED_METADATA = ["twitter:card", "twitter:title", "twitter:description", "twitter:image"];
 const PNG_BIT_DEPTHS = new Map([
   [0, new Set([1, 2, 4, 8, 16])],
   [2, new Set([8, 16])],
@@ -54,10 +56,6 @@ function startTags(html) {
     name: match[1].toLowerCase(),
     attributes: attributes(match[0])
   }));
-}
-
-function tags(html, name) {
-  return startTags(html).filter((tag) => tag.name === name).map((tag) => tag.attributes);
 }
 
 function isAbsoluteWebUrl(value) {
@@ -182,15 +180,15 @@ function inspectPng(bytes) {
   return undefined;
 }
 
-async function checkSocialImage(value, route, outputDir, findings) {
+async function checkSocialImage(value, route, outputDir, findings, label = "Open Graph") {
   if (!isAbsoluteWebUrl(value)) return;
   const url = new URL(value);
   if (url.origin !== site.origin) {
-    findings.add(`Off-origin Open Graph image URL: ${value} in ${route}`);
+    findings.add(`Off-origin ${label} image URL: ${value} in ${route}`);
     return;
   }
   if (!url.pathname.toLowerCase().endsWith(".png")) {
-    findings.add(`Open Graph image must be PNG: ${value}`);
+    findings.add(`${label} image must be PNG: ${value}`);
     return;
   }
 
@@ -215,30 +213,107 @@ async function checkSocialImage(value, route, outputDir, findings) {
   }
 }
 
+function valuesForMetadata(metaTags, attribute, key) {
+  return metaTags
+    .filter((tag) => (tag.get(attribute) ?? "").toLowerCase() === key)
+    .map((tag) => tag.get("content") ?? "");
+}
+
+function requireSingleMetadata(metaTags, attribute, field, route, findings) {
+  const values = valuesForMetadata(metaTags, attribute, field);
+  if (values.length === 0) {
+    findings.add(`Missing metadata field: ${field} in ${route}`);
+  } else if (values.length > 1) {
+    findings.add(`Expected exactly one metadata field ${field} in ${route}, found ${values.length}`);
+  }
+  if (values.length === 1 && !values[0].trim()) {
+    findings.add(`Empty metadata field: ${field} in ${route}`);
+  }
+  return values;
+}
+
+function expectedCanonicalUrl(route) {
+  const canonicalRoute = route === "/archive/" ? "/projects/" : route;
+  return new URL(canonicalRoute, `${site.origin}/`).href;
+}
+
+function checkPageUrl(value, label, route, expected, findings) {
+  if (!isAbsoluteWebUrl(value)) {
+    findings.add(`Non-absolute ${label}: ${value || "(empty)"} in ${route}`);
+    return;
+  }
+  const url = new URL(value);
+  const sentenceLabel = label === "canonical URL" ? "Canonical URL" : label;
+  if (url.origin !== site.origin) {
+    findings.add(`${sentenceLabel} must use ${site.origin} origin: ${value} in ${route}`);
+    return;
+  }
+  if (url.href !== expected) {
+    findings.add(`${sentenceLabel} mismatch: expected ${expected}, got ${value} in ${route}`);
+  }
+}
+
 async function checkMetadata(html, route, outputDir, findings) {
-  const canonicalValues = tags(html, "link")
+  const documentTags = startTags(html);
+  const linkTags = documentTags.filter((tag) => tag.name === "link").map((tag) => tag.attributes);
+  const metaTags = documentTags.filter((tag) => tag.name === "meta").map((tag) => tag.attributes);
+  const canonicalValues = linkTags
     .filter((tag) => tag.get("rel")?.toLowerCase().split(/\s+/).includes("canonical"))
     .map((tag) => tag.get("href") ?? "");
-  const socialValues = tags(html, "meta")
-    .filter((tag) => (tag.get("property") ?? "").toLowerCase() === "og:image")
-    .map((tag) => tag.get("content") ?? "");
+  const expected = expectedCanonicalUrl(route);
 
-  if (route !== "/404.html" && canonicalValues.length === 0) {
+  if (canonicalValues.length === 0) {
     findings.add(`Missing canonical URL: ${route}`);
+  } else if (canonicalValues.length > 1) {
+    findings.add(`Expected exactly one canonical URL in ${route}, found ${canonicalValues.length}`);
   }
-  for (const value of canonicalValues.filter((item) => !isAbsoluteWebUrl(item))) {
-    findings.add(`Non-absolute canonical URL: ${value || "(empty)"} in ${route}`);
+  for (const value of canonicalValues) {
+    checkPageUrl(value, "canonical URL", route, expected, findings);
   }
 
-  if (socialValues.length === 0) findings.add(`Missing Open Graph image URL: ${route}`);
+  const metadataValues = new Map();
+  for (const field of REQUIRED_PROPERTY_METADATA) {
+    metadataValues.set(field, requireSingleMetadata(metaTags, "property", field, route, findings));
+  }
+  for (const field of REQUIRED_NAMED_METADATA) {
+    metadataValues.set(field, requireSingleMetadata(metaTags, "name", field, route, findings));
+  }
+
+  const openGraphUrl = metadataValues.get("og:url");
+  if (openGraphUrl?.length === 1) {
+    checkPageUrl(openGraphUrl[0], "Open Graph URL", route, expected, findings);
+  }
+
+  const expectedType = route.startsWith("/essays/") && route.endsWith("/") ? "article" : "website";
+  const openGraphType = metadataValues.get("og:type");
+  if (openGraphType?.length === 1 && openGraphType[0] !== expectedType) {
+    findings.add(`Open Graph type mismatch: expected ${expectedType}, got ${openGraphType[0] || "(empty)"} in ${route}`);
+  }
+
+  const twitterCard = metadataValues.get("twitter:card");
+  if (twitterCard?.length === 1 && twitterCard[0] !== "summary_large_image") {
+    findings.add(`Twitter card mismatch: expected summary_large_image, got ${twitterCard[0] || "(empty)"} in ${route}`);
+  }
+
+  const socialValues = metadataValues.get("og:image") ?? [];
   for (const value of socialValues) {
     if (!isAbsoluteWebUrl(value)) {
       findings.add(`Non-absolute Open Graph image URL: ${value || "(empty)"} in ${route}`);
     }
-    await checkSocialImage(value, route, outputDir, findings);
+    await checkSocialImage(value, route, outputDir, findings, "Open Graph");
+  }
+  const twitterImageValues = metadataValues.get("twitter:image") ?? [];
+  for (const value of twitterImageValues) {
+    if (!isAbsoluteWebUrl(value)) {
+      findings.add(`Non-absolute Twitter image URL: ${value || "(empty)"} in ${route}`);
+    }
+    await checkSocialImage(value, route, outputDir, findings, "Twitter");
+  }
+  if (socialValues.length === 1 && twitterImageValues.length === 1 && socialValues[0] !== twitterImageValues[0]) {
+    findings.add(`Open Graph and Twitter image URLs differ in ${route}`);
   }
 
-  if (route.startsWith("/essays/") && route.endsWith("/") && !tags(html, "meta").some(
+  if (route.startsWith("/essays/") && route.endsWith("/") && !metaTags.some(
     (tag) => (tag.get("property") ?? "").toLowerCase() === "article:published_time"
   )) {
     findings.add(`Public draft/upcoming essay route: ${route}`);
