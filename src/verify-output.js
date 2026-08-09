@@ -29,7 +29,10 @@ function attributes(tag) {
 }
 
 function startTags(html) {
-  return [...html.matchAll(/<([a-z][\w:-]*)\b[^>]*>/gi)].map((match) => ({
+  const markup = html
+    .replace(/<!--[\s\S]*?-->/g, "")
+    .replace(/(<(script|style)\b[^>]*>)[\s\S]*?<\/\2\s*>/gi, "$1");
+  return [...markup.matchAll(/<([a-z][\w:-]*)\b[^>]*>/gi)].map((match) => ({
     name: match[1].toLowerCase(),
     attributes: attributes(match[0])
   }));

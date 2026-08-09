@@ -123,10 +123,18 @@ test("verifyOutput requires local references to resolve to files", async (t) => 
 
 test("verifyOutput ignores attribute-like text outside start tags", async (t) => {
   const outputDir = await outputFixture(t, {
-    "index.html": `<link rel="canonical" href="https://ana-varela.vercel.app/"><meta property="og:image" content="https://cdn.example.com/social.png"><p>Example source text: src='/missing.png'</p><!-- href="/also-missing/" -->`
+    "index.html": `<link rel="canonical" href="https://ana-varela.vercel.app/"><meta property="og:image" content="https://cdn.example.com/social.png"><p>Example source text: src='/missing.png'</p><!-- <img src="/commented.png"> --><script>const example = '<a href="/script-link/">';</script><style>/* <img src="/style-image.png"> */</style>`
   });
 
   await assert.doesNotReject(verifyOutput(outputDir));
+});
+
+test("verifyOutput ignores metadata tags inside comments", async (t) => {
+  const outputDir = await outputFixture(t, {
+    "index.html": `<meta property="og:image" content="https://cdn.example.com/social.png"><!-- <link rel="canonical" href="https://ana-varela.vercel.app/"> -->`
+  });
+
+  await assert.rejects(verifyOutput(outputDir), /Missing canonical URL: \//);
 });
 
 test("verifyOutput permits 404 metadata omission and resolves query or fragment suffixes", async (t) => {
