@@ -124,6 +124,14 @@ test("Contact renders the approved editorial-letter structure and exact copy", (
   assert.doesNotMatch(html, /Let’s talk|A note from Ana/);
 });
 
+test("Contact stylesheet uses the paper palette and responsive link grid", async () => {
+  const css = await readFile("src/styles.css", "utf8");
+
+  assert.match(css, /\.contact-page\s*\{[^}]*background:\s*var\(--paper\)/s);
+  assert.match(css, /\.contact-letter-links\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s);
+  assert.match(css, /@media[\s\S]*?\.contact-letter-links\s*\{[^}]*grid-template-columns:\s*1fr/s);
+});
+
 test("the footer LinkedIn link independently provides safe new-window markup", () => {
   const html = renderFooter();
   assert.match(html, /<a href="https:\/\/www\.linkedin\.com\/in\/[^\"]+" target="_blank" rel="noopener noreferrer">LinkedIn<span class="sr-only"> \(opens in a new tab\)<\/span><\/a>/);
