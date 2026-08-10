@@ -104,6 +104,7 @@ test("question rotation exposes an accessible live region without forcing announ
   const html = renderHomePage([publishedEssay]);
   assert.match(html, /class="question-list"[^>]+data-question-list/);
   assert.match(html, /aria-label="Show another set of questions"/);
+  assert.match(html, /class="essay-series-artwork" src="\/images\/editorial-myths\.svg"/);
   assert.doesNotMatch(html, /aria-live/);
 });
 
@@ -133,6 +134,7 @@ test("Contact stylesheet uses the paper palette and responsive link grid", async
   assert.match(css, /\.contact-letter-links\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s);
   assert.match(css, /@media[\s\S]*?\.contact-letter-links\s*\{[^}]*grid-template-columns:\s*1fr/s);
   assert.match(css, /@media[\s\S]*?\.essay-series-artwork\s*\{[^}]*aspect-ratio:\s*16\s*\/\s*9/s);
+  assert.match(css, /\.essay-card \.essay-series-artwork\s*\{[^}]*object-fit:\s*contain/s);
 });
 
 test("the footer LinkedIn link independently provides safe new-window markup", () => {

@@ -191,6 +191,11 @@ h3 {
   margin-bottom: 14px;
 }
 
+.essay-card .essay-series-artwork {
+  background: var(--paper);
+  object-fit: contain;
+}
+
 .essay-card span,
 .archive-row small {
   color: var(--muted);
