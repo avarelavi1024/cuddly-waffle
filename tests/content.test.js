@@ -69,6 +69,23 @@ test("loadEssays sorts newest first and derives slug", async () => {
   assert.equal(essays[0].bodyHtml, "<p>Newer body contains more than twenty words so it remains valid under the strict editorial schema while preserving this loader behavior assertion.</p>");
 });
 
+test("loadEssays exposes optional series metadata", async () => {
+  const dir = await fixtureDir({
+    "series.md": essaySource({ series: "The Secret Histories of Colour" })
+  });
+  test.after(() => cleanupFixture(dir));
+
+  const [essay] = await loadEssays(dir);
+  assert.equal(essay.series, "The Secret Histories of Colour");
+});
+
+test("loadEssays rejects a non-string optional series", async () => {
+  const dir = await fixtureDir({ "series.md": essaySource({ series: false }) });
+  test.after(() => cleanupFixture(dir));
+
+  await assert.rejects(loadEssays(dir), /series\.md: series must be a non-empty string when provided/);
+});
+
 test("loadEssays rejects unsupported publication states with the filename", async () => {
   const dir = await fixtureDir({
     "invalid.md": essaySource({ status: "private" }, "This fixture contains more than twenty words so publication-body validation cannot hide the intended unsupported-status failure from this focused test case.")

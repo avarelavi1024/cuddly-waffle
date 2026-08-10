@@ -9,7 +9,7 @@ excerpt: "Food choices are often reduced to discipline, but eating behaviour is 
 image: "images/editorial-nutrition.svg"
 socialImage: "images/social-willpower-food.png"
 curated: true
-featured: true
+featured: false
 status: "published"
 ---
 

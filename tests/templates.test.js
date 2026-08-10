@@ -16,6 +16,7 @@ const publishedEssay = {
   date: "2026-08-09",
   year: "2026",
   category: "Culture",
+  series: "The Secret Histories of Colour",
   tags: ["culture", "examples"],
   excerpt: "An example essay used to verify the page renderer.",
   image: "/images/editorial-myths.svg",
@@ -31,6 +32,16 @@ test("published essay pages expose article metadata and useful image alt text", 
   const html = renderEssayPage(publishedEssay, [publishedEssay]);
   assert.match(html, /property="og:type" content="article"/);
   assert.match(html, /<img[^>]+alt="Editorial illustration for Example Essay"/);
+});
+
+test("essay pages render optional series metadata", () => {
+  const html = renderEssayPage(publishedEssay, [publishedEssay]);
+  assert.match(html, /<p class="essay-series">The Secret Histories of Colour<\/p>/);
+  assert.match(html, /<img class="essay-series-artwork"/);
+
+  const withoutSeries = renderEssayPage({ ...publishedEssay, series: "" }, [publishedEssay]);
+  assert.doesNotMatch(withoutSeries, /class="essay-series"/);
+  assert.doesNotMatch(withoutSeries, /class="essay-series-artwork"/);
 });
 
 test("essay image attributes remain single escaped attributes with adversarial input", () => {
@@ -63,7 +74,7 @@ test("essay pages without a social image use the default raster card", () => {
   const html = renderEssayPage(essay, [essay]);
 
   assert.match(html, /property="og:image" content="https:\/\/ana-varela\.vercel\.app\/images\/social-default\.png"/);
-  assert.match(html, /<img src="\/images\/editorial-myths\.svg" alt="Editorial illustration for Example Essay">/);
+  assert.match(html, /<img[^>]+src="\/images\/editorial-myths\.svg" alt="Editorial illustration for Example Essay">/);
 });
 
 test("category pages use raster social metadata while preserving editorial artwork", () => {
@@ -93,12 +104,37 @@ test("question rotation exposes an accessible live region without forcing announ
   const html = renderHomePage([publishedEssay]);
   assert.match(html, /class="question-list"[^>]+data-question-list/);
   assert.match(html, /aria-label="Show another set of questions"/);
+  assert.match(html, /class="essay-series-artwork" src="\/images\/editorial-myths\.svg"/);
   assert.doesNotMatch(html, /aria-live/);
 });
 
 test("the Contact LinkedIn link independently provides safe new-window markup", () => {
   const html = renderContactPage();
   assert.match(html, /<main[\s\S]*?<a href="https:\/\/www\.linkedin\.com\/in\/[^\"]+" target="_blank" rel="noopener noreferrer">LinkedIn:[\s\S]*?<span class="sr-only"> \(opens in a new tab\)<\/span><\/a>[\s\S]*?<\/main>/);
+});
+
+test("Contact renders the approved editorial-letter structure and exact copy", () => {
+  const html = renderContactPage();
+
+  assert.match(html, /<main[^>]*class="contact-page"/);
+  assert.match(html, /<article class="contact-letter">/);
+  assert.match(html, /<h1>Contact<\/h1>/);
+  assert.match(html, /If something here made you think, connect ideas or see a topic differently, I’d be glad to hear from you\. Reach out through LinkedIn or email below\./);
+  assert.match(html, /class="contact-letter-links"/);
+  assert.match(html, /LinkedIn: www\.linkedin\.com\/in\/ana-varela-vilariño-7aa95b235/);
+  assert.match(html, /Email: avarelavi@gmail\.com/);
+  assert.match(html, /href="mailto:avarelavi@gmail\.com"/);
+  assert.doesNotMatch(html, /Let’s talk|A note from Ana/);
+});
+
+test("Contact stylesheet uses the paper palette and responsive link grid", async () => {
+  const css = await readFile("src/styles.css", "utf8");
+
+  assert.match(css, /\.contact-page\s*\{[^}]*background:\s*var\(--paper\)/s);
+  assert.match(css, /\.contact-letter-links\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s);
+  assert.match(css, /@media[\s\S]*?\.contact-letter-links\s*\{[^}]*grid-template-columns:\s*1fr/s);
+  assert.match(css, /@media[\s\S]*?\.essay-series-artwork\s*\{[^}]*aspect-ratio:\s*16\s*\/\s*9/s);
+  assert.match(css, /\.essay-card \.essay-series-artwork\s*\{[^}]*object-fit:\s*contain/s);
 });
 
 test("the footer LinkedIn link independently provides safe new-window markup", () => {

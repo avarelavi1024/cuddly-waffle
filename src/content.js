@@ -98,6 +98,9 @@ export function validateEssay(data, body, file) {
   if (!Array.isArray(data.tags) || data.tags.length === 0 || data.tags.some((tag) => typeof tag !== "string" || !tag.trim())) {
     throw new Error(`${file}: tags must be a non-empty array of strings`);
   }
+  if (Object.hasOwn(data, "series") && (typeof data.series !== "string" || !data.series.trim())) {
+    throw new Error(`${file}: series must be a non-empty string when provided`);
+  }
   for (const field of BOOLEAN_FIELDS) {
     if (Object.hasOwn(data, field) && typeof data[field] !== "boolean") {
       throw new Error(`${file}: ${field} must be true or false without quotes`);
@@ -153,6 +156,7 @@ export async function loadEssays(contentDir = "content/essays") {
       date: data.date,
       year: data.year,
       category: data.category,
+      series: data.series ?? "",
       tags: data.tags,
       excerpt: data.excerpt,
       image: normalizeEditorialImagePath(data.image, "image", file),

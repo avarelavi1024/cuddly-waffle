@@ -191,6 +191,11 @@ h3 {
   margin-bottom: 14px;
 }
 
+.essay-card .essay-series-artwork {
+  background: var(--paper);
+  object-fit: contain;
+}
+
 .essay-card span,
 .archive-row small {
   color: var(--muted);
@@ -462,9 +467,7 @@ h3 {
 .category-tile:focus-visible,
 .question-list summary:focus-visible,
 .visual-notes a:focus-visible,
-.visual-notes button:focus-visible,
-.contact-page a:focus-visible,
-.compact-contact + .site-footer a:focus-visible {
+.visual-notes button:focus-visible {
   outline-color: var(--paper);
 }
 
@@ -591,6 +594,14 @@ h3 {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 280px;
   gap: clamp(28px, 5vw, 70px);
+}
+
+.essay-series {
+  margin: 0 0 10px;
+  color: var(--green);
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
 }
 
 .essay-hero h1 {
@@ -783,70 +794,86 @@ h3 {
 }
 
 .contact-page {
-  background: var(--night);
-  color: var(--paper);
+  min-height: 70vh;
+  background: var(--paper);
+  color: var(--ink);
 }
 
-.compact-contact {
-  min-height: calc(100vh - 58px);
-  display: grid;
-  align-items: center;
-}
-
-.compact-contact + .site-footer {
-  background: var(--night);
-  color: var(--paper);
-  border-top-color: #333;
-}
-
-.compact-contact + .site-footer a {
-  color: #cfc7ba;
-}
-
-.contact-original {
-  display: grid;
-  gap: clamp(54px, 10vw, 120px);
-  max-width: 840px;
-}
-
-.contact-original p {
-  max-width: 560px;
-  color: var(--paper);
-  font-weight: 700;
-  line-height: 1.35;
-}
-
-.contact-original div {
-  display: grid;
-  gap: 4px;
-}
-
-.contact-original a {
-  color: #e0d5f7;
-  font-weight: 650;
-  overflow-wrap: anywhere;
-}
-
-.contact-hero {
+.contact-letter {
   max-width: 980px;
+  margin: 0 auto;
 }
 
-.contact-hero h1 {
-  font-size: clamp(44px, 7vw, 94px);
-  line-height: .96;
-  text-wrap: balance;
+.contact-letter-header {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
 }
 
-.contact-hero p:last-child {
+.contact-letter-copy {
   max-width: 640px;
-  color: #cfc7ba;
-  font-size: clamp(18px, 2vw, 24px);
-  line-height: 1.45;
+  margin: clamp(64px, 10vw, 112px) auto 0;
 }
 
-.contact-grid a {
-  background: #202020;
-  border-color: var(--paper);
+.contact-letter-label {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-family: var(--serif);
+  font-style: italic;
+}
+
+.contact-letter-copy h1 {
+  margin: 0 0 clamp(28px, 4vw, 44px);
+  font-size: clamp(52px, 8vw, 92px);
+  font-weight: 400;
+  letter-spacing: -.04em;
+  line-height: .95;
+}
+
+.contact-letter-copy > p:last-of-type {
+  margin: 0 0 clamp(36px, 6vw, 56px);
+  color: var(--muted);
+  font-family: var(--serif);
+  font-size: clamp(18px, 2vw, 22px);
+  line-height: 1.65;
+}
+
+.contact-letter-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(18px, 4vw, 32px);
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.contact-letter-links a {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  min-width: 0;
+  padding: 0 0 9px;
+  border-bottom: 1px solid var(--ink);
+  color: var(--ink);
+  font-size: 11px;
+  letter-spacing: .06em;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+.contact-letter-links a::after {
+  content: "↗";
+  flex: 0 0 auto;
+}
+
+.contact-letter-links a:hover {
+  color: var(--red);
+  border-bottom-color: var(--red);
 }
 
 .site-footer {
@@ -959,6 +986,14 @@ h3 {
     min-height: 44px;
   }
 
+  .contact-letter-header {
+    gap: 24px;
+  }
+
+  .contact-letter-links {
+    grid-template-columns: 1fr;
+  }
+
   .name-hero,
   .section,
   .projects-page,
@@ -1037,6 +1072,10 @@ h3 {
     margin-top: 22px;
   }
 
+  .essay-hero .essay-series-artwork {
+    aspect-ratio: 16 / 9;
+  }
+
   .essay-body {
     margin-top: 34px;
     font-size: 18px;
@@ -1089,7 +1128,6 @@ h3 {
 
   .hero h1,
   .name-hero h1,
-  .contact-hero h1,
   .essay-hero h1 {
     font-size: clamp(38px, 13vw, 54px);
   }
