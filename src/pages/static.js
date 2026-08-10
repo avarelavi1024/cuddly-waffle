@@ -48,14 +48,22 @@ export function renderContactPage() {
     title: "Contact",
     description: "Contact Ana Varela Vilariño by LinkedIn or email.",
     path: "/contact/",
-    body: `<main class="contact-page compact-contact">
-      <section class="contact-original">
-        <p>If something here made you think, connect ideas or see a topic differently, I’d be glad to hear from you. Reach out through LinkedIn or email below.</p>
-        <div>
-          <a href="https://www.linkedin.com/in/ana-varela-vilariño-7aa95b235" target="_blank" rel="noopener noreferrer">LinkedIn: www.linkedin.com/in/ana-varela-vilariño-7aa95b235<span class="sr-only"> (opens in a new tab)</span></a>
-          <a href="mailto:avarelavi@gmail.com">Email: avarelavi@gmail.com</a>
+    body: `<main class="contact-page">
+      <article class="contact-letter">
+        <header class="contact-letter-header">
+          <span>Ana Varela</span>
+          <span>Contact</span>
+        </header>
+        <div class="contact-letter-copy">
+          <p class="contact-letter-label">Contact</p>
+          <h1>Contact</h1>
+          <p>If something here made you think, connect ideas or see a topic differently, I’d be glad to hear from you. Reach out through LinkedIn or email below.</p>
+          <div class="contact-letter-links">
+            <a href="https://www.linkedin.com/in/ana-varela-vilariño-7aa95b235" target="_blank" rel="noopener noreferrer">LinkedIn: www.linkedin.com/in/ana-varela-vilariño-7aa95b235<span class="sr-only"> (opens in a new tab)</span></a>
+            <a href="mailto:avarelavi@gmail.com">Email: avarelavi@gmail.com</a>
+          </div>
         </div>
-      </section>
+      </article>
     </main>`
   });
 }

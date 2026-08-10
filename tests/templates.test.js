@@ -110,6 +110,20 @@ test("the Contact LinkedIn link independently provides safe new-window markup", 
   assert.match(html, /<main[\s\S]*?<a href="https:\/\/www\.linkedin\.com\/in\/[^\"]+" target="_blank" rel="noopener noreferrer">LinkedIn:[\s\S]*?<span class="sr-only"> \(opens in a new tab\)<\/span><\/a>[\s\S]*?<\/main>/);
 });
 
+test("Contact renders the approved editorial-letter structure and exact copy", () => {
+  const html = renderContactPage();
+
+  assert.match(html, /<main[^>]*class="contact-page"/);
+  assert.match(html, /<article class="contact-letter">/);
+  assert.match(html, /<h1>Contact<\/h1>/);
+  assert.match(html, /If something here made you think, connect ideas or see a topic differently, I’d be glad to hear from you\. Reach out through LinkedIn or email below\./);
+  assert.match(html, /class="contact-letter-links"/);
+  assert.match(html, /LinkedIn: www\.linkedin\.com\/in\/ana-varela-vilariño-7aa95b235/);
+  assert.match(html, /Email: avarelavi@gmail\.com/);
+  assert.match(html, /href="mailto:avarelavi@gmail\.com"/);
+  assert.doesNotMatch(html, /Let’s talk|A note from Ana/);
+});
+
 test("the footer LinkedIn link independently provides safe new-window markup", () => {
   const html = renderFooter();
   assert.match(html, /<a href="https:\/\/www\.linkedin\.com\/in\/[^\"]+" target="_blank" rel="noopener noreferrer">LinkedIn<span class="sr-only"> \(opens in a new tab\)<\/span><\/a>/);
