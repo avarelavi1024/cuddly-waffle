@@ -7,6 +7,7 @@ category: "Health"
 tags: ["nutrition", "willpower", "food behaviour", "appetite", "health"]
 excerpt: "Food choices are often reduced to discipline, but eating behaviour is shaped by biology, stress, culture, access and environment."
 image: "images/editorial-nutrition.svg"
+socialImage: "images/social-willpower-food.png"
 curated: true
 featured: true
 status: "published"

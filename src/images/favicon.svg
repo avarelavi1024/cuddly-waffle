@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Ana Varela Vilariño monogram">
+  <rect width="64" height="64" rx="10" fill="#0d4d4f"/>
+  <path d="M8 48 L25 15 L32 48 M14 37 H28" fill="none" stroke="#f4f1ea" stroke-width="5" stroke-linecap="square" stroke-linejoin="miter"/>
+  <path d="M33 16 L45 48 L58 16" fill="none" stroke="#d9a294" stroke-width="5" stroke-linecap="square" stroke-linejoin="miter"/>
+  <rect x="8" y="53" width="50" height="3" fill="#a24e34"/>
+</svg>
