@@ -37,9 +37,11 @@ test("published essay pages expose article metadata and useful image alt text", 
 test("essay pages render optional series metadata", () => {
   const html = renderEssayPage(publishedEssay, [publishedEssay]);
   assert.match(html, /<p class="essay-series">The Secret Histories of Colour<\/p>/);
+  assert.match(html, /<img class="essay-series-artwork"/);
 
   const withoutSeries = renderEssayPage({ ...publishedEssay, series: "" }, [publishedEssay]);
   assert.doesNotMatch(withoutSeries, /class="essay-series"/);
+  assert.doesNotMatch(withoutSeries, /class="essay-series-artwork"/);
 });
 
 test("essay image attributes remain single escaped attributes with adversarial input", () => {
@@ -72,7 +74,7 @@ test("essay pages without a social image use the default raster card", () => {
   const html = renderEssayPage(essay, [essay]);
 
   assert.match(html, /property="og:image" content="https:\/\/ana-varela\.vercel\.app\/images\/social-default\.png"/);
-  assert.match(html, /<img src="\/images\/editorial-myths\.svg" alt="Editorial illustration for Example Essay">/);
+  assert.match(html, /<img[^>]+src="\/images\/editorial-myths\.svg" alt="Editorial illustration for Example Essay">/);
 });
 
 test("category pages use raster social metadata while preserving editorial artwork", () => {
@@ -130,6 +132,7 @@ test("Contact stylesheet uses the paper palette and responsive link grid", async
   assert.match(css, /\.contact-page\s*\{[^}]*background:\s*var\(--paper\)/s);
   assert.match(css, /\.contact-letter-links\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s);
   assert.match(css, /@media[\s\S]*?\.contact-letter-links\s*\{[^}]*grid-template-columns:\s*1fr/s);
+  assert.match(css, /@media[\s\S]*?\.essay-series-artwork\s*\{[^}]*aspect-ratio:\s*16\s*\/\s*9/s);
 });
 
 test("the footer LinkedIn link independently provides safe new-window markup", () => {

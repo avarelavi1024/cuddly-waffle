@@ -25,7 +25,7 @@ export function renderEssayPage(essay, essays) {
           <p class="kicker">${escapeHtml(essay.category)} / ${escapeHtml(essay.readingTime)}</p>
           <h1>${escapeHtml(essay.title)}</h1>
           <p>${escapeHtml(essay.subtitle)}</p>
-          <img src="${escapeHtml(asset(essay.image))}" alt="Editorial illustration for ${escapeHtml(essay.title)}">
+          <img${essay.series ? ` class="essay-series-artwork"` : ""} src="${escapeHtml(asset(essay.image))}" alt="Editorial illustration for ${escapeHtml(essay.title)}">
         </header>
         <div class="essay-body">${essay.bodyHtml}</div>
       </article>

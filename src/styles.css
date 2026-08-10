@@ -1067,6 +1067,10 @@ h3 {
     margin-top: 22px;
   }
 
+  .essay-hero .essay-series-artwork {
+    aspect-ratio: 16 / 9;
+  }
+
   .essay-body {
     margin-top: 34px;
     font-size: 18px;
