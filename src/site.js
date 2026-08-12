@@ -34,11 +34,11 @@ export const categoryThemes = [
     description: "Urban life, belonging, tourism, housing and the difference between visiting and living."
   },
   {
-    name: "Visual Culture",
+    name: "Art, Design & Visual Culture",
     slug: "visual-culture",
     image: "/images/editorial-visual-culture.svg",
-    categories: ["Visual Culture"],
-    description: "Images, platforms, aesthetics and the visual systems that shape how ideas are read."
+    categories: ["Art, Design & Visual Culture"],
+    description: "Art, design, colour, images and material culture examined through the visual systems that shape how ideas are read."
   },
   {
     name: "Health",

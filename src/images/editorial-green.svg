@@ -6,10 +6,9 @@
   <g fill="#f4f1ea">
     <text x="56" y="58" font-family="Arial, sans-serif" font-size="14" letter-spacing="2.2">THE SECRET HISTORIES OF COLOUR</text>
     <text x="644" y="58" text-anchor="end" font-family="Arial, sans-serif" font-size="14">01</text>
-    <text x="56" y="279" font-family="Georgia, serif" font-size="25" font-style="italic" opacity=".86">A visual essay</text>
-    <text x="56" y="363" font-family="Georgia, serif" font-size="88" letter-spacing="-3">Green</text>
-    <text x="56" y="417" font-family="Georgia, serif" font-size="38">From Poison to Purity</text>
-    <text x="56" y="621" font-family="Arial, sans-serif" font-size="14" letter-spacing="2">ANA VARELA · VISUAL CULTURE</text>
+    <text x="56" y="325" font-family="Georgia, serif" font-size="88" letter-spacing="-3">Green</text>
+    <text x="56" y="379" font-family="Georgia, serif" font-size="38">From Poison to Purity</text>
+    <text x="56" y="621" font-family="Arial, sans-serif" font-size="12" letter-spacing="1.55">ANA VARELA · ART, DESIGN &amp; VISUAL CULTURE</text>
   </g>
   <line x1="56" y1="78" x2="644" y2="78" stroke="#f4f1ea" stroke-opacity=".68"/>
   <text x="754" y="58" fill="#725344" font-family="Arial, sans-serif" font-size="14" letter-spacing="2.2">PIGMENT ARCHIVE</text>
