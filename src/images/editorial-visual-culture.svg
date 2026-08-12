@@ -1,7 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Editorial abstract image about visual culture">
-  <rect width="1200" height="900" fill="#f4f1ea"/>
-  <rect x="120" y="120" width="420" height="660" fill="#0d4d4f"/>
-  <circle cx="790" cy="330" r="230" fill="#d9a294"/>
-  <path d="M650 690 C 760 500, 960 520, 1080 260" fill="none" stroke="#bf8b2e" stroke-width="44"/>
-  <rect x="710" y="570" width="300" height="160" fill="#5a1e37"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title description">
+  <title id="title">Visual Culture editorial artwork</title>
+  <desc id="description">An eye-like aperture containing offset frames represents images, observation and mediation.</desc>
+  <rect class="category-field" width="1200" height="900" fill="#f4f1ea"/>
+  <rect width="684" height="900" fill="#211714"/>
+  <line class="category-rule" x1="72" y1="112" x2="1128" y2="112" stroke="#a24e34" stroke-width="2"/>
+  <text x="72" y="78" fill="#f4f1ea" font-family="Arial, sans-serif" font-size="18" letter-spacing="3">IMAGE / MEDIATION</text>
+  <text x="1128" y="78" text-anchor="end" fill="#211714" font-family="Arial, sans-serif" font-size="18">04</text>
+  <g class="category-symbol category-symbol-visual-culture" fill="none" stroke-linejoin="round">
+    <path d="M132 463c154-220 321-290 492-214 104 46 202 145 294 214-130 202-294 282-467 228-127-39-233-141-319-228z" stroke="#f4f1ea" stroke-width="14"/>
+    <rect x="456" y="311" width="360" height="294" stroke="#a24e34" stroke-width="14"/>
+    <rect x="530" y="368" width="360" height="294" stroke="#f4f1ea" stroke-width="10"/>
+  </g>
 </svg>

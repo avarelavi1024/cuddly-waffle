@@ -1,7 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Editorial abstract image about business">
-  <rect width="1200" height="900" fill="#0d4d4f"/>
-  <rect x="120" y="170" width="960" height="120" fill="#bf8b2e"/>
-  <rect x="120" y="390" width="620" height="120" fill="#f4f1ea"/>
-  <rect x="120" y="610" width="820" height="120" fill="#a24e34"/>
-  <circle cx="930" cy="450" r="150" fill="#5a1e37"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title description">
+  <title id="title">Business editorial artwork</title>
+  <desc id="description">An ordered asymmetric network represents work, systems and organisation.</desc>
+  <rect class="category-field" width="1200" height="900" fill="#f4f1ea"/>
+  <rect width="684" height="900" fill="#0d4d4f"/>
+  <line class="category-rule" x1="72" y1="112" x2="1128" y2="112" stroke="#a24e34" stroke-width="2"/>
+  <text x="72" y="78" fill="#f4f1ea" font-family="Arial, sans-serif" font-size="18" letter-spacing="3">WORK / SYSTEMS</text>
+  <text x="1128" y="78" text-anchor="end" fill="#211714" font-family="Arial, sans-serif" font-size="18">06</text>
+  <g class="category-symbol category-symbol-business" stroke-linejoin="round">
+    <path d="M256 296L542 444 782 247 978 516 673 701 328 624 256 296zM542 444L673 701M782 247L673 701" fill="none" stroke="#f4f1ea" stroke-width="12"/>
+    <circle cx="256" cy="296" r="46" fill="#bf8b2e"/>
+    <circle cx="542" cy="444" r="60" fill="#f4f1ea"/>
+    <circle cx="782" cy="247" r="42" fill="#bf8b2e"/>
+    <circle cx="978" cy="516" r="52" fill="#0d4d4f" stroke="#211714" stroke-width="10"/>
+    <circle cx="673" cy="701" r="55" fill="#a24e34"/>
+  </g>
 </svg>

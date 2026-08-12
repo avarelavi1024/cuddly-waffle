@@ -1,7 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Editorial abstract image about open questions">
-  <rect width="1200" height="900" fill="#a24e34"/>
-  <circle cx="330" cy="350" r="210" fill="#f4f1ea"/>
-  <circle cx="690" cy="350" r="210" fill="#bf8b2e"/>
-  <circle cx="510" cy="560" r="210" fill="#0d4d4f"/>
-  <path d="M820 640 C 920 460, 1030 420, 1100 250" fill="none" stroke="#5a1e37" stroke-width="38"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title description">
+  <title id="title">Open Questions editorial artwork</title>
+  <desc id="description">An incomplete aperture continued by an open path represents ideas still in progress.</desc>
+  <rect class="category-field" width="1200" height="900" fill="#f4f1ea"/>
+  <rect width="684" height="900" fill="#211714"/>
+  <line class="category-rule" x1="72" y1="112" x2="1128" y2="112" stroke="#a24e34" stroke-width="2"/>
+  <text x="72" y="78" fill="#f4f1ea" font-family="Arial, sans-serif" font-size="18" letter-spacing="3">IDEAS / IN PROGRESS</text>
+  <text x="1128" y="78" text-anchor="end" fill="#211714" font-family="Arial, sans-serif" font-size="18">07</text>
+  <g class="category-symbol category-symbol-open-questions" fill="none" stroke-linecap="round">
+    <path d="M747 235a242 242 0 1 0 166 418" stroke="#f4f1ea" stroke-width="16"/>
+    <path d="M748 235c129 17 229 118 243 248" stroke="#a24e34" stroke-width="16"/>
+    <path d="M913 653c-103 60-167 120-210 181" stroke="#a24e34" stroke-width="14"/>
+    <circle cx="703" cy="834" r="12" fill="#a24e34" stroke="none"/>
+  </g>
 </svg>

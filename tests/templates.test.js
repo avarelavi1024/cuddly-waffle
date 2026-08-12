@@ -85,6 +85,27 @@ test("category pages use raster social metadata while preserving editorial artwo
   assert.match(html, new RegExp(`<img src="${theme.image}" alt="">`));
 });
 
+test("category themes retain the seven stable editorial artwork paths", () => {
+  assert.deepEqual(
+    categoryThemes.map(({ slug, image }) => [slug, image]),
+    [
+      ["politics", "/images/editorial-politics.svg"],
+      ["mythologies", "/images/editorial-myths.svg"],
+      ["cities", "/images/editorial-cities.svg"],
+      ["visual-culture", "/images/editorial-visual-culture.svg"],
+      ["health", "/images/editorial-nutrition.svg"],
+      ["business", "/images/editorial-business.svg"],
+      ["open-questions", "/images/editorial-open-questions.svg"]
+    ]
+  );
+
+  const html = renderHomePage([publishedEssay]);
+  for (const theme of categoryThemes) {
+    const escapedName = theme.name.replaceAll("&", "&amp;");
+    assert.match(html, new RegExp(`<span>${escapedName}<\\/span>`));
+  }
+});
+
 test("the 404 page preserves the site identity and recovery links", () => {
   assert.equal(typeof templates.renderNotFoundPage, "function");
   const html = templates.renderNotFoundPage();
