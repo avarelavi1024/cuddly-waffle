@@ -190,6 +190,15 @@ test("reader journey actions use restrained responsive editorial styling", async
   assert.doesNotMatch(relatedRule, /\btop\s*:/);
 });
 
+test("long-form essays use the approved desktop reading scale without shrinking mobile text", async () => {
+  const css = await readFile("src/styles.css", "utf8");
+
+  assert.match(css, /\.essay-body\s*\{[^}]*font-size:\s*clamp\(18px,\s*1\.35vw,\s*20px\)/s);
+  assert.match(css, /\.essay-body ol\s*\{[^}]*font-size:\s*clamp\(14px,\s*1\.1vw,\s*16px\)/s);
+  assert.match(css, /\.essay-body h3 \+ ol\s*\{[^}]*font-size:\s*clamp\(13px,\s*1\.15vw,\s*15px\)/s);
+  assert.match(css, /@media \(max-width:\s*600px\)[\s\S]*?\.essay-body\s*\{[^}]*font-size:\s*18px/s);
+});
+
 test("the Contact LinkedIn link independently provides safe new-window markup", () => {
   const html = renderContactPage();
   assert.match(html, /<main[\s\S]*?<a href="https:\/\/www\.linkedin\.com\/in\/[^\"]+" target="_blank" rel="noopener noreferrer">LinkedIn:[\s\S]*?<span class="sr-only"> \(opens in a new tab\)<\/span><\/a>[\s\S]*?<\/main>/);
