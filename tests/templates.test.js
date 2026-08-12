@@ -175,6 +175,18 @@ test("every essay ending offers archive and LinkedIn continuation actions", () =
   assert.match(html, /More essays will appear here soon\./);
 });
 
+test("reader journey actions use restrained responsive editorial styling", async () => {
+  const html = renderHomePage([publishedEssay]);
+  const css = await readFile("src/styles.css", "utf8");
+
+  assert.match(html, /<p class="hero-intro">I collect research/);
+  assert.match(css, /\.hero-intro\s*\{[^}]*font-size:/s);
+  assert.match(css, /\.hero-positioning\s*\{[^}]*font-size:/s);
+  assert.match(css, /\.hero-latest-link\s*\{[^}]*display:\s*inline-flex/s);
+  assert.match(css, /\.related-actions\s*\{[^}]*border-top:\s*1px solid/s);
+  assert.match(css, /@media[\s\S]*?\.related-actions\s*\{[^}]*align-items:\s*flex-start/s);
+});
+
 test("the Contact LinkedIn link independently provides safe new-window markup", () => {
   const html = renderContactPage();
   assert.match(html, /<main[\s\S]*?<a href="https:\/\/www\.linkedin\.com\/in\/[^\"]+" target="_blank" rel="noopener noreferrer">LinkedIn:[\s\S]*?<span class="sr-only"> \(opens in a new tab\)<\/span><\/a>[\s\S]*?<\/main>/);
