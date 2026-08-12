@@ -726,8 +726,7 @@ h3 {
 }
 
 .related {
-  position: sticky;
-  top: 88px;
+  position: static;
   align-self: start;
 }
 
@@ -996,9 +995,6 @@ h3 {
     grid-auto-columns: 78vw;
   }
 
-  .related {
-    position: static;
-  }
 }
 
 @media (max-width: 600px) {
