@@ -397,43 +397,47 @@ h3 {
 }
 
 .category-tile {
-  position: relative;
-  min-height: 210px;
-  overflow: hidden;
-  background: var(--night);
-  color: var(--paper);
-  isolation: isolate;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-height: 0;
+  overflow: visible;
+  background: var(--paper);
+  color: var(--ink);
+  border-top: 1px solid var(--ink);
 }
 
 .category-tile img {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  height: 100%;
-  opacity: .76;
-  transition: transform .45s ease, opacity .45s ease;
+  position: relative;
+  inset: auto;
+  z-index: auto;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  opacity: 1;
+  transition: transform .35s ease;
 }
 
 .category-tile span {
-  position: absolute;
-  left: 18px;
-  right: 18px;
-  bottom: 18px;
+  position: relative;
+  inset: auto;
+  padding: 14px 0 4px;
+  color: var(--ink);
   font-family: var(--serif);
-  font-size: clamp(27px, 3vw, 44px);
-  line-height: 1;
+  font-size: clamp(24px, 2.5vw, 38px);
+  line-height: 1.02;
 }
 
 .category-tile:hover img,
 .category-tile:focus-visible img {
-  transform: scale(1.08) rotate(-1deg);
-  opacity: .94;
+  transform: scale(1.018);
+  opacity: 1;
 }
 
 .category-tile:hover,
 .category-tile:focus-visible {
   outline: 2px solid var(--red);
-  outline-offset: 4px;
+  outline-offset: 5px;
 }
 
 .question-list {
@@ -464,7 +468,6 @@ h3 {
 
 .theme-pill:focus-visible,
 .essay-card-featured a:focus-visible,
-.category-tile:focus-visible,
 .question-list summary:focus-visible,
 .visual-notes a:focus-visible,
 .visual-notes button:focus-visible {
@@ -491,6 +494,7 @@ h3 {
 
 .category-title img {
   aspect-ratio: 4 / 3;
+  object-fit: cover;
   min-height: 260px;
   border-top: 1px solid var(--ink);
 }
@@ -1053,14 +1057,13 @@ h3 {
   }
 
   .category-tile {
-    min-height: 156px;
+    min-height: 0;
   }
 
   .category-tile span {
-    left: 14px;
-    right: 14px;
-    bottom: 14px;
-    font-size: clamp(27px, 10vw, 38px);
+    inset: auto;
+    padding-top: 12px;
+    font-size: clamp(25px, 9vw, 36px);
   }
 
   .question-list summary {
@@ -1165,5 +1168,14 @@ h3 {
 
   .theme-marquee {
     overflow-x: auto;
+  }
+
+  .category-tile img {
+    transition: none;
+  }
+
+  .category-tile:hover img,
+  .category-tile:focus-visible img {
+    transform: none;
   }
 }
