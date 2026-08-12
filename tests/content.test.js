@@ -98,6 +98,8 @@ test("the Green visual edition contains five credited editorial figures", async 
   assert.match(body, /Metropolitan Museum of Art · Public domain/);
   assert.match(body, /Library of Congress · Public domain/);
   assert.match(body, /Original editorial study · Ana Varela Vilariño/);
+  assert.match(body, /Woman’s Dress \(Robe à Transformation\), ca\. 1860 · Los Angeles County Museum of Art/);
+  assert.doesNotMatch(body, /images\/green-dress-1860\.jpg|Dress, American or European/);
 });
 
 test("loadEssays rejects a non-string optional series", async () => {
