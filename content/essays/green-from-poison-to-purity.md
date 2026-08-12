@@ -3,9 +3,9 @@ title: "Green: From Poison to Purity"
 subtitle: "How one colour moved from nature, instability and toxicity to wellness, sustainability and modern purity."
 date: "2026-08-10"
 year: "2026"
-category: "Visual Culture"
+category: "Art, Design & Visual Culture"
 series: "The Secret Histories of Colour"
-tags: ["colour", "visual culture", "design history", "green", "pigments"]
+tags: ["colour", "art, design and visual culture", "design history", "green", "pigments"]
 excerpt: "How green moved from unstable and poisonous pigments to one of contemporary culture's strongest symbols of nature, health and sustainability."
 image: "images/editorial-green.svg"
 socialImage: "images/social-green.png"
@@ -288,20 +288,6 @@ Green: from poison to purity. Not because it was ever only one thing, but becaus
 4. In the nineteenth century, arsenical greens appeared in wallpapers, textiles, artificial flowers and domestic interiors, creating a public health concern around fashionable design.
 5. Green's modern association with wellness and sustainability is not timeless. It is a cultural construction shaped by environmental awareness, branding and visual communication.
 6. The history of green shows that colours are never neutral. They carry material histories, symbolic meanings and cultural contradictions.
-
-## Pull Quotes for the Visual Essay
-
-> Green did not simply mean nature. It learned to mean nature.
-
-> The colour of life was once the colour of domestic danger.
-
-> A green room could signal taste, fashion and modernity, but also carry hidden risk.
-
-> The colour that once made poison look beautiful now helps make products look clean.
-
-> Green is not a neutral colour. It carries a history of attraction and anxiety.
-
-> Colours do not simply decorate culture. They help organise it.
 
 ## Consolidated Bibliography
 
