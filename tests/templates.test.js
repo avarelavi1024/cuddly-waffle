@@ -106,6 +106,18 @@ test("category themes retain the seven stable editorial artwork paths", () => {
   }
 });
 
+test("Art, Design & Visual Culture retains its established public route", () => {
+  const theme = categoryThemes.find(({ slug }) => slug === "visual-culture");
+
+  assert.equal(theme.name, "Art, Design & Visual Culture");
+  assert.deepEqual(theme.categories, ["Art, Design & Visual Culture"]);
+  assert.equal(theme.slug, "visual-culture");
+
+  const html = renderCategoryPage(theme, []);
+  assert.match(html, /<h1>Art, Design &amp; Visual Culture<\/h1>/);
+  assert.match(html, /https:\/\/ana-varela\.vercel\.app\/categories\/visual-culture\//);
+});
+
 test("the 404 page preserves the site identity and recovery links", () => {
   assert.equal(typeof templates.renderNotFoundPage, "function");
   const html = templates.renderNotFoundPage();

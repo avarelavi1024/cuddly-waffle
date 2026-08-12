@@ -46,16 +46,22 @@ test("Green is a complete published colour-series essay", async () => {
 
   assert.equal(data.title, "Green: From Poison to Purity");
   assert.equal(data.series, "The Secret Histories of Colour");
-  assert.equal(data.category, "Visual Culture");
+  assert.equal(data.category, "Art, Design & Visual Culture");
   assert.equal(data.status, "published");
   assert.equal(data.featured, true);
   assert.match(body, /## 3\. The Difficulty of Making Green/);
   assert.match(body, /## 4\. Toxic Beauty: Scheele's Green and Arsenic in the Home/);
   assert.match(body, /## Consolidated Bibliography/);
+  assert.doesNotMatch(body, /Pull Quotes for the Visual Essay/i);
   assert.ok((body.match(/### Sources for this section/g) || []).length >= 8);
   assert.ok(body.trim().split(/\s+/).length >= 2500);
   assert.equal(await exists("src/images/editorial-green.svg"), true);
   assert.equal(await exists("src/images/social-green.png"), true);
+
+  const cover = await readFile("src/images/editorial-green.svg", "utf8");
+  assert.doesNotMatch(cover, /A visual essay/i);
+  assert.doesNotMatch(cover, />VISUAL CULTURE</);
+  assert.match(cover, /ART, DESIGN &amp; VISUAL CULTURE/);
 });
 
 async function buildFixture(t, { onlyDraft = false, publishedSlug = "published" } = {}) {
