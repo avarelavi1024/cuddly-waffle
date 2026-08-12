@@ -227,3 +227,18 @@ test("social cards are 1200 by 630 raster images", async () => {
     assert.equal(bytes.readUInt32BE(20), 630);
   }
 });
+
+test("the Green magazine build emits scoped figures and responsive editorial styles", async (t) => {
+  const outputDir = await mkdtemp(join(tmpdir(), "green-magazine-build-"));
+  t.after(() => rm(outputDir, { recursive: true, force: true }));
+
+  await build({ outputDir });
+  const html = await readFile(join(outputDir, "essays", "green-from-poison-to-purity", "index.html"), "utf8");
+  const css = await readFile(join(outputDir, "styles.css"), "utf8");
+
+  assert.match(html, /class="essay-page essay-page-visual"/);
+  assert.equal((html.match(/<figure class="editorial-figure">/g) || []).length, 5);
+  assert.match(html, /<figcaption>William Morris, Willow Bough, 1887/);
+  assert.match(css, /\.essay-body-visual \.editorial-figure\s*\{/);
+  assert.match(css, /@media \(max-width:\s*600px\)[\s\S]*?\.essay-body-visual \.editorial-figure\s*\{/);
+});

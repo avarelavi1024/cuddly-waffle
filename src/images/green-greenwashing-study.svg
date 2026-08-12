@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+  <title id="title">Green Claims Study No. 02</title>
+  <desc id="desc">An editorial diagram contrasting ecological appearance with supporting evidence.</desc>
+  <rect width="1400" height="900" fill="#173d2a"/>
+  <g stroke="#d9ddc7" fill="none" stroke-width="2">
+    <path d="M70 128h1260M70 774h1260"/>
+    <circle cx="700" cy="445" r="270"/><circle cx="700" cy="445" r="170"/>
+    <path d="M700 175v540M430 445h540"/>
+  </g>
+  <g fill="#eef0df" font-family="Georgia,serif">
+    <text x="70" y="88" font-size="28" letter-spacing="5">GREEN CLAIMS STUDY NO. 02</text>
+    <text x="500" y="425" font-size="54">APPEARANCE</text>
+    <text x="582" y="492" font-size="30" letter-spacing="7">EVIDENCE</text>
+  </g>
+  <g fill="#c8d4ad" font-family="Arial,sans-serif" font-size="17" letter-spacing="3">
+    <text x="90" y="250">NATURAL</text><text x="1090" y="250">RESPONSIBLE</text>
+    <text x="90" y="680">RENEWABLE</text><text x="1090" y="680">VERIFIED</text>
+    <text x="70" y="842">A VISUAL PROMISE IS NOT MATERIAL PROOF</text>
+  </g>
+</svg>

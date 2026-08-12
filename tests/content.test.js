@@ -1,4 +1,4 @@
-import { mkdir, rm, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -77,6 +77,27 @@ test("loadEssays exposes optional series metadata", async () => {
 
   const [essay] = await loadEssays(dir);
   assert.equal(essay.series, "The Secret Histories of Colour");
+});
+
+test("loadEssays exposes an optional visual edition flag", async () => {
+  const dir = await fixtureDir({
+    "visual.md": essaySource({ visualEdition: true })
+  });
+  test.after(() => cleanupFixture(dir));
+
+  const [essay] = await loadEssays(dir);
+  assert.equal(essay.visualEdition, true);
+});
+
+test("the Green visual edition contains five credited editorial figures", async () => {
+  const source = await readFile("content/essays/green-from-poison-to-purity.md", "utf8");
+  const { data, body } = parseFrontmatter(source, "green-from-poison-to-purity.md");
+
+  assert.equal(data.visualEdition, true);
+  assert.equal((body.match(/^!\[[^\]]+\]\(images\/[A-Za-z0-9._/-]+ "[^"]+"\)$/gm) || []).length, 5);
+  assert.match(body, /Metropolitan Museum of Art · Public domain/);
+  assert.match(body, /Library of Congress · Public domain/);
+  assert.match(body, /Original editorial study · Ana Varela Vilariño/);
 });
 
 test("loadEssays rejects a non-string optional series", async () => {

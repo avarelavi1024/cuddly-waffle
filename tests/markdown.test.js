@@ -50,3 +50,18 @@ test("markdownToHtml escapes HTML inside lists and block quotes", () => {
   assert.match(html, /&lt;img/);
   assert.match(html, /&lt;script/);
 });
+
+test("markdownToHtml renders a credited local image as a semantic figure", () => {
+  const html = markdownToHtml(`![A green silk dress](images/green-dress.jpg "Dress, ca. 1860 · The Metropolitan Museum of Art · Public domain")`);
+
+  assert.equal(
+    html,
+    `<figure class="editorial-figure"><img src="/images/green-dress.jpg" alt="A green silk dress" loading="lazy"><figcaption>Dress, ca. 1860 · The Metropolitan Museum of Art · Public domain</figcaption></figure>`
+  );
+});
+
+test("markdownToHtml does not turn remote or unsafe image paths into figures", () => {
+  const html = markdownToHtml(`![Remote](https://example.com/image.jpg "Remote")\n\n![Unsafe](../secret.jpg "Unsafe")`);
+
+  assert.doesNotMatch(html, /<img/);
+});
