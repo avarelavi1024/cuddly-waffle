@@ -178,6 +178,7 @@ test("every essay ending offers archive and LinkedIn continuation actions", () =
 test("reader journey actions use restrained responsive editorial styling", async () => {
   const html = renderHomePage([publishedEssay]);
   const css = await readFile("src/styles.css", "utf8");
+  const relatedRule = css.match(/\.related\s*\{([^}]*)\}/)?.[1] ?? "";
 
   assert.match(html, /<p class="hero-intro">I collect research/);
   assert.match(css, /\.hero-intro\s*\{[^}]*font-size:/s);
@@ -185,6 +186,17 @@ test("reader journey actions use restrained responsive editorial styling", async
   assert.match(css, /\.hero-latest-link\s*\{[^}]*display:\s*inline-flex/s);
   assert.match(css, /\.related-actions\s*\{[^}]*border-top:\s*1px solid/s);
   assert.match(css, /@media[\s\S]*?\.related-actions\s*\{[^}]*align-items:\s*flex-start/s);
+  assert.match(relatedRule, /position:\s*static/);
+  assert.doesNotMatch(relatedRule, /\btop\s*:/);
+});
+
+test("long-form essays use the approved desktop reading scale without shrinking mobile text", async () => {
+  const css = await readFile("src/styles.css", "utf8");
+
+  assert.match(css, /\.essay-body\s*\{[^}]*font-size:\s*clamp\(18px,\s*1\.35vw,\s*20px\)/s);
+  assert.match(css, /\.essay-body ol\s*\{[^}]*font-size:\s*clamp\(14px,\s*1\.1vw,\s*16px\)/s);
+  assert.match(css, /\.essay-body h3 \+ ol\s*\{[^}]*font-size:\s*clamp\(13px,\s*1\.15vw,\s*15px\)/s);
+  assert.match(css, /@media \(max-width:\s*600px\)[\s\S]*?\.essay-body\s*\{[^}]*font-size:\s*18px/s);
 });
 
 test("the Contact LinkedIn link independently provides safe new-window markup", () => {
