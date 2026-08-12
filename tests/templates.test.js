@@ -141,6 +141,21 @@ test("question rotation exposes an accessible live region without forcing announ
   assert.doesNotMatch(html, /aria-live/);
 });
 
+test("the homepage gives LinkedIn visitors a direct editorial entry path", () => {
+  const html = renderHomePage([publishedEssay]);
+
+  assert.match(html, /class="hero-positioning">Research-led essays on culture, design, health and the systems behind everyday life\.<\/p>/);
+  assert.match(html, /class="text-link hero-latest-link" href="\/essays\/example-essay\/">Read the latest essay/);
+  assert.match(html, /href="\/projects\/">Explore the archive<\/a>/);
+  assert.doesNotMatch(html, />View projects<\/a>/);
+});
+
+test("the homepage omits the latest-essay action when nothing is published", () => {
+  const html = renderHomePage([]);
+
+  assert.doesNotMatch(html, /class="text-link hero-latest-link"/);
+});
+
 test("the Contact LinkedIn link independently provides safe new-window markup", () => {
   const html = renderContactPage();
   assert.match(html, /<main[\s\S]*?<a href="https:\/\/www\.linkedin\.com\/in\/[^\"]+" target="_blank" rel="noopener noreferrer">LinkedIn:[\s\S]*?<span class="sr-only"> \(opens in a new tab\)<\/span><\/a>[\s\S]*?<\/main>/);

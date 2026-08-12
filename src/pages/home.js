@@ -93,6 +93,8 @@ export function renderHomePage(essays) {
           <p class="kicker">Mini Theses / Personal Archive</p>
           <h1>Ana Varela Vilariño</h1>
           <p>I collect research, visual culture and everyday questions into concise essays - a living archive of the ideas that shape how we read the world.</p>
+          <p class="hero-positioning">Research-led essays on culture, design, health and the systems behind everyday life.</p>
+          ${featured ? `<a class="text-link hero-latest-link" href="/essays/${escapeHtml(featured.slug)}/">Read the latest essay <span aria-hidden="true">→</span></a>` : ""}
         </div>
       </section>
 
@@ -105,7 +107,7 @@ export function renderHomePage(essays) {
       <section class="section latest-publication">
         <div class="section-heading">
           <h2>Latest publication</h2>
-          <a href="/projects/">View projects</a>
+          <a href="/projects/">Explore the archive</a>
         </div>
         ${featured ? essayCard(featured, true) : `<p class="empty-state">No essays published yet.</p>`}
       </section>
