@@ -1,7 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Editorial abstract image about cities">
-  <rect width="1200" height="900" fill="#d9a294"/>
-  <rect x="130" y="150" width="230" height="600" fill="#0d4d4f"/>
-  <rect x="430" y="260" width="230" height="490" fill="#7d2027"/>
-  <rect x="730" y="90" width="300" height="660" fill="#6f6b37"/>
-  <path d="M90 790 C 290 660, 520 730, 720 610 S 1000 540, 1130 680" fill="none" stroke="#f4f1ea" stroke-width="34"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title description">
+  <title id="title">Cities editorial artwork</title>
+  <desc id="description">Unequal architectural frames crossed by a route express urban structure, movement and belonging.</desc>
+  <rect class="category-field" width="1200" height="900" fill="#f4f1ea"/>
+  <rect width="684" height="900" fill="#0d4d4f"/>
+  <line class="category-rule" x1="72" y1="112" x2="1128" y2="112" stroke="#a24e34" stroke-width="2"/>
+  <text x="72" y="78" fill="#f4f1ea" font-family="Arial, sans-serif" font-size="18" letter-spacing="3">SPACE / BELONGING</text>
+  <text x="1128" y="78" text-anchor="end" fill="#211714" font-family="Arial, sans-serif" font-size="18">03</text>
+  <g class="category-symbol category-symbol-cities" fill="none" stroke-linejoin="round">
+    <path d="M170 742V338h235v404M468 742V205h254v537M790 742V401h238v341" stroke="#f4f1ea" stroke-width="14"/>
+    <path d="M116 742h968M212 410h151M212 489h151M516 291h158M516 380h158M516 469h158M838 482h142M838 563h142" stroke="#d9a294" stroke-width="10"/>
+    <path d="M104 682c188-107 340-4 480-112 158-122 337-82 505-214" stroke="#a24e34" stroke-width="15"/>
+  </g>
 </svg>

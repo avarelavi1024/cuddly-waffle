@@ -1,6 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Editorial abstract image about nutrition">
-  <rect width="1200" height="900" fill="#f4f1ea"/>
-  <circle cx="850" cy="260" r="240" fill="#6f6b37"/>
-  <rect x="170" y="180" width="520" height="560" fill="#d9a294"/>
-  <path d="M140 700 C 360 500, 520 820, 760 590 S 1040 460, 1110 660" fill="none" stroke="#a24e34" stroke-width="36"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title description">
+  <title id="title">Health editorial artwork</title>
+  <desc id="description">Balanced circles joined by a flowing line represent bodies, behaviour and equilibrium.</desc>
+  <rect class="category-field" width="1200" height="900" fill="#f4f1ea"/>
+  <rect width="684" height="900" fill="#6f6b37"/>
+  <line class="category-rule" x1="72" y1="112" x2="1128" y2="112" stroke="#a24e34" stroke-width="2"/>
+  <text x="72" y="78" fill="#f4f1ea" font-family="Arial, sans-serif" font-size="18" letter-spacing="3">BODY / BALANCE</text>
+  <text x="1128" y="78" text-anchor="end" fill="#211714" font-family="Arial, sans-serif" font-size="18">05</text>
+  <g class="category-symbol category-symbol-health" fill="none" stroke-linecap="round">
+    <circle cx="393" cy="406" r="151" stroke="#f4f1ea" stroke-width="14"/>
+    <circle cx="825" cy="493" r="124" stroke="#d9a294" stroke-width="14"/>
+    <path d="M126 590c115-202 223 157 350-26 115-165 228 162 349-18 78-116 159-109 249 25" stroke="#a24e34" stroke-width="15"/>
+  </g>
 </svg>

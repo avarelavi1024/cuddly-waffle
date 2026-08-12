@@ -1,11 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Editorial abstract image about politics, history and identity">
-  <rect width="1200" height="900" fill="#5a1e37"/>
-  <rect x="105" y="110" width="360" height="640" fill="#f4f1ea"/>
-  <rect x="510" y="175" width="250" height="520" fill="#6f6b37"/>
-  <rect x="805" y="110" width="290" height="640" fill="#0d4d4f"/>
-  <circle cx="285" cy="430" r="78" fill="#bf8b2e"/>
-  <circle cx="635" cy="430" r="62" fill="#d9a294"/>
-  <circle cx="950" cy="430" r="70" fill="#a24e34"/>
-  <path d="M185 705 C 330 625, 430 785, 590 700 S 830 580, 1015 705" fill="none" stroke="#f4f1ea" stroke-width="24"/>
-  <path d="M190 182 L390 182 M550 245 L720 245 M850 182 L1045 182" stroke="#211714" stroke-width="18" stroke-linecap="round" opacity=".55"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title description">
+  <title id="title">Politics and Identity editorial artwork</title>
+  <desc id="description">Two opposing profiles divided by a line represent identity, memory and public tension.</desc>
+  <rect class="category-field" width="1200" height="900" fill="#f4f1ea"/>
+  <rect width="684" height="900" fill="#0d4d4f"/>
+  <line class="category-rule" x1="72" y1="112" x2="1128" y2="112" stroke="#a24e34" stroke-width="2"/>
+  <text x="72" y="78" fill="#f4f1ea" font-family="Arial, sans-serif" font-size="18" letter-spacing="3">POWER / MEMORY</text>
+  <text x="1128" y="78" text-anchor="end" fill="#211714" font-family="Arial, sans-serif" font-size="18">01</text>
+  <g class="category-symbol category-symbol-politics" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M238 724V418c0-151 88-235 215-235 77 0 139 36 177 95-108 38-147 108-147 202 0 108 63 175 179 203v41" stroke="#f4f1ea" stroke-width="15"/>
+    <path d="M962 724V418c0-151-88-235-215-235-53 0-99 17-135 48" stroke="#a24e34" stroke-width="15"/>
+    <line x1="684" y1="158" x2="684" y2="758" stroke="#a24e34" stroke-width="10"/>
+  </g>
 </svg>
