@@ -2,7 +2,10 @@ import { asset, essayCard, pageShell } from "../components.js";
 import { escapeHtml } from "../markdown.js";
 
 export function renderEssayPage(essay, essays) {
-  const related = essays.filter((item) => item.slug !== essay.slug && item.category === essay.category).slice(0, 2);
+  const publishedCandidates = essays.filter((item) => item.slug !== essay.slug && item.status === "published");
+  const sameCategory = publishedCandidates.filter((item) => item.category === essay.category);
+  const fallback = publishedCandidates.filter((item) => item.category !== essay.category);
+  const related = [...sameCategory, ...fallback].slice(0, 2);
   const article = essay.status === "published"
     ? {
       publishedTime: essay.date,
@@ -32,6 +35,10 @@ export function renderEssayPage(essay, essays) {
       <aside class="related">
         <h2>Read next</h2>
         ${related.length ? related.map((item) => essayCard(item)).join("") : `<p class="empty-state">More essays will appear here soon.</p>`}
+        <nav class="related-actions" aria-label="Continue exploring">
+          <a class="text-link" href="/projects/">Browse the complete archive</a>
+          <a class="text-link" href="https://www.linkedin.com/in/ana-varela-vilariño-7aa95b235" target="_blank" rel="noopener noreferrer">New essays are announced on LinkedIn<span class="sr-only"> (opens in a new tab)</span></a>
+        </nav>
       </aside>
     </main>`
   });
