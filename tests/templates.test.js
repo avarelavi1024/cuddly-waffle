@@ -141,6 +141,52 @@ test("question rotation exposes an accessible live region without forcing announ
   assert.doesNotMatch(html, /aria-live/);
 });
 
+test("the homepage gives LinkedIn visitors a direct editorial entry path", () => {
+  const html = renderHomePage([publishedEssay]);
+
+  assert.match(html, /class="hero-positioning">Research-led essays on culture, design, health and the systems behind everyday life\.<\/p>/);
+  assert.match(html, /class="text-link hero-latest-link" href="\/essays\/example-essay\/">Read the latest essay/);
+  assert.match(html, /href="\/projects\/">Explore the archive<\/a>/);
+  assert.doesNotMatch(html, />View projects<\/a>/);
+});
+
+test("the homepage omits the latest-essay action when nothing is published", () => {
+  const html = renderHomePage([]);
+
+  assert.doesNotMatch(html, /class="text-link hero-latest-link"/);
+});
+
+test("essay recommendations prefer the same category and fall back to other published work", () => {
+  const sameCategory = { ...publishedEssay, slug: "same", title: "Same Category", featured: false };
+  const fallback = { ...publishedEssay, slug: "fallback", title: "Published Fallback", category: "Health", featured: false };
+  const comingSoon = { ...publishedEssay, slug: "soon", title: "Coming Soon Fixture", status: "coming-soon" };
+  const draft = { ...publishedEssay, slug: "draft", title: "Draft Fixture", status: "draft" };
+  const html = renderEssayPage(publishedEssay, [publishedEssay, fallback, comingSoon, sameCategory, draft]);
+
+  assert.ok(html.indexOf("Same Category") < html.indexOf("Published Fallback"));
+  assert.doesNotMatch(html, /Coming Soon Fixture|Draft Fixture/);
+});
+
+test("every essay ending offers archive and LinkedIn continuation actions", () => {
+  const html = renderEssayPage(publishedEssay, [publishedEssay]);
+
+  assert.match(html, /href="\/projects\/">Browse the complete archive<\/a>/);
+  assert.match(html, /href="https:\/\/www\.linkedin\.com\/in\/ana-varela-vilariño-7aa95b235" target="_blank" rel="noopener noreferrer">New essays are announced on LinkedIn<span class="sr-only"> \(opens in a new tab\)<\/span><\/a>/);
+  assert.match(html, /More essays will appear here soon\./);
+});
+
+test("reader journey actions use restrained responsive editorial styling", async () => {
+  const html = renderHomePage([publishedEssay]);
+  const css = await readFile("src/styles.css", "utf8");
+
+  assert.match(html, /<p class="hero-intro">I collect research/);
+  assert.match(css, /\.hero-intro\s*\{[^}]*font-size:/s);
+  assert.match(css, /\.hero-positioning\s*\{[^}]*font-size:/s);
+  assert.match(css, /\.hero-latest-link\s*\{[^}]*display:\s*inline-flex/s);
+  assert.match(css, /\.related-actions\s*\{[^}]*border-top:\s*1px solid/s);
+  assert.match(css, /@media[\s\S]*?\.related-actions\s*\{[^}]*align-items:\s*flex-start/s);
+});
+
 test("the Contact LinkedIn link independently provides safe new-window markup", () => {
   const html = renderContactPage();
   assert.match(html, /<main[\s\S]*?<a href="https:\/\/www\.linkedin\.com\/in\/[^\"]+" target="_blank" rel="noopener noreferrer">LinkedIn:[\s\S]*?<span class="sr-only"> \(opens in a new tab\)<\/span><\/a>[\s\S]*?<\/main>/);
