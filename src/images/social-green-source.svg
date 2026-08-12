@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">Green: From Poison to Purity</title>
+  <desc id="description">An editorial pigment archive card with a deep green title field and three historical green swatches.</desc>
+  <rect width="1200" height="630" fill="#f4f1ea"/>
+  <rect width="700" height="630" fill="#355b42"/>
+  <g fill="#f4f1ea">
+    <text x="58" y="57" font-family="Arial, sans-serif" font-size="14" letter-spacing="2.2">THE SECRET HISTORIES OF COLOUR</text>
+    <text x="646" y="57" text-anchor="end" font-family="Arial, sans-serif" font-size="14">01</text>
+    <text x="58" y="310" font-family="Georgia, serif" font-size="82" letter-spacing="-3">Green</text>
+    <text x="58" y="366" font-family="Georgia, serif" font-size="37">From Poison to Purity</text>
+    <text x="58" y="576" font-family="Arial, sans-serif" font-size="12" letter-spacing="1.5">ANA VARELA · ART, DESIGN &amp; VISUAL CULTURE</text>
+  </g>
+  <line x1="58" y1="76" x2="646" y2="76" stroke="#f4f1ea" stroke-opacity=".68"/>
+  <text x="756" y="57" fill="#725344" font-family="Arial, sans-serif" font-size="14" letter-spacing="2.2">PIGMENT ARCHIVE</text>
+  <line x1="756" y1="76" x2="1142" y2="76" stroke="#c98768"/>
+  <rect x="756" y="108" width="386" height="286" fill="#243f2e"/>
+  <rect x="756" y="410" width="386" height="70" fill="#6f6b37"/>
+  <rect x="756" y="496" width="386" height="70" fill="#a8b99b"/>
+  <text x="778" y="370" fill="#f4f1ea" font-family="Arial, sans-serif" font-size="12" letter-spacing="2">POISON</text>
+  <text x="1120" y="544" text-anchor="end" fill="#243f2e" font-family="Arial, sans-serif" font-size="12" letter-spacing="2">PURITY</text>
+</svg>

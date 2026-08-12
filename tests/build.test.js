@@ -62,6 +62,12 @@ test("Green is a complete published colour-series essay", async () => {
   assert.doesNotMatch(cover, /A visual essay/i);
   assert.doesNotMatch(cover, />VISUAL CULTURE</);
   assert.match(cover, /ART, DESIGN &amp; VISUAL CULTURE/);
+
+  const socialSource = await readFile("src/images/social-green-source.svg", "utf8");
+  assert.match(socialSource, /width="1200" height="630"/);
+  assert.doesNotMatch(socialSource, /A visual essay/i);
+  assert.doesNotMatch(socialSource, />VISUAL CULTURE</);
+  assert.match(socialSource, /ART, DESIGN &amp; VISUAL CULTURE/);
 });
 
 async function buildFixture(t, { onlyDraft = false, publishedSlug = "published" } = {}) {
