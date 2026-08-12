@@ -178,6 +178,7 @@ test("every essay ending offers archive and LinkedIn continuation actions", () =
 test("reader journey actions use restrained responsive editorial styling", async () => {
   const html = renderHomePage([publishedEssay]);
   const css = await readFile("src/styles.css", "utf8");
+  const relatedRule = css.match(/\.related\s*\{([^}]*)\}/)?.[1] ?? "";
 
   assert.match(html, /<p class="hero-intro">I collect research/);
   assert.match(css, /\.hero-intro\s*\{[^}]*font-size:/s);
@@ -185,6 +186,8 @@ test("reader journey actions use restrained responsive editorial styling", async
   assert.match(css, /\.hero-latest-link\s*\{[^}]*display:\s*inline-flex/s);
   assert.match(css, /\.related-actions\s*\{[^}]*border-top:\s*1px solid/s);
   assert.match(css, /@media[\s\S]*?\.related-actions\s*\{[^}]*align-items:\s*flex-start/s);
+  assert.match(relatedRule, /position:\s*static/);
+  assert.doesNotMatch(relatedRule, /\btop\s*:/);
 });
 
 test("the Contact LinkedIn link independently provides safe new-window markup", () => {
