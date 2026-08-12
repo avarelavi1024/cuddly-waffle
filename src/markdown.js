@@ -47,6 +47,7 @@ export function markdownToHtml(markdown) {
   }
 
   for (const line of lines) {
+    const figure = line.match(/^!\[([^\]]*)\]\((images\/[A-Za-z0-9._/-]+)\s+"([^"]+)"\)$/);
     const unorderedItem = line.match(/^[-*] (.+)$/);
     const orderedItem = line.match(/^\d+\. (.+)$/);
     const quote = line.match(/^> (.+)$/);
@@ -55,6 +56,9 @@ export function markdownToHtml(markdown) {
 
     if (!line.trim()) {
       flushBlocks();
+    } else if (figure && !figure[2].includes("..")) {
+      flushBlocks();
+      html.push(`<figure class="editorial-figure"><img src="/${escapeHtml(figure[2])}" alt="${escapeHtml(figure[1])}" loading="lazy"><figcaption>${inlineMarkdown(figure[3])}</figcaption></figure>`);
     } else if (thematicBreak) {
       flushBlocks();
       html.push("<hr>");

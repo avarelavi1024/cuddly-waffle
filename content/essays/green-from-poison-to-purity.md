@@ -9,6 +9,7 @@ tags: ["colour", "art, design and visual culture", "design history", "green", "p
 excerpt: "How green moved from unstable and poisonous pigments to one of contemporary culture's strongest symbols of nature, health and sustainability."
 image: "images/editorial-green.svg"
 socialImage: "images/social-green.png"
+visualEdition: true
 curated: true
 featured: true
 status: "published"
@@ -94,6 +95,8 @@ This does not weaken green's association with nature. Instead, it makes it more 
 
 ## 3. The Difficulty of Making Green
 
+![A granular study of historical green pigment](images/green-pigment-study.svg "Pigment Study No. 01 · Scheele’s Green, copper arsenite · Original editorial study · Ana Varela Vilariño")
+
 **Main question: Why was green historically difficult to produce, preserve and control?**
 
 Green may look natural, but historically it was not always an easy colour to make. In painting, textiles and decoration, producing a convincing green required suitable pigments or dyes, and not all of them were stable, bright or durable. Some greens faded. Others darkened, reacted with other materials or changed over time.
@@ -122,6 +125,8 @@ The colour of nature became a product of chemistry. And in the nineteenth centur
 4. Eastaugh N, Walsh V, Chaplin T, Siddall R. Pigment compendium: a dictionary and optical microscopy of historical pigments. Oxford: Butterworth-Heinemann; 2008.
 
 ## 4. Toxic Beauty: Scheele's Green and Arsenic in the Home
+
+![Engraved portrait of the chemist Carl Wilhelm Scheele](images/green-scheele.jpg "Carl Wilhelm Scheele, 1899 · Library of Congress · Public domain")
 
 **Main question: How did a fashionable green become associated with domestic illness, anxiety and poison?**
 
@@ -158,6 +163,10 @@ It gave green one of its most unusual historical contradictions: the colour of n
 
 ## 5. Desire, Fashion and Decoration
 
+![William Morris wallpaper patterned with winding willow leaves](images/green-willow-bough.jpg "William Morris, Willow Bough, 1887 · The Metropolitan Museum of Art · Public domain. Shown as botanical design history; this object is not identified here as arsenical.")
+
+![A green silk dress displayed on a museum mannequin](images/green-dress-1860.jpg "Dress, American or European, ca. 1860 · The Metropolitan Museum of Art · Public domain. The collection record does not identify this garment as arsenical.")
+
 **Main question: Why did people continue to desire green even when its dangers became visible?**
 
 The toxic history of green is not only a story of ignorance. It is also a story of desire. Arsenical greens became popular because they were beautiful, vivid and fashionable. Their brightness offered something that earlier greens often did not: intensity. They created a visual effect that felt fresh, modern and luxurious.
@@ -191,6 +200,8 @@ The more desirable the colour became, the more dangerous its presence could be.
 5. Hawksley L. Bitten by witch fever: wallpaper & arsenic in the Victorian home. London: Thames & Hudson; 2016.
 
 ## 6. The Modern Reinvention of Green
+
+![An abstract editorial diagram of leaves, labels and circular claims](images/green-greenwashing-study.svg "Green Claims Study No. 02 · Appearance, evidence and the space between · Original editorial study · Ana Varela Vilariño")
 
 **Main question: How did green become a modern symbol of health, sustainability and purity?**
 

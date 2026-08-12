@@ -4,7 +4,7 @@ import { markdownToHtml } from "./markdown.js";
 
 const REQUIRED_FIELDS = ["title", "subtitle", "date", "year", "category", "excerpt", "image", "status"];
 const STATUSES = new Set(["published", "coming-soon", "draft"]);
-const BOOLEAN_FIELDS = ["curated", "featured"];
+const BOOLEAN_FIELDS = ["curated", "featured", "visualEdition"];
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const SAFE_ASSET_SEGMENT = /^[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?$/;
 
@@ -162,6 +162,7 @@ export async function loadEssays(contentDir = "content/essays") {
       image: normalizeEditorialImagePath(data.image, "image", file),
       curated: data.curated ?? false,
       featured: data.featured ?? false,
+      visualEdition: data.visualEdition ?? false,
       status: data.status,
       socialImage: Object.hasOwn(data, "socialImage")
         ? normalizeEditorialImagePath(data.socialImage, "socialImage", file)

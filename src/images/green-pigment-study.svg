@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+  <title id="title">Pigment Study No. 01</title>
+  <desc id="desc">An editorial plate of granular green pigment with scientific annotations.</desc>
+  <defs>
+    <filter id="grain"><feTurbulence baseFrequency=".42" numOctaves="4" seed="17"/><feColorMatrix values="0 0 0 0 .1 0 0 0 0 .34 0 0 0 0 .18 0 0 0 .6 0"/></filter>
+  </defs>
+  <rect width="1400" height="900" fill="#ede9dc"/>
+  <path d="M0 128h1400M0 774h1400" stroke="#26342b" stroke-width="2"/>
+  <circle cx="690" cy="450" r="300" fill="#3e6b42"/>
+  <circle cx="690" cy="450" r="285" filter="url(#grain)" opacity=".72"/>
+  <g fill="#213128" font-family="Georgia,serif">
+    <text x="70" y="88" font-size="28" letter-spacing="5">PIGMENT STUDY NO. 01</text>
+    <text x="70" y="842" font-size="25">Scheele’s Green · copper arsenite · 1775</text>
+    <text x="1135" y="842" font-size="20" letter-spacing="3">MATTER / DESIRE</text>
+  </g>
+  <g stroke="#26342b" fill="none" stroke-width="2"><path d="M245 260h180l95 90"/><path d="M920 555l110 110h235"/></g>
+  <g fill="#26342b" font-family="Arial,sans-serif" font-size="18" letter-spacing="2"><text x="92" y="252">BRILLIANCE</text><text x="1090" y="700">TOXICITY</text></g>
+</svg>

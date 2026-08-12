@@ -44,6 +44,15 @@ test("essay pages render optional series metadata", () => {
   assert.doesNotMatch(withoutSeries, /class="essay-series-artwork"/);
 });
 
+test("visual editions receive scoped magazine classes without changing ordinary essays", () => {
+  const visual = renderEssayPage({ ...publishedEssay, visualEdition: true }, [publishedEssay]);
+  const ordinary = renderEssayPage(publishedEssay, [publishedEssay]);
+
+  assert.match(visual, /<main id="main-content" class="essay-page essay-page-visual">/);
+  assert.match(visual, /<div class="essay-body essay-body-visual">/);
+  assert.doesNotMatch(ordinary, /essay-page-visual|essay-body-visual/);
+});
+
 test("essay image attributes remain single escaped attributes with adversarial input", () => {
   const essay = { ...publishedEssay, image: '/images/editorial.svg" onerror="alert(1)' };
   const html = renderEssayPage(essay, [essay]);

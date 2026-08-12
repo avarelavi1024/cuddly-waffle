@@ -2,6 +2,8 @@ import { asset, essayCard, pageShell } from "../components.js";
 import { escapeHtml } from "../markdown.js";
 
 export function renderEssayPage(essay, essays) {
+  const visualClass = essay.visualEdition ? " essay-page-visual" : "";
+  const visualBodyClass = essay.visualEdition ? " essay-body-visual" : "";
   const publishedCandidates = essays.filter((item) => item.slug !== essay.slug && item.status === "published");
   const sameCategory = publishedCandidates.filter((item) => item.category === essay.category);
   const fallback = publishedCandidates.filter((item) => item.category !== essay.category);
@@ -21,7 +23,7 @@ export function renderEssayPage(essay, essays) {
     image: essay.socialImage ? asset(essay.socialImage) : undefined,
     type: "article",
     article,
-    body: `<main class="essay-page">
+    body: `<main class="essay-page${visualClass}">
       <article>
         <header class="essay-hero">
           ${essay.series ? `<p class="essay-series">${escapeHtml(essay.series)}</p>` : ""}
@@ -30,7 +32,7 @@ export function renderEssayPage(essay, essays) {
           <p>${escapeHtml(essay.subtitle)}</p>
           <img${essay.series ? ` class="essay-series-artwork"` : ""} src="${escapeHtml(asset(essay.image))}" alt="Editorial illustration for ${escapeHtml(essay.title)}">
         </header>
-        <div class="essay-body">${essay.bodyHtml}</div>
+        <div class="essay-body${visualBodyClass}">${essay.bodyHtml}</div>
       </article>
       <aside class="related">
         <h2>Read next</h2>
