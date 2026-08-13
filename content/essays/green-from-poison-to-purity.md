@@ -165,7 +165,7 @@ It gave green one of its most unusual historical contradictions: the colour of n
 
 ![William Morris wallpaper patterned with winding willow leaves](images/green-willow-bough.jpg "William Morris, Willow Bough, 1887 · The Metropolitan Museum of Art · Public domain. Shown as botanical design history; this object is not identified here as arsenical.")
 
-![A green silk dress displayed on a museum mannequin](images/green-dress-1860.jpg "Dress, American or European, ca. 1860 · The Metropolitan Museum of Art · Public domain. The collection record does not identify this garment as arsenical.")
+![An emerald green silk transformation dress displayed on a museum mannequin](images/green-dress-lacma.jpg "Woman’s Dress (Robe à Transformation), ca. 1860 · Los Angeles County Museum of Art · Public domain. The collection record does not identify this garment as arsenical.")
 
 **Main question: Why did people continue to desire green even when its dangers became visible?**
 
