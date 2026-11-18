@@ -48,7 +48,7 @@ test("Green is a complete published colour-series essay", async () => {
   assert.equal(data.series, "The Secret Histories of Colour");
   assert.equal(data.category, "Art, Design & Visual Culture");
   assert.equal(data.status, "published");
-  assert.equal(data.featured, true);
+  assert.equal(data.featured, false);
   assert.match(body, /## 3\. The Difficulty of Making Green/);
   assert.match(body, /## 4\. Toxic Beauty: Scheele's Green and Arsenic in the Home/);
   assert.match(body, /## Consolidated Bibliography/);
