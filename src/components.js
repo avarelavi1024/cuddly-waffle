@@ -79,6 +79,8 @@ export function pageShell({ title, description, path, body, image, type = "websi
   <title>${escapeHtml(title)} · ${escapeHtml(site.title)}</title>
   ${renderMetadata({ title, description, path, image, type, article })}
   <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/images/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
