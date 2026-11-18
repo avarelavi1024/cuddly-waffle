@@ -109,10 +109,9 @@ test("category themes retain the seven stable editorial artwork paths", () => {
   );
 
   const html = renderHomePage([publishedEssay]);
-  for (const theme of categoryThemes) {
-    const escapedName = theme.name.replaceAll("&", "&amp;");
-    assert.match(html, new RegExp(`<span>${escapedName}<\\/span>`));
-  }
+  assert.match(html, /<span>Mythologies<\/span>/);
+  assert.match(html, /<span>Open Questions<\/span>/);
+  assert.doesNotMatch(html, /<span>Business<\/span>/);
 });
 
 test("Art, Design & Visual Culture retains its established public route", () => {
