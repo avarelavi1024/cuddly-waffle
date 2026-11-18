@@ -73,7 +73,7 @@ export const categoryThemes = [
 // Editorial photography. Unsplash images (Unsplash License) are served from
 // images.unsplash.com; local files live in src/images.
 export const essayPhotos = {
-  "breogans-tower-galicia-and-ireland": "https://images.unsplash.com/photo-1777108177283-79143d9114b3",
+  "breogans-tower-galicia-and-ireland": "https://images.unsplash.com/photo-1543191878-f6a3e470454e",
   "green-from-poison-to-purity": "/images/green-willow-bough.jpg",
   "ireland-and-spain-political-culture": "https://images.unsplash.com/photo-1661887332909-93e6c9a4e21a",
   "why-do-we-talk-about-willpower-food": "https://images.unsplash.com/photo-1600881329755-8b3afb279b27",
