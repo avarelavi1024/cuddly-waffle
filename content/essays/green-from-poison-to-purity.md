@@ -11,7 +11,7 @@ image: "images/editorial-green.svg"
 socialImage: "images/social-green.png"
 visualEdition: true
 curated: true
-featured: true
+featured: false
 status: "published"
 ---
 
