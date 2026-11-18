@@ -1,9 +1,24 @@
 import { escapeHtml } from "./markdown.js";
 import { renderMetadata } from "./metadata.js";
-import { categoryThemes, site } from "./site.js";
+import { categoryThemes, essayPhotos, photoSrcset, photoUrl, site } from "./site.js";
 
 export function themeForCategory(category) {
   return categoryThemes.find((theme) => theme.categories.includes(category));
+}
+
+export function essayCover(essay) {
+  const photo = essayPhotos[essay.slug];
+  return photo ? { src: photo, artwork: false } : { src: asset(essay.image), artwork: Boolean(essay.series) };
+}
+
+export function picture(src, { alt = "", sizes = "100vw", className = "", width = 1200, eager = false } = {}) {
+  const srcset = photoSrcset(src);
+  return `<img${className ? ` class="${className}"` : ""} src="${escapeHtml(photoUrl(src, width))}"${srcset ? ` srcset="${escapeHtml(srcset)}" sizes="${sizes}"` : ""} alt="${escapeHtml(alt)}"${eager ? "" : ` loading="lazy"`}>`;
+}
+
+function coverImage(essay, sizes) {
+  const cover = essayCover(essay);
+  return picture(cover.src, { sizes, className: cover.artwork ? "essay-series-artwork" : "" });
 }
 
 export function categoryLabel(category) {
@@ -16,7 +31,7 @@ export function asset(path) {
 
 export function renderHeader() {
   return `<header class="site-header">
-    <a class="brand" href="/">${site.name}®</a>
+    <a class="brand" href="/">${site.name}</a>
     <nav aria-label="Primary navigation">
       <a href="/projects/">Projects</a>
       <a href="/about/">About</a>
@@ -27,14 +42,20 @@ export function renderHeader() {
 
 export function renderFooter() {
   return `<footer class="site-footer">
+    <div class="footer-brand">
+      <a class="brand" href="/">${site.name}</a>
+      <p>${escapeHtml(site.description)}</p>
+      <p class="footer-credit">Photography via <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash<span class="sr-only"> (opens in a new tab)</span></a></p>
+    </div>
     <div>
       <strong>Archive</strong>
       <a href="/projects/">Projects</a>
       <a href="/#essays">Curated</a>
+      <a href="/categories/open-questions/">Open questions</a>
     </div>
     <div>
       <strong>Explore</strong>
-      ${categoryThemes.map((theme) => `<a href="/categories/${theme.slug}/">${escapeHtml(theme.name)}</a>`).join("\n      ")}
+      ${categoryThemes.filter((theme) => theme.slug !== "open-questions").map((theme) => `<a href="/categories/${theme.slug}/">${escapeHtml(theme.name)}</a>`).join("\n      ")}
     </div>
     <div>
       <strong>More</strong>
@@ -73,10 +94,13 @@ export function pageShell({ title, description, path, body, image, type = "websi
 export function essayCard(essay, featured = false) {
   const published = essay.status !== "coming-soon";
   const content = `
-      <img${essay.series ? ` class="essay-series-artwork"` : ""} src="${escapeHtml(asset(essay.image))}" alt="">
-      <span>${escapeHtml(categoryLabel(essay.category))} / ${published ? escapeHtml(essay.readingTime) : "Coming soon"}</span>
-      <h3>${escapeHtml(essay.title)}</h3>
-      <p>${escapeHtml(essay.excerpt)}</p>`;
+      <div class="essay-card-media">${coverImage(essay, featured ? "(max-width: 820px) 100vw, 60vw" : "(max-width: 820px) 100vw, 33vw")}</div>
+      <div class="essay-card-body">
+        <span>${escapeHtml(categoryLabel(essay.category))} · ${published ? escapeHtml(essay.readingTime) : "Coming soon"}</span>
+        <h3>${escapeHtml(essay.title)}</h3>
+        <p>${escapeHtml(essay.excerpt)}</p>
+        ${published && featured ? `<em class="card-cta">Read essay <span aria-hidden="true">→</span></em>` : ""}
+      </div>`;
   return `<article class="essay-card ${featured ? "essay-card-featured" : ""}">
     ${published ? `<a href="/essays/${essay.slug}/" aria-label="Read ${escapeHtml(essay.title)}">${content}</a>` : `<div class="disabled-card">${content}</div>`}
   </article>`;
@@ -84,8 +108,10 @@ export function essayCard(essay, featured = false) {
 
 export function smallEssayCard(essay) {
   const published = essay.status !== "coming-soon";
+  const badge = published ? "" : `<b class="badge">Coming soon</b>`;
   const content = `
-      <span>${escapeHtml(categoryLabel(essay.category))} / ${published ? escapeHtml(essay.year) : "Coming soon"}</span>
+      <div class="small-essay-media">${coverImage(essay, "(max-width: 820px) 100vw, 33vw")}${badge}</div>
+      <span>${escapeHtml(categoryLabel(essay.category))} · ${published ? escapeHtml(essay.year) : "In progress"}</span>
       <h3>${escapeHtml(essay.title)}</h3>
       <p>${escapeHtml(essay.excerpt)}</p>`;
   return `<article class="small-essay">
@@ -93,12 +119,20 @@ export function smallEssayCard(essay) {
   </article>`;
 }
 
+export function categoryTile(theme, attributes = "") {
+  return `<a${attributes} href="/categories/${theme.slug}/" class="category-tile">${picture(theme.photo ?? theme.image, { sizes: "(max-width: 820px) 50vw, 25vw", width: 800 })}<span>${escapeHtml(theme.name)}</span></a>`;
+}
+
+export function questionItem(item, hidden = false) {
+  return `<div class="question-item" data-question-item${hidden ? " hidden" : ""}><small>${escapeHtml(item.category)}</small><p>${escapeHtml(item.question)}</p></div>`;
+}
+
 export function archiveRow(essay) {
   const published = essay.status !== "coming-soon";
   const theme = themeForCategory(essay.category);
   const content = `
     <span>${escapeHtml(essay.title)}</span>
-    <small>${escapeHtml(categoryLabel(essay.category))} / ${published ? escapeHtml(essay.year) : "Coming soon"}</small>`;
+    <small>${escapeHtml(categoryLabel(essay.category))} · ${published ? escapeHtml(essay.year) : "Coming soon"}</small>`;
   const data = `data-category="${escapeHtml(essay.category)}" data-theme="${escapeHtml(theme?.slug ?? "")}" data-year="${escapeHtml(essay.year)}"`;
   return published
     ? `<a class="archive-row" href="/essays/${essay.slug}/" ${data}>${content}</a>`

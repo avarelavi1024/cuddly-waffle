@@ -20,6 +20,12 @@ async function copyImages(sourceRoot, outputDir) {
   const sourceDir = join(sourceRoot, "src", "images");
   const destinationDir = join(outputDir, "images");
   await cp(sourceDir, destinationDir, { recursive: true });
+  const fontsDir = join(sourceRoot, "src", "fonts");
+  try {
+    await cp(fontsDir, join(outputDir, "fonts"), { recursive: true });
+  } catch (error) {
+    if (error.code !== "ENOENT") throw error;
+  }
 }
 
 async function isFile(path) {
