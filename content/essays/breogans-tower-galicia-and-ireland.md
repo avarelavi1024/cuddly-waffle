@@ -8,7 +8,7 @@ tags: ["mythology", "Galicia", "Ireland", "national identity", "Celticism"]
 excerpt: "A medieval Irish legend claimed that the Gaels sailed to Ireland from a tower in Galicia. Centuries later, Galicia took the story back and turned it into an anthem."
 image: "images/editorial-myths.svg"
 curated: true
-featured: true
+featured: false
 status: "published"
 ---
 
@@ -145,33 +145,33 @@ Myths change when society changes because their purpose is not to preserve facts
 ## References
 
 1. Carey J. The Irish national origin-legend: synthetic pseudohistory. Cambridge: Department of Anglo-Saxon, Norse, and Celtic, University of Cambridge; 1994. (Quiggin Pamphlets on the Sources of Mediaeval Gaelic History; 1).
-2. Soto LG. Pondal e o celtismo: Galiza, de gente de Breogán a nação de Breogán [Internet]. Porto: Faculdade de Letras da Universidade do Porto; [cited 2026 Nov 18]. Available from: https://ler.letras.up.pt/uploads/ficheiros/19927.pdf
+2. Soto LG. Pondal e o celtismo: Galiza, de gente de Breogán a nação de Breogán [Internet]. Porto: Faculdade de Letras da Universidade do Porto; [cited 2026 Oct 21]. Available from: https://ler.letras.up.pt/uploads/ficheiros/19927.pdf
 3. Carey J. Did the Irish come from Spain? The legend of the Milesians. History Ireland. 2001;9(3). Available from: https://www.historyireland.com/pre-history-archaeology/did-the-irish-come-from-spain/
-4. Breogán. In: Wikipedia [Internet]. [cited 2026 Nov 18]. Available from: https://en.wikipedia.org/wiki/Breog%C3%A1n
+4. Breogán. In: Wikipedia [Internet]. [cited 2026 Oct 21]. Available from: https://en.wikipedia.org/wiki/Breog%C3%A1n
 5. Macalister RAS, editor and translator. Lebor Gabála Érenn: the book of the taking of Ireland. 5 vols. Dublin: Irish Texts Society; 1938-1956. Online text of §65-95 (The Milesians) available from: https://www.maryjones.us/ctexts/lebor5.html
 6. Orosius P. Historiarum adversum paganos libri VII. Book I, chapter 2.
-7. UNESCO World Heritage Centre. Tower of Hercules [Internet]. Paris: UNESCO; 2009 [cited 2026 Nov 18]. Available from: https://whc.unesco.org/en/list/1312
-8. Concello da Coruña. The Tower: from mythology to legends [Internet]. A Coruña: Concello da Coruña; [cited 2026 Nov 18]. Available from: https://www.coruna.gal/the-tower/en/discover-the-tower/from-mythology-to-legends
-9. Centro de Interpretación e Acollida de Visitantes da Torre de Hércules. Legends and stories [Internet]. A Coruña; [cited 2026 Nov 18]. Available from: https://ciav.torredeherculesacoruna.com/en/legends-and-stories/
+7. UNESCO World Heritage Centre. Tower of Hercules [Internet]. Paris: UNESCO; 2009 [cited 2026 Oct 21]. Available from: https://whc.unesco.org/en/list/1312
+8. Concello da Coruña. The Tower: from mythology to legends [Internet]. A Coruña: Concello da Coruña; [cited 2026 Oct 21]. Available from: https://www.coruna.gal/the-tower/en/discover-the-tower/from-mythology-to-legends
+9. Centro de Interpretación e Acollida de Visitantes da Torre de Hércules. Legends and stories [Internet]. A Coruña; [cited 2026 Oct 21]. Available from: https://ciav.torredeherculesacoruna.com/en/legends-and-stories/
 10. Varela Rodríguez J. Trezenzonio, revisitado. Noticias históricas de su culto, estudio, edición y traducción del relato De Solistitionis insula magna. Hispania Sacra. 2022;74(150):357-369. doi:10.3989/hs.2022.24.
 11. Díaz y Díaz MC. Visiones del más allá en Galicia durante la Alta Edad Media. Santiago de Compostela: Artes Gráficas Galicia; 1985.
-12. Fernández Redondo S. The Book of Invasions and the Spanish Gaels. History Ireland [Internet]. [cited 2026 Nov 18]. Available from: https://historyireland.com/?p=38950
+12. Fernández Redondo S. The Book of Invasions and the Spanish Gaels. History Ireland [Internet]. [cited 2026 Oct 21]. Available from: https://historyireland.com/?p=38950
 13. Morgan H, editor. The Battle of Kinsale. Bray: Wordwell; 2004.
-14. Corpus of Electronic Texts. Briefe relation of Ireland, and the diversity of Irish in the same [Internet]. Cork: University College Cork; [cited 2026 Nov 18]. Available from: https://celt.ucc.ie/published/T100077/text001.html
+14. Corpus of Electronic Texts. Briefe relation of Ireland, and the diversity of Irish in the same [Internet]. Cork: University College Cork; [cited 2026 Oct 21]. Available from: https://celt.ucc.ie/published/T100077/text001.html
 15. Recio Morales Ó. Ireland and the Spanish Empire, 1600-1825. Dublin: Four Courts Press; 2010.
-16. Encyclopedia of Romantic Nationalism in Europe. Manuel Murguía; Eduardo Pondal; Os pinos [Internet]. Amsterdam: Study Platform on Interlocking Nationalisms; [cited 2026 Nov 18]. Available from: https://ernie.uva.nl
+16. Encyclopedia of Romantic Nationalism in Europe. Manuel Murguía; Eduardo Pondal; Os pinos [Internet]. Amsterdam: Study Platform on Interlocking Nationalisms; [cited 2026 Oct 21]. Available from: https://ernie.uva.nl
 17. Pereira González F. O mito celta na historia. Gallaecia. 2000;19:311-333.
 18. Agís Villaverde M. O celtismo: mito fundacional do galeguismo. In: Natário C, Pinto J, Borges L, Epifânio R, coordinators. Filosofia da cultura celta: cosmovisões e mundivivências da orla atlântica. Porto: Faculdade de Letras da Universidade do Porto; 2024. Available from: https://ler.letras.up.pt/uploads/ficheiros/19920.pdf
 19. Gonçalves Soares AR. [Review of] Lama López MX. Apropiación cultural e contradiscurso histórico. A materia artúrica na literatura galega. Madrygal. Revista de Estudios Gallegos. 2023;26:e103999.
-20. Salas Díaz M. Racismo nacionalista en la literatura galleguista de los siglos XIX y XX [Internet]. Murcia: Universidad de Murcia, Digitum; [cited 2026 Nov 18]. Available from: https://digitum.um.es/digitum/bitstream/10201/43348/1/
+20. Salas Díaz M. Racismo nacionalista en la literatura galleguista de los siglos XIX y XX [Internet]. Murcia: Universidad de Murcia, Digitum; [cited 2026 Oct 21]. Available from: https://digitum.um.es/digitum/bitstream/10201/43348/1/
 21. Pondal E. Queixumes dos pinos. 1886.
-22. Turismo de Galicia. Who composed the Galician anthem? [Internet]. Santiago de Compostela: Xunta de Galicia; [cited 2026 Nov 18]. Available from: https://blog.turismo.gal/?p=9086
+22. Turismo de Galicia. Who composed the Galician anthem? [Internet]. Santiago de Compostela: Xunta de Galicia; [cited 2026 Oct 21]. Available from: https://blog.turismo.gal/?p=9086
 23. Ferreiro M. De Breogán aos Pinos: o texto do Himno Galego. Santiago de Compostela: Laiovento; 2007.
-24. Xunta de Galicia. O himno de Galicia [Internet]. Santiago de Compostela: Xunta de Galicia; [cited 2026 Nov 18]. Available from: https://www.xunta.gal/es/o-himno-de-galicia
-25. Consellería de Educación, Xunta de Galicia. Historia do Himno galego [Internet]. Santiago de Compostela: Xunta de Galicia; [cited 2026 Nov 18]. Available from: https://recursos.edu.xunta.gal/sites/default/files/recurso/1557390734/historia, Himno galego.pdf
+24. Xunta de Galicia. O himno de Galicia [Internet]. Santiago de Compostela: Xunta de Galicia; [cited 2026 Oct 21]. Available from: https://www.xunta.gal/es/o-himno-de-galicia
+25. Consellería de Educación, Xunta de Galicia. Historia do Himno galego [Internet]. Santiago de Compostela: Xunta de Galicia; [cited 2026 Oct 21]. Available from: https://recursos.edu.xunta.gal/sites/default/files/recurso/1557390734/historia, Himno galego.pdf
 26. Oppenheimer S. The origins of the British: a genetic detective story. London: Constable and Robinson; 2006.
 27. Cassidy LM, Martiniano R, Murphy EM, Teasdale MD, Mallory J, Hartwell B, Bradley DG. Neolithic and Bronze Age migration to Ireland and establishment of the insular Atlantic genome. Proc Natl Acad Sci U S A. 2016;113(2):368-373. doi:10.1073/pnas.1518445113.
-28. Queen's University Belfast. Scientists sequence first ancient Irish human genomes [Internet]. Belfast: QUB; 2015 [cited 2026 Nov 18]. Available from: https://www.qub.ac.uk/News/Allnews/2016/ScientistsSequenceFirstAncientIrishHumanGenomes.html
+28. Queen's University Belfast. Scientists sequence first ancient Irish human genomes [Internet]. Belfast: QUB; 2015 [cited 2026 Oct 21]. Available from: https://www.qub.ac.uk/News/Allnews/2016/ScientistsSequenceFirstAncientIrishHumanGenomes.html
 29. Cunliffe B, Koch JT, editors. Celtic from the West: alternative perspectives from archaeology, genetics, language and literature. Oxford: Oxbow Books; 2010.
-30. Carey J. Ireland and Spain [letter]. History Ireland [Internet]. [cited 2026 Nov 18]. Available from: https://historyireland.com/?p=3018
-31. Concello da Coruña. Parque escultórico Torre de Hércules: Breogán (Xosé Cid, 1995) [Internet]. A Coruña: Concello da Coruña; [cited 2026 Nov 18]. Available from: https://coruna.gal/descarga/1453786534399/ParqueescultoricoEN_web.pdf
+30. Carey J. Ireland and Spain [letter]. History Ireland [Internet]. [cited 2026 Oct 21]. Available from: https://historyireland.com/?p=3018
+31. Concello da Coruña. Parque escultórico Torre de Hércules: Breogán (Xosé Cid, 1995) [Internet]. A Coruña: Concello da Coruña; [cited 2026 Oct 21]. Available from: https://coruna.gal/descarga/1453786534399/ParqueescultoricoEN_web.pdf
