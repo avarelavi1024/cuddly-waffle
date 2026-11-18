@@ -1,8 +1,7 @@
-import { categoryTile, essayCard, pageShell, picture, questionItem, smallEssayCard } from "../components.js";
+import { archiveRow, categoryTile, essayCard, pageShell, picture, questionItem, smallEssayCard, themesWithContent } from "../components.js";
 import { escapeHtml } from "../markdown.js";
 import { categoryThemes, site } from "../site.js";
 
-const themes = categoryThemes;
 
 export const openQuestions = [
   ["Culture, society and everyday life", "Why is it easier to visit cities than to live in them?"],
@@ -80,7 +79,9 @@ export const openQuestions = [
 export function renderHomePage(essays) {
   const publishedEssays = essays.filter((essay) => essay.status !== "coming-soon");
   const featured = publishedEssays.find((essay) => essay.featured) ?? publishedEssays[0] ?? essays[0];
-  const selected = featured ? essays.filter((essay) => essay.slug !== featured.slug).slice(0, 3) : [];
+  const selected = publishedEssays.filter((essay) => essay.slug !== featured?.slug).slice(0, 3);
+  const upcoming = essays.filter((essay) => essay.status === "coming-soon");
+  const themes = themesWithContent(essays);
 
   return pageShell({
     title: site.name,
@@ -119,15 +120,23 @@ export function renderHomePage(essays) {
           <h2>Selected essays</h2>
           <a href="/projects/">See all</a>
         </div>
-        <div class="small-selection">${selected.map((essay) => smallEssayCard(essay)).join("")}</div>
+        ${selected.length ? `<div class="small-selection">${selected.map((essay) => smallEssayCard(essay)).join("")}</div>` : `<p class="empty-state">More essays will appear here soon.</p>`}
       </section>
+
+      ${upcoming.length ? `<section class="section upcoming-essays" id="coming-soon">
+        <div class="section-heading">
+          <h2>Coming soon</h2>
+          <span>${upcoming.length} in progress</span>
+        </div>
+        <div class="archive-list">${upcoming.map((essay) => archiveRow(essay)).join("")}</div>
+      </section>` : ""}
 
       <section class="section category-icons">
         <div class="section-heading">
           <h2>Available categories</h2>
           <a href="/projects/">Explore</a>
         </div>
-        <div class="category-grid">${themes.map((theme) => categoryTile(theme)).join("")}</div>
+        <div class="category-grid">${themes.map((theme) => categoryTile(theme, "", essays)).join("")}</div>
       </section>
 
       <section class="section open-questions" id="open-questions">

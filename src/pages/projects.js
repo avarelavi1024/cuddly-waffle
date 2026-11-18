@@ -1,4 +1,4 @@
-import { archiveRow, categoryTile, pageShell, picture, questionItem } from "../components.js";
+import { archiveRow, categoryTile, essayCard, pageShell, picture, questionItem, themesWithContent } from "../components.js";
 import { escapeHtml } from "../markdown.js";
 import { categoryThemes } from "../site.js";
 import { openQuestions } from "./home.js";
@@ -22,10 +22,7 @@ export function renderProjectsPage(essays) {
       <section class="page-title">
         <p class="kicker">Projects</p>
         <h1>Essays, visual notes and questions in progress.</h1>
-        <p>Explore the themes that shape this archive, from politics and identity to culture, cities, health, business and open questions.</p>
-      </section>
-      <section class="category-grid project-categories">
-        ${themes.map((theme) => categoryTile(theme, ` id="${theme.slug}"`)).join("")}
+        <p>Every published essay in the archive, followed by the pieces in progress and the themes that connect them.</p>
       </section>
       <section class="section all-essays" id="all-essays">
         <div class="section-heading">
@@ -36,7 +33,7 @@ export function renderProjectsPage(essays) {
           <button type="button" data-filter="All" aria-pressed="true">All</button>
           ${filterThemes.map((theme) => `<button type="button" data-filter="${theme.slug}" aria-pressed="false">${escapeHtml(theme.name)}</button>`).join("")}
         </div>` : ""}
-        <div class="archive-list">${published.length ? published.map((essay) => archiveRow(essay)).join("") : `<p class="empty-state">No essays published yet.</p>`}</div>
+        ${published.length ? `<div class="essay-grid">${published.map((essay) => essayCard(essay)).join("")}</div>` : `<p class="empty-state">No essays published yet.</p>`}
       </section>
       ${upcoming.length ? `<section class="section all-essays" id="in-progress">
         <div class="section-heading">
@@ -45,6 +42,14 @@ export function renderProjectsPage(essays) {
         </div>
         <div class="archive-list">${upcoming.map((essay) => archiveRow(essay)).join("")}</div>
       </section>` : ""}
+      <section class="section" id="categories">
+        <div class="section-heading">
+          <h2>Browse by category</h2>
+        </div>
+        <div class="category-grid project-categories">
+          ${themesWithContent(essays).map((theme) => categoryTile(theme, ` id="${theme.slug}"`, essays)).join("")}
+        </div>
+      </section>
     </main>`
   });
 }
