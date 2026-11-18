@@ -11,6 +11,10 @@ export function renderArchivePage(essays) {
 }
 
 export function renderProjectsPage(essays) {
+  const published = essays.filter((essay) => essay.status !== "coming-soon");
+  const upcoming = essays.filter((essay) => essay.status === "coming-soon");
+  const filterThemes = themes.filter((theme) => published.some((essay) => theme.categories.includes(essay.category)));
+
   return pageShell({
     title: "Projects",
     description: "Browse categories and every essay by Ana Varela Vilariño.",
@@ -26,11 +30,22 @@ export function renderProjectsPage(essays) {
       </section>
       <section class="section all-essays" id="all-essays">
         <div class="section-heading">
-          <h2>All published essays</h2>
-          <span>${essays.filter((essay) => essay.status !== "coming-soon").length} published</span>
+          <h2>Published essays</h2>
+          <span>${published.length} published</span>
         </div>
-        <div class="archive-list">${essays.length ? essays.map((essay) => archiveRow(essay)).join("") : `<p class="empty-state">No essays published yet.</p>`}</div>
+        ${filterThemes.length > 1 ? `<div class="filters" data-filters role="group" aria-label="Filter essays by category">
+          <button type="button" data-filter="All" aria-pressed="true">All</button>
+          ${filterThemes.map((theme) => `<button type="button" data-filter="${theme.slug}" aria-pressed="false">${escapeHtml(theme.name)}</button>`).join("")}
+        </div>` : ""}
+        <div class="archive-list">${published.length ? published.map((essay) => archiveRow(essay)).join("") : `<p class="empty-state">No essays published yet.</p>`}</div>
       </section>
+      ${upcoming.length ? `<section class="section all-essays" id="in-progress">
+        <div class="section-heading">
+          <h2>In progress</h2>
+          <span>${upcoming.length} coming soon</span>
+        </div>
+        <div class="archive-list">${upcoming.map((essay) => archiveRow(essay)).join("")}</div>
+      </section>` : ""}
     </main>`
   });
 }
