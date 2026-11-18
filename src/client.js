@@ -8,16 +8,19 @@ if (carousel && next && prev) {
 }
 
 const filters = document.querySelector("[data-filters]");
-const rows = [...document.querySelectorAll(".archive-row")];
+const rows = [...document.querySelectorAll("#all-essays .archive-row")];
 
 if (filters) {
   filters.addEventListener("click", (event) => {
     const button = event.target.closest("[data-filter]");
     if (!button) return;
     const selected = button.dataset.filter;
-    filters.querySelectorAll("button").forEach((item) => item.classList.toggle("active", item === button));
+    filters.querySelectorAll("button").forEach((item) => {
+      item.classList.toggle("active", item === button);
+      item.setAttribute("aria-pressed", String(item === button));
+    });
     rows.forEach((row) => {
-      row.hidden = selected !== "All" && row.dataset.category !== selected;
+      row.hidden = selected !== "All" && row.dataset.theme !== selected;
     });
   });
   filters.querySelector("[data-filter='All']")?.classList.add("active");

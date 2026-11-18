@@ -600,6 +600,10 @@ h3 {
   overflow-wrap: anywhere;
 }
 
+.archive-row[hidden] {
+  display: none;
+}
+
 .archive-row-disabled {
   color: var(--muted);
   background: color-mix(in srgb, var(--paper-2) 55%, transparent);
@@ -978,6 +982,7 @@ h3 {
 
 .site-footer div {
   display: grid;
+  align-content: start;
   gap: 10px;
 }
 
