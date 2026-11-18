@@ -25,13 +25,13 @@ test("category SVGs share the approved archive grammar and unique symbolic hooks
   }
 });
 
-test("category cards use the light editorial treatment and restrained interaction", async () => {
+test("category cards use editorial photography and restrained interaction", async () => {
   const css = await readFile("src/styles.css", "utf8");
-  assert.match(css, /\.category-tile\s*\{[^}]*background:\s*var\(--paper\)[^}]*border-top:\s*1px solid var\(--ink\)/s);
-  assert.match(css, /\.category-tile img\s*\{[^}]*aspect-ratio:\s*4\s*\/\s*3[^}]*object-fit:\s*cover/s);
+  assert.match(css, /\.category-tile\s*\{[^}]*background:\s*var\(--surface\)/s);
+  assert.match(css, /\.category-tile img\s*\{[^}]*aspect-ratio:\s*3\s*\/\s*4[^}]*object-fit:\s*cover/s);
   assert.match(css, /\.category-tile span\s*\{[^}]*position:\s*relative[^}]*color:\s*var\(--ink\)/s);
   assert.doesNotMatch(css, /\.category-tile:hover img[^{]*\{[^}]*rotate\(/s);
-  assert.match(css, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.category-tile img\s*\{[^}]*transition:\s*none/s);
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.category-tile img[^{]*\{[^}]*transition:\s*none/s);
 });
 
 test("category page artwork preserves its editorial ratio responsively", async () => {

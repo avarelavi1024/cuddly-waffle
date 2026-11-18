@@ -86,12 +86,12 @@ test("essay pages without a social image use the default raster card", () => {
   assert.match(html, /<img[^>]+src="\/images\/editorial-myths\.svg" alt="Editorial illustration for Example Essay">/);
 });
 
-test("category pages use raster social metadata while preserving editorial artwork", () => {
+test("category pages use raster social metadata and the category photograph", () => {
   const theme = categoryThemes[0];
   const html = renderCategoryPage(theme, []);
 
   assert.match(html, /property="og:image" content="https:\/\/ana-varela\.vercel\.app\/images\/social-default\.png"/);
-  assert.match(html, new RegExp(`<img src="${theme.image}" alt="">`));
+  assert.ok(html.includes(`<img src="${theme.photo}?auto=format`));
 });
 
 test("category themes retain the seven stable editorial artwork paths", () => {
@@ -192,7 +192,7 @@ test("reader journey actions use restrained responsive editorial styling", async
   assert.match(html, /<p class="hero-intro">I collect research/);
   assert.match(css, /\.hero-intro\s*\{[^}]*font-size:/s);
   assert.match(css, /\.hero-positioning\s*\{[^}]*font-size:/s);
-  assert.match(css, /\.hero-latest-link\s*\{[^}]*display:\s*inline-flex/s);
+  assert.match(css, /\.hero-latest-link[^{]*\{[^}]*display:\s*inline-flex/s);
   assert.match(css, /\.related-actions\s*\{[^}]*border-top:\s*1px solid/s);
   assert.match(css, /@media[\s\S]*?\.related-actions\s*\{[^}]*align-items:\s*flex-start/s);
   assert.match(relatedRule, /position:\s*static/);

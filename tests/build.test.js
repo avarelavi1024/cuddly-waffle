@@ -153,7 +153,7 @@ test("public listings include coming-soon essays but exclude drafts", async (t) 
   const projects = await readFile(join(outputDir, "projects", "index.html"), "utf8");
   const culture = await readFile(join(outputDir, "categories", "mythologies", "index.html"), "utf8");
   assert.match(projects, /archive-row-disabled/);
-  assert.match(projects, /Cities \/ Coming soon/);
+  assert.match(projects, /Cities · Coming soon/);
   assert.doesNotMatch(projects, /Draft Essay/);
   assert.match(culture, /Published Essay/);
   assert.doesNotMatch(culture, /Draft Essay/);
