@@ -77,10 +77,10 @@ export const essayPhotos = {
   "green-from-poison-to-purity": "/images/green-willow-bough.jpg",
   "ireland-and-spain-political-culture": "https://images.unsplash.com/photo-1661887332909-93e6c9a4e21a",
   "why-do-we-talk-about-willpower-food": "https://images.unsplash.com/photo-1600881329755-8b3afb279b27",
-  "nutrition-for-real-people": "https://images.unsplash.com/photo-1617500603321-bcd6286973b7",
-  "eating-well-choice-or-privilege": "https://images.unsplash.com/photo-1646326760697-59a7f96cc8c5",
-  "myths-change-when-society-changes": "https://images.unsplash.com/photo-1742548991283-fac7aa1a50fa",
-  "cities-easier-to-visit-than-live-in": "https://images.unsplash.com/photo-1653164488636-7407bec89281"
+  "the-atlantic-diet": "https://images.unsplash.com/photo-1617500603321-bcd6286973b7",
+  "when-fashion-was-illegal": "https://images.unsplash.com/photo-1789479772987-a767db71b117",
+  "santa-compana-and-the-banshee": "https://images.unsplash.com/photo-1640085461451-e3dc47415dd1",
+  "why-has-finding-a-home-become-so-hard": "https://images.unsplash.com/photo-1653164488636-7407bec89281"
 };
 
 export function photoUrl(src, width = 1200) {
