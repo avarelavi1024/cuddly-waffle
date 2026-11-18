@@ -3,6 +3,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadEssays } from "./content.js";
 import { absoluteUrl, site } from "./site.js";
+import { setArchiveEssays } from "./components.js";
 import { categoryThemes, renderAboutPage, renderArchivePage, renderCategoryPage, renderContactPage, renderEssayPage, renderHomePage, renderNotFoundPage, renderProjectsPage } from "./templates.js";
 import { verifyOutput } from "./verify-output.js";
 
@@ -79,6 +80,7 @@ export async function build({ contentDir = "content/essays", outputDir = "dist" 
   const sourceRoot = resolve(contentDir, "..", "..");
 
   await preflightEssayAssets(essays, sourceRoot);
+  setArchiveEssays(visibleEssays);
 
   await rm(outputDir, { recursive: true, force: true });
   await mkdir(outputDir, { recursive: true });

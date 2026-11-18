@@ -8,7 +8,7 @@ if (carousel && next && prev) {
 }
 
 const filters = document.querySelector("[data-filters]");
-const rows = [...document.querySelectorAll("#all-essays .archive-row")];
+const rows = [...document.querySelectorAll("#all-essays [data-theme]")];
 
 if (filters) {
   filters.addEventListener("click", (event) => {

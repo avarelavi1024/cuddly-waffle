@@ -2,6 +2,33 @@ import { escapeHtml } from "./markdown.js";
 import { renderMetadata } from "./metadata.js";
 import { categoryThemes, essayPhotos, photoSrcset, photoUrl, site } from "./site.js";
 
+let archiveEssays = null;
+
+export function setArchiveEssays(essays) {
+  archiveEssays = essays;
+}
+
+export function themeEssays(theme, essays) {
+  return essays.filter((essay) => theme.categories.includes(essay.category) && essay.status !== "draft");
+}
+
+export function themesWithContent(essays = archiveEssays) {
+  if (!essays) return categoryThemes;
+  return categoryThemes.filter((theme) => theme.slug === "open-questions" || themeEssays(theme, essays).length > 0);
+}
+
+function themeCountLabel(theme, essays) {
+  if (!essays) return "";
+  if (theme.slug === "open-questions") return "Questions to think with";
+  const list = themeEssays(theme, essays);
+  const published = list.filter((essay) => essay.status === "published").length;
+  const upcoming = list.length - published;
+  const parts = [];
+  if (published) parts.push(`${published} ${published === 1 ? "essay" : "essays"}`);
+  if (upcoming) parts.push(`${upcoming} coming soon`);
+  return parts.join(" · ");
+}
+
 export function themeForCategory(category) {
   return categoryThemes.find((theme) => theme.categories.includes(category));
 }
@@ -55,7 +82,7 @@ export function renderFooter() {
     </div>
     <div>
       <strong>Explore</strong>
-      ${categoryThemes.filter((theme) => theme.slug !== "open-questions").map((theme) => `<a href="/categories/${theme.slug}/">${escapeHtml(theme.name)}</a>`).join("\n      ")}
+      ${themesWithContent().filter((theme) => theme.slug !== "open-questions").map((theme) => `<a href="/categories/${theme.slug}/">${escapeHtml(theme.name)}</a>`).join("\n      ")}
     </div>
     <div>
       <strong>More</strong>
@@ -103,7 +130,7 @@ export function essayCard(essay, featured = false) {
         <p>${escapeHtml(essay.excerpt)}</p>
         ${published && featured ? `<em class="card-cta">Read essay <span aria-hidden="true">→</span></em>` : ""}
       </div>`;
-  return `<article class="essay-card ${featured ? "essay-card-featured" : ""}">
+  return `<article class="essay-card ${featured ? "essay-card-featured" : ""}" data-theme="${escapeHtml(themeForCategory(essay.category)?.slug ?? "")}">
     ${published ? `<a href="/essays/${essay.slug}/" aria-label="Read ${escapeHtml(essay.title)}">${content}</a>` : `<div class="disabled-card">${content}</div>`}
   </article>`;
 }
@@ -121,8 +148,9 @@ export function smallEssayCard(essay) {
   </article>`;
 }
 
-export function categoryTile(theme, attributes = "") {
-  return `<a${attributes} href="/categories/${theme.slug}/" class="category-tile">${picture(theme.photo ?? theme.image, { sizes: "(max-width: 820px) 50vw, 25vw", width: 800 })}<span>${escapeHtml(theme.name)}</span></a>`;
+export function categoryTile(theme, attributes = "", essays = archiveEssays) {
+  const count = themeCountLabel(theme, essays);
+  return `<a${attributes} href="/categories/${theme.slug}/" class="category-tile">${picture(theme.photo ?? theme.image, { sizes: "(max-width: 820px) 50vw, 25vw", width: 800 })}<span>${escapeHtml(theme.name)}</span>${count ? `<small>${escapeHtml(count)}</small>` : ""}</a>`;
 }
 
 export function questionItem(item, hidden = false) {
