@@ -1,10 +1,9 @@
-import { archiveRow, pageShell } from "../components.js";
+import { archiveRow, categoryTile, pageShell, picture, questionItem } from "../components.js";
 import { escapeHtml } from "../markdown.js";
 import { categoryThemes } from "../site.js";
 import { openQuestions } from "./home.js";
 
 const themes = categoryThemes;
-const themeHref = (theme) => `/categories/${theme.slug}/`;
 
 export function renderArchivePage(essays) {
   return renderProjectsPage(essays);
@@ -26,7 +25,7 @@ export function renderProjectsPage(essays) {
         <p>Explore the themes that shape this archive, from politics and identity to culture, cities, health, business and open questions.</p>
       </section>
       <section class="category-grid project-categories">
-        ${themes.map((theme) => `<a id="${theme.slug}" href="${themeHref(theme)}" class="category-tile"><img src="${theme.image}" alt=""><span>${escapeHtml(theme.name)}</span></a>`).join("")}
+        ${themes.map((theme) => categoryTile(theme, ` id="${theme.slug}"`)).join("")}
       </section>
       <section class="section all-essays" id="all-essays">
         <div class="section-heading">
@@ -68,7 +67,7 @@ export function renderCategoryPage(theme, essays) {
           <h1>${escapeHtml(theme.name)}</h1>
           <p>${escapeHtml(theme.description)}</p>
         </div>
-        <img src="${theme.image}" alt="">
+        ${picture(theme.photo ?? theme.image, { sizes: "(max-width: 820px) 100vw, 45vw", eager: true })}
       </section>
       <section class="section all-essays">
         <div class="section-heading">
@@ -100,7 +99,7 @@ function renderOpenQuestionsPage(theme) {
           <h1>${escapeHtml(theme.name)}</h1>
           <p>${escapeHtml(theme.description)}</p>
         </div>
-        <img src="${theme.image}" alt="">
+        ${picture(theme.photo ?? theme.image, { sizes: "(max-width: 820px) 100vw, 45vw", eager: true })}
       </section>
       <section class="section open-questions">
         <div class="section-heading">
@@ -108,7 +107,7 @@ function renderOpenQuestionsPage(theme) {
           <a href="/#open-questions">View on home</a>
         </div>
         <div class="question-list">
-          ${openQuestions.map((item) => `<details><summary>${escapeHtml(item.question)}</summary><p>${escapeHtml(item.category)}</p></details>`).join("")}
+          ${openQuestions.map((item) => questionItem(item)).join("")}
         </div>
       </section>
     </main>`

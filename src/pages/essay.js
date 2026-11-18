@@ -1,4 +1,4 @@
-import { asset, essayCard, pageShell } from "../components.js";
+import { asset, categoryLabel, essayCard, essayCover, pageShell, picture } from "../components.js";
 import { escapeHtml } from "../markdown.js";
 
 export function renderEssayPage(essay, essays) {
@@ -27,10 +27,10 @@ export function renderEssayPage(essay, essays) {
       <article>
         <header class="essay-hero">
           ${essay.series ? `<p class="essay-series">${escapeHtml(essay.series)}</p>` : ""}
-          <p class="kicker">${escapeHtml(essay.category)} / ${escapeHtml(essay.readingTime)}</p>
+          <p class="kicker">${escapeHtml(categoryLabel(essay.category))} · ${escapeHtml(essay.readingTime)}</p>
           <h1>${escapeHtml(essay.title)}</h1>
           <p>${escapeHtml(essay.subtitle)}</p>
-          <img${essay.series ? ` class="essay-series-artwork"` : ""} src="${escapeHtml(asset(essay.image))}" alt="Editorial illustration for ${escapeHtml(essay.title)}">
+          ${picture(essayCover(essay).src, { alt: `Editorial illustration for ${essay.title}`, className: essayCover(essay).artwork ? "essay-series-artwork" : "", sizes: "(max-width: 1000px) 100vw, 1000px", width: 1600, eager: true })}
         </header>
         <div class="essay-body${visualBodyClass}">${essay.bodyHtml}</div>
       </article>

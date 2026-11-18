@@ -1,9 +1,8 @@
-import { essayCard, pageShell, smallEssayCard } from "../components.js";
+import { categoryTile, essayCard, pageShell, picture, questionItem, smallEssayCard } from "../components.js";
 import { escapeHtml } from "../markdown.js";
 import { categoryThemes, site } from "../site.js";
 
 const themes = categoryThemes;
-const themeHref = (theme) => `/categories/${theme.slug}/`;
 
 export const openQuestions = [
   ["Culture, society and everyday life", "Why is it easier to visit cities than to live in them?"],
@@ -87,20 +86,23 @@ export function renderHomePage(essays) {
     title: site.name,
     description: site.description,
     path: "/",
-    body: `<main>
+    body: `<main class="home-page">
       <section class="name-hero">
         <div class="hero-copy">
-          <p class="kicker">Mini Theses / Personal Archive</p>
+          <p class="kicker">Mini Theses · Personal archive</p>
           <h1>Ana Varela Vilariño</h1>
-          <p class="hero-intro">I collect research, visual culture and everyday questions into concise essays - a living archive of the ideas that shape how we read the world.</p>
           <p class="hero-positioning">Research-led essays on culture, design, health and the systems behind everyday life.</p>
-          ${featured ? `<a class="text-link hero-latest-link" href="/essays/${escapeHtml(featured.slug)}/">Read the latest essay <span aria-hidden="true">→</span></a>` : ""}
+          <p class="hero-intro">I collect research, visual culture and everyday questions into concise essays - a living archive of the ideas that shape how we read the world.</p>
+          <div class="hero-actions">
+            ${featured ? `<a class="text-link hero-latest-link" href="/essays/${escapeHtml(featured.slug)}/">Read the latest essay <span aria-hidden="true">→</span></a>` : ""}
+            <a class="button-ghost" href="/projects/">Browse all essays</a>
+          </div>
         </div>
       </section>
 
       <section class="theme-marquee" aria-label="Thematic carousel">
         <div class="theme-track">
-          ${[...themes, ...themes].map((theme) => `<a href="${themeHref(theme)}" class="theme-pill"><img src="${theme.image}" alt=""><span>${escapeHtml(theme.name)}</span></a>`).join("")}
+          ${[...themes, ...themes].map((theme, index) => `<a href="/categories/${theme.slug}/" class="theme-pill"${index >= themes.length ? ` aria-hidden="true" tabindex="-1"` : ""}>${picture(theme.photo ?? theme.image, { sizes: "220px", width: 500 })}<span>${escapeHtml(theme.name)}</span></a>`).join("")}
         </div>
       </section>
 
@@ -125,24 +127,29 @@ export function renderHomePage(essays) {
           <h2>Available categories</h2>
           <a href="/projects/">Explore</a>
         </div>
-        <div class="category-grid">${themes.map((theme) => `<a href="${themeHref(theme)}" class="category-tile"><img src="${theme.image}" alt=""><span>${escapeHtml(theme.name)}</span></a>`).join("")}</div>
+        <div class="category-grid">${themes.map((theme) => categoryTile(theme)).join("")}</div>
       </section>
 
       <section class="section open-questions" id="open-questions">
         <div class="section-heading">
-          <h2>Open questions</h2>
+          <div>
+            <h2>Open questions</h2>
+            <p class="section-note">Questions to think with. They change from time to time.</p>
+          </div>
           <button type="button" class="rotate-questions" data-rotate-questions aria-label="Show another set of questions">Rotate</button>
         </div>
         <div class="question-list" data-question-list>
-          ${openQuestions.map((item, index) => `<details data-question-item ${index > 2 ? "hidden" : ""}><summary>${escapeHtml(item.question)}</summary><p>${escapeHtml(item.category)}</p></details>`).join("")}
+          ${openQuestions.map((item, index) => questionItem(item, index > 2)).join("")}
         </div>
       </section>
 
-      <section class="about-strip" id="about">
+      <section class="section about-strip" id="about">
         <p class="kicker">About this archive</p>
         <h2>A personal space for connecting ideas across disciplines.</h2>
-        <p>This journal brings together cultural analysis, social questions, health topics, business observations and visual storytelling.</p>
-        <a class="text-link" href="/about/">Read about the archive</a>
+        <div>
+          <p>This journal brings together cultural analysis, social questions, health topics, business observations and visual storytelling.</p>
+          <a class="text-link" href="/about/">Read about the archive <span aria-hidden="true">→</span></a>
+        </div>
       </section>
     </main>`
   });

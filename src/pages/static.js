@@ -50,12 +50,8 @@ export function renderContactPage() {
     path: "/contact/",
     body: `<main class="contact-page">
       <article class="contact-letter">
-        <header class="contact-letter-header">
-          <span>Ana Varela</span>
-          <span>Contact</span>
-        </header>
         <div class="contact-letter-copy">
-          <p class="contact-letter-label">Contact</p>
+          <p class="kicker">Get in touch</p>
           <h1>Contact</h1>
           <p>If something here made you think, connect ideas or see a topic differently, I’d be glad to hear from you. Reach out through LinkedIn or email below.</p>
           <div class="contact-letter-links">
